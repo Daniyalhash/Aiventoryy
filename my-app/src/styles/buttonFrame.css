@@ -1,0 +1,392 @@
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  border: none;
+ 
+}
+
+/* Main container for the button row */
+.buttonUpper {
+  display: flex;
+  justify-content: flex-start; /* Aligns children to the right */
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+/* Main container for the button row */
+
+
+/* Dropdown wrapper styling */
+.dropdown-wrapper {
+  position: relative;
+  margin-left: 0.5rem; /* Adds spacing between elements */
+}
+.dropdown-button-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dropdown-chevron {
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  margin-top: 5px;
+  min-width: 180px;
+}
+
+.period-dropdown {
+  left: 0;
+}
+
+.category-dropdown {
+  left: 0;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-item.selected {
+  background-color: #e0f7fa;
+  font-weight: bold;
+}
+
+.dropdown-item.empty {
+  color: #999;
+  cursor: default;
+}
+
+/* Product Input Field */
+.product-input-wrapper {
+  flex: 1;
+  min-width: 200px;
+}
+
+.product-input-field {
+
+
+
+  display: flex;
+    
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: black;
+    border: .3px solid #70D560;
+    border-radius: 25px;
+    padding: 10px 15px;
+      /* padding: 10px 50px; */
+width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    font-family: "Poppins", sans-serif;
+}
+
+.product-input-field:focus {
+  outline: none;
+  border-color: #4fc3f7;
+  box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+}
+
+/* Primary button style (for Predict Demand) */
+.primary-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+
+.primary-button:hover {
+  background-color: #388e3c;
+}
+
+.primary-button:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+/* Add these to your styles */
+/* .granularity-selector {
+  display: flex;
+  gap: 15px;
+  margin: 10px 0;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.radio-option input {
+  margin: 0;
+} */
+
+.dropdown-menu.month-dropdown {
+  max-height: 200px;
+  overflow-y: auto;
+
+
+
+}
+.granularity-container {
+  display: flex;
+  justify-content: center;
+ 
+}
+
+.granularity-selector {
+  display: flex;
+  position: relative;
+  background: #17412D;
+  border-radius: 50px;
+  padding: 1px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.granularity-selector input[type="radio"] {
+  display: none;
+}
+
+.option-label {
+  position: relative;
+  z-index: 2;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  text-align: center;
+  border-radius: 50px;
+}
+
+.granularity-selector input[type="radio"]:checked + .option-label {
+  color: #fff;
+}
+
+.selection-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  background: #70D560;
+  border-radius: 50px;
+  transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 1;
+}
+
+#month-option:checked ~ .selection-indicator {
+  transform: translateX(0);
+  width: calc(50% - 0px);
+}
+
+#day-option:checked ~ .selection-indicator {
+  transform: translateX(100%);
+  width: calc(50% - 4px);
+}
+.suggestion-dropdown {
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+/* Loading States */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--light-accent);
+  animation: bounce 1.4s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+  100% { transform: scale(0.8); opacity: 0.7; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+.product-suggestions {
+  width: 100%;
+  margin: 0.5rem 0 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap to next line */
+  gap: 0.5rem; /* Space between items */
+}
+
+.suggestion-div {
+  width: 100%;
+  margin: 0.5rem 0 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background: #f7f7f8; /* GPT-like light gray background */
+  border-radius: 8px; /* Rounded corners like GPT */
+  padding: 1rem; /* Inner spacing */
+  border: 1px solid #e5e5e6; /* Subtle border */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Very subtle shadow */
+}
+/* Hover state */
+.suggestion-item:hover {
+  background: #f0f0f1; /* Slightly darker than container */
+  border-color: #d9d9e0;
+  transform: translateY(-1px);
+}
+
+/* Selected item */
+.suggestion-item.selected {
+  background: #f9f9f9; /* Light blue selection */
+  border-color: #A9E6A0;
+  color: #52c41a;
+}
+.product-clear-field {
+  width: 100%;
+  padding: 10px 15px 10px 40px; /* Left padding for icon */
+  background-color: transparent;
+  color: black;
+  border: 1px solid #70D560;
+  border-radius: 25px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  outline: none;
+  cursor: pointer;
+}
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+.red{
+  color: red;
+  border: 1px solid red;
+}
+/* Add icon styling */
+.suggestion-item .add-icon {
+  color: #999;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.suggestion-item:hover .add-icon {
+  opacity: 1;
+  color: #52c41a;
+}
+/* Individual suggestion items */
+.suggestion-item {
+  background: white;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e5e6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 200px;
+}/* Empty State Styling */
+.empty-state {
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px dashed #e0e0e0;
+}
+
+.empty-icon {
+  font-size: 2rem;
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+.empty-message {
+  color: #666;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+
+
+.not{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.no-products {
+  text-align: center;
+  padding: 2rem;
+  color: #17412D;
+  opacity: 0.7;
+}

@@ -1,0 +1,85 @@
+
+/* Global reset */
+* {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.InventoryPage {
+  background-color: #F8F8F8;
+  min-height: 100vh;
+  padding: 20px;
+}
+.actionContainer {
+  padding: 10px 50px;
+
+  border-radius: 8px;
+  
+ 
+}
+/* Dataset Container */
+.dataset-container2 {
+
+ 
+ 
+}
+.dataset-feature {
+  padding: 10px 50px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+.visual-feature {
+  padding: 10px 50px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+}
+
+.loading-animation {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #17412D;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container {
+  text-align: center;
+  color: red;
+  margin-top: 10px;
+}
+
+.error-text {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.retry-btn {
+  background-color: #ff4c4c;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.retry-btn:hover {
+  background-color: #e04343;
+}

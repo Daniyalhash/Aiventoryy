@@ -1,0 +1,426 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* Base Styles */
+* {
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Profile Container */
+.profileContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  gap: 20px;
+}
+
+/* Bell Section */
+.bellSection {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.bellIconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 4px; /* Reduced from 5px */
+  cursor: pointer;}
+
+.bellIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bellIcon:hover {
+  background-color: rgba(23, 65, 45, 0.1);
+  transform: scale(1.05);
+}
+
+.Iconbell {
+  font-size: 18px; /* Slightly reduced if needed */
+  padding: 8px; /* Clickable area */
+  color: #17412D;
+  transition: transform 0.2s ease;
+}
+
+.divLine {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(174, 174, 174, 0.5);
+  margin: 0 -12px; /* Reduced side margins */
+}
+
+/* Profile Section */
+.profile {
+  display: flex;
+  align-items: center;
+  border: 1px solid #17412D;
+  padding: 5px 5px 5px 15px;
+  gap: 10px;
+  background-color: #F0F0F0;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: all 0.2s ease;
+  max-width: 200px;
+  overflow: hidden;
+}
+
+.profile:hover {
+  background-color: #e6e6e6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profileInfo {
+  min-width: 0; /* Allows text truncation */
+}
+
+.username {
+  font-weight: 500;
+  color: #17412D;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+.profileIcon {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: #555;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.profileIcon:hover {
+  color: #17412D;
+}
+
+.Iconarrow {
+  width: 18px;
+  height: 18px;
+}
+
+/* Small avatar (profile button) */
+.user-avatar-small {
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+/* Large avatar (dropdown) */
+.user-avatar-large {
+  width: 72px;
+  height: 72px;
+  font-size: 32px;
+  margin: 0 auto 15px;
+}
+
+/* Dropdown-specific avatar styling */
+.dropdownAvatar {
+  display: block;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+/* Dropdown Styles */
+.dropdown {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  width: 280px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.dropdownInitial {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 24px;
+  margin-bottom: 15px;
+  background-color: #17412D; /* Default color */
+}
+
+.dropdownName {
+  font-weight: 600;
+  font-size: 18px;
+  color: #17412D;
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+}
+
+.dropdownPhone {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  width: 100%;
+  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 20px;
+}
+ /* For the edit profile page specifically */
+ .profile-edit-container .user-avatar {
+  margin: 0 auto 1rem;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.dropdownButton {
+  width: 100%;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #17412D;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+
+.logoutButton:hover {
+  background-color: #f0f0f0;
+}
+
+.logoutButton .icon, .logoutButton .IconLogout {
+  margin-right: 12px;
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.lineDiv {
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+  width: 100%;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .profile {
+    padding: 5px;
+    max-width: 160px;
+  }
+  
+  .username {
+    max-width: 80px;
+  }
+  
+  .dropdown {
+    width: 240px;
+    right: 10px;
+  }
+}
+/* Feature Guide Styles */
+.feature-guide-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.feature-guide-container {
+  background: white;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+}
+
+.feature-guide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.feature-guide-logo {
+  height: 40px;
+}
+
+.feature-guide-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.feature-guide-close:hover {
+  color: #333;
+}
+
+.feature-guide-content {
+  line-height: 1.6;
+}
+
+.feature-guide-content h2 {
+  color: #17412D;
+  margin-bottom: 1rem;
+}
+
+.feature-guide-content p {
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.feature-section {
+  margin-bottom: 1.5rem;
+  border-left: 3px solid #17412D;
+  padding-left: 1rem;
+}
+
+.feature-section h3 {
+  color: #17412D;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.feature-section ul {
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.feature-section li {
+  margin-bottom: 0.5rem;
+}
+
+.highlight {
+  font-weight: 600;
+  color: #17412D;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Make bell icons clickable */
+.bellIcon {
+  cursor: pointer;
+}
+/* Feature Guide Styles */
+.feature-guide-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.feature-guide-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.feature-guide-container {
+  background: white;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+  transform: translateY(20px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.feature-guide-overlay.active .feature-guide-container {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.feature-guide-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-guide-close:hover {
+  color: #333;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.feature-guide-close:active {
+  background: rgba(0, 0, 0, 0.1);
+}

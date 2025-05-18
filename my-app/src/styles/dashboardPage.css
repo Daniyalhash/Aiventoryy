@@ -1,0 +1,72 @@
+.dashboardPage{
+    background-color: #F8F8F8;
+    height: 85vh;
+    padding: 20px;
+  }
+  /* Welcome Message Styles */
+.welcome-message {
+  position: fixed;
+  top:10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  animation: fadeInOut 4s ease-in-out forwards;
+}
+
+.welcome-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 50PX;
+  padding: 2px 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 300px;
+  gap: 10px;
+}
+
+.welcome-content h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 10px 0 5px;
+  color: #000;
+}
+
+.welcome-content p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.welcome-icon {
+  font-size: 40px;
+
+  margin-right: 0px;
+
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}
+  
+  

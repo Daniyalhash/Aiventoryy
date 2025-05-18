@@ -1,0 +1,100 @@
+/* .InsightPage {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #F8F8F8;
+  } */
+/* Global reset */
+* {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.InsightPage {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #F8F8F8;
+  min-height: 100vh;
+}
+
+.feature-selector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.feature-tab {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  background-color: #E0E0E0;
+  color: #555;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
+}
+
+.feature-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.feature-tab.active {
+  background-color: #17412D;
+  color: white;
+  box-shadow: 0 4px 12px rgba(23, 65, 45, 0.3);
+}
+
+.feature-container {
+  position: relative;
+  min-height: 500px;
+  overflow: hidden;
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.slide-left {
+  animation: slideLeft 0.3s forwards;
+}
+
+.slide-right {
+  animation: slideRight 0.3s forwards;
+}
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+/* Add a subtle background pattern */
+.InsightPage {
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(112, 213, 96, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(23, 65, 45, 0.05) 0%, transparent 20%);
+  background-size: 300px 300px;
+}

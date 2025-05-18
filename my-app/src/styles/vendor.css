@@ -1,0 +1,81 @@
+
+/* Global reset */
+* {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.VendorPage {
+  padding: 20px;
+  background-color: #F8F8F8;
+  min-height: 100vh;
+}
+
+/* Dataset Container */
+.dataset-container {
+ display: flex;
+  flex-direction: column;
+  gap: 24px; /* This adds consistent spacing between all child elements */
+ 
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.dataset-feature2 {
+  padding: 10px 50px;
+
+  border-radius: 8px;
+ 
+  gap: 24px;}
+
+/* Loading States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 15px;
+}
+
+.loading-animation {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #17412D;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error States */
+.error-container {
+  text-align: center;
+  padding: 30px;
+  background-color: #FFF5F5;
+  border-radius: 8px;
+  border: 1px solid #FFEBEE;
+}
+
+.error-text {
+  font-size: 16px;
+  color: #D32F2F;
+  margin-bottom: 15px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .VendorPage {
+    padding: 15px;
+  }
+  
+  .dataset-feature2 {
+    padding: 15px;
+  }
+}

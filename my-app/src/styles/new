@@ -1,0 +1,59 @@
+/* Message container with smooth animation */
+.messageContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* Show state for messages */
+.messageContainer.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+/* Error and Success styles */
+.messageContainer.error {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.messageContainer.success {
+  background-color: #52c41a;
+  color: white;
+}
+/* Message content styling */
+.message-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 10px 20px;
+  position: relative;
+  white-space: nowrap;
+}
+/* Close icon positioned on the left */
+.close-icon {
+  font-size: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: color 0.3s;
+  position: absolute;
+  right: 20px; /* Adjusted to avoid overflow */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Hover effect on the close icon */
+.close-icon:hover {
+  color: #004b23;
+}

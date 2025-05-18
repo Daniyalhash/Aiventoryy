@@ -1,0 +1,408 @@
+/* Main Container */
+.low-stock-container {
+width: 100%;  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  color: #17412D;
+}
+
+/* Header Section */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #17412D;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Search Container */
+.search-container {
+  position: relative;
+  width: 300px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.search-input:focus {
+  outline: none;
+  color: #004b23;
+
+  border-color: #4CAF50;
+  box-shadow: 0 2px 15px rgba(76, 175, 80, 0.2);
+}
+.search-input::placeholder {
+  color: #004b23;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+/* Product Cards */
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.product-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.product-card.expanded {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.product-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.product-summary:hover {
+  background-color: #f9f9f9;
+}
+
+.product-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #17412D;
+  font-weight: 600;
+}
+
+.category {
+  margin: 0.3rem 0 0;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.stock-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stock-quantity {
+  background-color: #FFB84D;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.toggle-icon {
+  color: #4CAF50;
+  transition: transform 0.3s ease;
+}
+
+.product-card.expanded .toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Vendor Section */
+.vendor-section {
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid #eee;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.vendor-title {
+  color: #555;
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.vendors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.vendor-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vendor-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.vendor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.vendor-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.reliability-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.reliability-badge.high {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.reliability-badge.medium {
+  background-color: #FFB84D;
+  color: white;
+}
+
+.reliability-badge.low {
+  background-color: red;
+  color: white;
+}
+.vendor-tag{
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.vendor-tag.best-recommended {
+  border: 1px solid #4CAF50;
+  font-size: 0.6rem;
+
+  color:#4CAF50;
+}
+.vendor-tag.Slightly-best {
+  border: 1px solid #326D3C;
+  font-size: 0.6rem;
+
+  color:#326D3C;
+}
+.vendor-tag.good {
+  border: 1px solid #A9E6A0;
+  font-size: 0.8rem;
+
+  color: #A9E6A0;
+}
+.vendor-tag.slightly-good {
+  border: 1px solid #333333;
+  font-size: 0.7rem;
+
+  color: #333333;
+}
+
+.vendor-tag.Least-good {
+  border: 1px solid #FFB84D;
+  font-size: 0.7rem;
+
+  color: #FFB84D;
+}
+.vendor-tag.worst {
+  font-size: 0.8rem;
+
+  border: 1px solid red;
+  color: red;
+}
+
+.vendor-details {
+  margin: 1rem 0;
+}
+
+.vendor-details p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.vendor-details span {
+  font-weight: 600;
+  color: #333;
+}
+
+.order-button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.order-button:hover {
+  background-color: #45a049;
+}
+
+/* Pagination */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.pagination-button {
+  padding: 0.7rem 1.5rem;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Loading and Empty States */
+.loading-spinner {
+  border: 3px solid rgba(0,0,0,0.1);
+  border-radius: 50%;
+  border-top: 3px solid #4CAF50;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+.no-vendors, .empty-state {
+  text-align: center;
+  color: #777;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.error-message {
+  background-color: #FFEBEE;
+  color: #C62828;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ... other styles ... */
+/* Message container with smooth animation */
+.messageContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* Show state for messages */
+.messageContainer.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+/* Error and Success styles */
+.messageContainer.error {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.messageContainer.success {
+  background-color: #52c41a;
+  color: white;
+}
+/* Message content styling */
+.message-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 10px 20px;
+  position: relative;
+  white-space: nowrap;
+}
+/* Close icon positioned on the left */
+.close-icon {
+  font-size: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: color 0.3s;
+  position: absolute;
+  right: 20px; /* Adjusted to avoid overflow */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Hover effect on the close icon */
+.close-icon:hover {
+  color: #004b23;
+}
