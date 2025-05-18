@@ -1,0 +1,24 @@
+/* styles/SettingOver.css */
+/* Font import moved to global CSS for single import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.sover__container {
+  padding: 10px 50px;
+}
+
+.sover__heading {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #17412D;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.sover__subheading {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.3;
+}

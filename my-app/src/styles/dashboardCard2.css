@@ -1,0 +1,305 @@
+/* Global reset */
+* {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Large card section with flexbox */
+.LargecardSection {
+  display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+    padding: 10px 50px; /* Consistent padding */
+    justify-content: space-between; /* Distribute space between cards */
+    width: 100%; /* Ensure container takes full width */
+    max-width: 1500px; /* Optional: Set a max-width for very large screens */
+    margin: 0 auto; /* Center the container on the page */
+}
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.retry-button {
+  margin-top: 10px;
+  padding: 5px 15px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.messageContainer.error .retry-button {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.chart-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  font-style: italic;
+}
+/* Card styling */
+.card2 {
+  position: relative;
+  border-radius: 16px; /* Overall border radius */
+  padding: 20px;
+  max-width: 100%;
+  height: 350px;
+  border: none;
+  color: #000;
+  overflow: hidden;
+  flex: 1 1 calc(33% - 20px); /* Flex card layout, 3 cards per row */
+  min-width: 250px; /* Minimum width for cards */
+  box-sizing: border-box;
+  
+}
+/* Message container with smooth animation */
+.messageContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* Show state for messages */
+.messageContainer.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+/* Error and Success styles */
+.messageContainer.error {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.messageContainer.success {
+  background-color: #52c41a;
+  color: white;
+}
+/* Message content styling */
+.message-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 10px 20px;
+  position: relative;
+  white-space: nowrap;
+}
+/* Close icon positioned on the left */
+.close-icon {
+  font-size: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: color 0.3s;
+  position: absolute;
+  right: 20px; /* Adjusted to avoid overflow */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Hover effect on the close icon */
+.close-icon:hover {
+  color: #004b23;
+}
+.card2.bg-custom-one {
+  background-color: #9FE870; /* Custom background */
+  border: 0.002rem solid #333;
+}
+
+.card2.bg-custom-third {
+  background-color: #9FE870; /* Custom background */
+}
+
+/* Text section styling */
+.textSection2 {
+  margin-bottom: 20px; /* Space between text and graph */
+}
+
+.cardTitle2,
+.cardTitle {
+  font-size: 25px;
+  color: #17412D;
+  font-weight: 500;
+  padding-top: 10px;
+  z-index: 2;
+  position: relative;
+}
+
+.cardValue2 {
+  font-size: 50px;
+  font-weight: bold;
+  color: #17412D;
+  margin: 0;
+  z-index: 2;
+  position: relative;
+}
+
+.cardDescription2 {
+  font-size: 18px;
+  color: #17412D;
+  margin: 10px 0 5px;
+  z-index: 2;
+  position: relative;
+}
+
+/* Graph inside the card */
+.graphSection {
+  width: 100%;
+  height: 250px; /* Adjust the height of the graph */
+  margin-top: 20px;
+  border-radius: 10px; /* Rounded corners for the graph */
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Optional: adds some shadow for better contrast */
+}
+
+/* Chart Wrapper */
+.chartWrapper2 {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 100%; /* Occupies full width */
+  padding: 20px; /* Increased padding for a more spacious layout */
+  background-color: #ffffff; /* White background for the chart */
+  border-radius: 16px; /* Match the card style */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Soft shadow for better separation */
+  height: 100%; /* Adjusted height to fill the space */
+  border: 2px solid #17412D; /* Added border with highlighting color */
+}
+
+.iconArrow8 {
+  background-color: #17412D;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: rotate(330deg); /* Use 'transform' instead of 'rotate' */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  font-size: 24px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.iconArrow8:hover {
+  background-color: #ffffff;
+  color: #17412D;
+  border: 1px solid #17412D;
+}
+
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .card2 {
+    flex: 1 1 calc(50% - 20px); /* Two cards per row on medium screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .card2 {
+    flex: 1 1 100%; /* One card per row on very small screens */
+  }
+}
+.sales-trend-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-title {
+  color: #333;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-wrapper {
+  flex: 1;
+  min-height: 250px;
+}
+
+.chart-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+  padding: 40px;
+  text-align: center;
+}
+
+.fallback-icon {
+  color: #e0e0e0;
+  margin-bottom: 15px;
+}
+
+.chart-footer {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.data-info {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* Tooltip custom style */
+.recharts-tooltip-item {
+  color: #333 !important;
+  font-size: 13px !important;
+}
+
+.recharts-tooltip-item-name {
+  font-weight: 500 !important;
+}
+
+.recharts-legend-item-text {
+  color: #666 !important;
+  font-size: 13px !important;
+}

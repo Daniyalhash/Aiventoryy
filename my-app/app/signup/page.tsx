@@ -1,0 +1,136 @@
+'use client';
+import UserCredentials from '@/components/UserCredentials';
+import DatasetUpload from '@/components/DatasetUpload';
+import DashboardButton from '@/components/DashboardButton';
+import '@/styles/SignupPage.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import Link from "next/link";
+import Image from 'next/image';
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+
+import {
+  faUser,
+  faChevronLeft,
+  faEdit,
+  faCamera,
+  faSave,
+} from "@fortawesome/free-solid-svg-icons";
+const SignupPage = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const userIdFromUrl = searchParams.get("userId");
+  const emailFromUrl = searchParams.get("email");
+  // Determine initial step from URL query parameters
+  const initialStep = searchParams.get("step") ? parseInt(searchParams.get("step"), 10) : 1;
+  const [step, setStep] = useState(initialStep);
+  const [formData, setFormData] = useState({ email: "" });
+
+  useEffect(() => {
+    console.log("Received userId:", userIdFromUrl);
+    console.log("Received email:", emailFromUrl);
+
+    if (userIdFromUrl && emailFromUrl) {
+      setFormData({ user_id: userIdFromUrl, email: emailFromUrl });
+    }
+  }, [userIdFromUrl, emailFromUrl]);
+
+  useEffect(() => {
+    router.replace(`/signup?step=${step}&userId=${formData.user_id}&email=${encodeURIComponent(formData.email)}`, { scroll: false });
+  }, [step, formData, router]);
+
+
+
+
+
+
+
+
+
+
+
+  const handleCredentialsApproved = (data) => {
+    console.log("Credentials Approved:", data);
+    setFormData({ ...formData, user_id: data.user_id, email: data.email });
+    setStep(2); // Move to Dataset Upload step
+  };
+
+  const handleDatasetUploaded = () => setStep(3); // Move to Dashboard Button step
+
+  console.log("Current Step:", step);
+  console.log("Form Data:", formData);
+  return (
+    <div className="SignInContainer">
+      {/* Right Section */}
+
+
+      {/* Left Section */}
+      <div className="signLeft">
+        <div className="logocontainer">
+          <div className="logo">
+            <Image
+              src="/images/logoPro.png"
+              alt="Logo"
+              className="logImg"
+              width={100}
+              height={100}
+              hidden
+            />
+          </div>
+
+
+        </div>
+
+
+
+        {/* Login Form */}
+
+        {/* Step 1: User Credentials */}
+        {step === 1 && <UserCredentials onApproved={handleCredentialsApproved} />}
+
+        {formData.user_id && formData.email && step === 2 && (
+          <DatasetUpload userId={formData.user_id} emailId={formData.email} onUploadComplete={handleDatasetUploaded} />
+        )}
+
+        {formData.user_id && step === 3 && (
+          <DashboardButton userId={formData.user_id} />
+        )}
+
+
+
+
+      </div>
+      <div className="signRight">
+        <div className="logoRight">
+          <Link href="/">
+            <Image
+              src="/images/logoPro2.png"
+              alt="Logo"
+              className="logImg"
+              width={100}
+              height={100}
+              style={{ cursor: 'pointer' }} // Optional: Add pointer cursor
+            />
+          </Link>
+        </div>
+        {/* 3D Look Animated Video */}
+        <video
+          className="animatedVideo"
+          autoPlay
+          loop
+          muted
+          playsInline
+          src="/video/vid3.mp4"
+          type="video/mp4"
+        ></video>
+      </div>
+    </div>
+  );
+};
+
+export default SignupPage;
+
+
+
+

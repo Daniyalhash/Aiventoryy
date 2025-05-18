@@ -1,0 +1,244 @@
+/* Card container with flexbox to arrange cards neatly */
+.cardSection5 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Added space between cards for better spacing */
+  justify-content: flex-start; /* Changed from space-between for better control */
+  padding: 10px;
+  
+}
+
+.compare2 {
+  --circle-r: 30px;
+  --big-circle-r: 50px;
+  --pillar-size: max(34px, var(--circle-r));
+  --card-color: #fff;
+  max-width: 440px;
+
+  min-width: 440px; /* Minimum width */
+  border-radius: 40px;
+  margin: 0 auto; /* Center cards when they wrap */
+}
+.cardDescription, .cardDescription2 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%; /* Ensure text doesn't overflow */
+}
+.cardC5 {
+  border: 1px solid #e0e0e0; /* Lighter border for subtlety */
+  --circle-d: calc(var(--circle-r) * 2);
+  --circles-space: calc(var(--big-circle-r) + var(--pillar-size));
+  --circle-extend-inset: calc(var(--circle-r) + var(--circles-space));
+
+  position: relative;
+  border-top-right-radius: 0;
+  height: auto; /* Changed from fixed height to auto */
+  min-height: 150px; /* Minimum height */
+  border-radius: 25px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  overflow: hidden;
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Card hover effect */
+.cardC5:hover {
+}
+.cardDescription {
+  font-size: 16px;
+  color: #17412D;
+  margin: -10px 0 5px;
+  z-index: 2;
+  position: relative;
+  margin-bottom: 1rem;
+  line-height: 1.4; /* Better line spacing */
+}
+
+/* Guidance text styling */
+ .guidance {
+  font-size: 25px;
+  color: #555;
+  margin: auto;
+  text-align: center;
+  line-height: 1.5;
+  margin: 10px 0;
+  padding: 0 10px;
+  text-align: left;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp:0; /* Limit to 4 lines initially */
+  -webkit-box-orient: vertical;
+  transition: all 0.3s ease;
+}
+.cardDescription2 {
+  text-align: left;
+  font-style: italic;
+  margin-bottom: 1rem;
+  font-size: clamp(14px, 1.8vw, 16px);
+  color: #555;
+  margin-top: 10px;
+  padding: 0 10px; /* Add some padding */
+  line-height: 1.4; /* Better line spacing */
+}
+/* Background color classes */
+.cardC5.bg-custom-one {
+  background-color: #ffffff;
+}
+.cardC5.bg-custom-third {
+  background-color: #720101;
+}
+
+/* Text styling */
+.cardContent5 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 150px; /* Set minimum height for card */
+
+}
+
+.cardContent5 .subTitle {
+  font-size: 15px;
+  color: #7a827e;
+  font-weight: 400;
+  padding-top: px;
+  z-index: 2;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.cardContent5 .subTitle2 {
+  font-size: clamp(16px, 2vw, 20px); /* Responsive font size */
+  color: #17412D;
+  font-weight: lighter;
+  padding-top: 4px;
+  z-index: 2;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.cardContent5 .cardMain {
+  margin: 0 auto;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+.cardContent5 .cardValue {
+  font-size: clamp(60px, 10vw, 100px); /* Responsive font size */
+  font-weight: bold;
+  color: #9FE870;
+  margin: 0;
+  z-index: 2;
+  position: relative;
+  line-height: 0.9; /* Better spacing for large text */
+}
+
+/* Arrow button (top-right corner) */
+.cardContent5 .iconArrow {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ffffff;
+  color: #17412D;
+  border: none;
+  border-radius: 50%;
+  width: clamp(40px, 8vw, 60px); /* Responsive size */
+  height: clamp(40px, 8vw, 60px); /* Responsive size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: rotate(330deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+  font-size: clamp(20px, 4vw, 30px); /* Responsive size */
+  transition: all 0.3s ease;
+}
+
+.cardContent5 .iconArrow:hover {
+  background: #17412D;
+  color: #fff;
+}
+
+/* Overlapping background shape */
+.cardBackground {
+  position: absolute;
+  top: 50%;
+  left: -30px;
+  width: 120%; /* Relative to card size */
+  height: 150%; /* Relative to card size */
+  background: rgba(0, 0, 0, 0.03); /* Very subtle overlay */
+  transform: rotate(-30deg) translateY(-50%);
+  border-radius: 20px;
+  z-index: -1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cardSection5 {
+    justify-content: center; /* Center cards on smaller screens */
+  }
+  
+  .compare2 {
+    width: 100%; /* Full width on mobile */
+    max-width: 400px;
+  }
+  
+  .cardC5 {
+    padding: 15px;
+  }
+}/* Add to your existing CSS */
+
+.value-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+}
+
+.percentage-indicator {
+  font-weight: 600;
+  color: #fff;
+  background-color: #17412D;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 20px; /* Adjust to align with cardValue baseline */
+  line-height: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  bottom: 0.92em; /* Fine-tune vertical alignment */
+}
+
+/* Adjust cardValue to work with the percentage indicator */
+.cardContent5 .cardValue {
+  margin: 0;
+  padding: 0;
+}
+
+/* For dark background cards */
+.cardC5.bg-custom-third .percentage-indicator {
+  background-color: #fff;
+  color: #17412D;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .percentage-indicator {
+    font-size: clamp(14px, 2.5vw, 18px);
+    padding: 2px 8px;
+    margin-bottom: 15px;
+  }
+  
+  .value-container {
+    gap: 5px;
+  }
+}

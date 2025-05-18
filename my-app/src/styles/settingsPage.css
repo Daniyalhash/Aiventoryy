@@ -1,0 +1,144 @@
+/* settingsPage.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+.settings-page {
+  background-color: #f9f9f9;
+  min-height: 70vh;
+  padding: 10px;
+}
+
+.settings-page h2 {
+  color: #17412D;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Settings List */
+.settingslist {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.settingsitem {
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.settingsitem:hover {
+  transform: translateX(5px);
+}
+
+.settingslink,
+.settingslink2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  padding: 1.2rem 2rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.settingslink {
+  background: #ffffff;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.settingslink2 {
+  background: #ff4444;
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 68, 68, 0.2);
+}
+
+.settingslink:hover {
+  background-color: #17412D;
+  color: white;
+  box-shadow: 0 4px 12px rgba(23, 65, 45, 0.2);
+  transform: translateY(-2px);
+}
+
+.settingslink2:hover {
+  background-color: #cc0000;
+  color: white;
+  box-shadow: 0 4px 12px rgba(204, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.settinglinkSub {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.settingsicon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+.settingslink span,
+.settingslink2 span {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.arrow-icon {
+  font-size: 0.9rem;
+  color: #999;
+  transition: all 0.3s ease;
+}
+
+.settingslink:hover .arrow-icon {
+  color: white;
+}
+
+.settingslink2 .arrow-icon {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.settingslink2:hover .arrow-icon {
+  color: white;
+}
+
+/* Logout button specific styles */
+.logout-button .settingslink2 {
+  background: transparent;
+  color: #ff4444;
+  box-shadow: none;
+  border: 1px solid #ff4444;
+}
+
+.logout-button .settingslink2:hover {
+  background: #ff4444;
+  color: white;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 1.5rem;
+  }
+
+  .settings-page h2 {
+    font-size: 1.6rem;
+  }
+
+  .settingslink,
+  .settingslink2 {
+    padding: 1rem 1.5rem;
+  }
+
+  .settingslink span,
+  .settingslink2 span {
+    font-size: 1rem;
+  }
+}

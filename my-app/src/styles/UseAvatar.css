@@ -1,0 +1,47 @@
+/* User Avatar Styles */
+.user-avatar {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    background-color: #17412D; /* Default fallback color */
+  }
+  
+  /* Size Variants */
+  .user-avatar-small {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  
+  .user-avatar-medium {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .user-avatar-large {
+    width: 64px;
+    height: 64px;
+    font-size: 24px;
+  }
+  
+  .user-avatar-xlarge {
+    width: 96px;
+    height: 96px;
+    font-size: 36px;
+  }
+  
+  /* Animation for hover effects */
+  .user-avatar {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .user-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+ 
