@@ -286,7 +286,20 @@ const LowStockSuggestionSection: React.FC = () => {
     }
   };
   
-  
+  const [isAllSelected, setIsAllSelected] = useState(false);
+const [selectedProducts, setSelectedProducts] = useState<string[]>([]); // Adjust type as needed
+
+const handleSelectAll = (e) => {
+  const isChecked = e.target.checked;
+  setIsAllSelected(isChecked);
+  if (isChecked) {
+      console.log("wow")
+
+  } else {
+    // Clear selection
+  console.log("no")
+  }
+};
   const renderVendors = () => {
     if (loading) return <div className="loading-spinner"></div>;
     if (!vendorDetails || vendorDetails.length === 0) return <p className="no-vendors">No vendors available</p>;
@@ -338,7 +351,21 @@ const LowStockSuggestionSection: React.FC = () => {
       )} */}
       
       <div className="header-section">
-        <h2 className="section-title">Low Stock Products ({filteredProducts.length})</h2>
+ <div className="search-head">
+  <h2 className="section-title">Low Stock Products ({filteredProducts.length})</h2>
+
+  <div className="checkbox-wrapper">
+    <label htmlFor="selectAll" className="checkbox-label">
+      <input
+        type="checkbox"
+        id="selectAll"
+        checked={isAllSelected}
+        onChange={handleSelectAll}
+      />
+      <span className="custom-checkbox"></span>
+Automate Orders    </label>
+  </div>
+</div>
         <div className="search-container">
           <input
             type="text"

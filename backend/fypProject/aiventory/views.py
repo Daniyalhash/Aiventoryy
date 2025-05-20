@@ -304,11 +304,20 @@ def discard_signup(request):
         email = request.data.get("email")
         if not email:
             return Response({"error": "Email is required."}, status=400)
+        # Check if user exists with the given email
+        user = db["users"].find_one({"email": email})
 
-        result = db["users"].delete_one({"email": email})
+        if not user:
+            return Response({"error": "No user found with this email."}, status=404)
+
+        if user.get("status") != "incomplete":
+            return Response({"error": "Account is completed and cannot be deleted."}, status=403)
+        
+        result = db["users"].delete_one({"email": email, "status": "incomplete"})
+
 
         if result.deleted_count == 0:
-            return Response({"error": "No user found with this email."}, status=404)
+            return Response({"error": "Unable to delete user."}, status=500)
 
         return Response({"message": "Signup discarded successfully. User deleted."}, status=200)
 
@@ -321,16 +330,18 @@ def in_complete_signup(request):
         email = request.data.get("email")  # Identify user by email
         if not email:
             return Response({"error": "Email is required."}, status=400)
-
-        result = db["users"].update_one(
+        user = db["users"].find_one({"email": email})
+        if not user:
+            return Response({"error": "User not found."}, status=404)
+        if user.get("status") != "complete":
+            db["users"].update_one(
             {"email": email, "status": "incomplete"},
             {"$set": {"status": "incomplete"}}
         )
 
-        if result.matched_count == 0:
-            return Response({"error": "No such user found or user already completed signup."}, status=404)
-
-        return Response({"message": "User signup incomplete successfully."})
+            return Response({"message": "User marked as incomplete."})
+        else:
+            return Response({"message": "User already completed signup."})
 
     except Exception as e:
         return Response({"error": str(e)}, status=500)
@@ -3586,27 +3597,27 @@ def last_sales_month(request):
         formatted_month = date.strftime("%B %Y")
 
         # 6. Generate the next 12 months starting from the month after the last sales month
-        def generate_next_12_months(last_month):
+        def generate_next_12_months():
             months_list = [
                 "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
             ]
-            try:
-                month_name, year = last_month.split(" ")
-                current_month_index = months_list.index(month_name)
-                next_year = int(year)
+            today = datetime.today()
 
-                months = []
-                for i in range(1, 13):  # Generate 12 months
-                    next_month_index = (current_month_index + i) % 12
-                    next_year_value = next_year + ((current_month_index + i) // 12)  # Correctly increment the year
-                    months.append(f"{months_list[next_month_index]} {next_year_value}")
-                return months
-            except Exception as e:
-                print(f"Error generating next 12 months: {e}")
-                return []
+            # Decide if current month is still forecastable (e.g., if today is before the 25th)
+            start_month = today.month if today.day < 25 else (today.month % 12 + 1)
+            start_year = today.year if today.day < 25 else (today.year if today.month < 12 else today.year + 1)
 
-        available_months = generate_next_12_months(formatted_month)
+            months = []
+            for i in range(12):
+                next_month_index = (start_month - 1 + i) % 12
+                year_offset = (start_month - 1 + i) // 12
+                month_name = months_list[next_month_index]
+                year = start_year + year_offset
+                months.append(f"{month_name} {year}")
+            return months
+
+        available_months = generate_next_12_months()
         if not available_months:
             return Response(
                 {"status": "error", "message": "Failed to generate available months"},
@@ -3937,13 +3948,19 @@ def get_expiry_forecast(user_id):
         waste_reducer = AIWasteReducer(user_id)
         print("✅ Waste predictor initialized")
 
-        waste_reducer.train()
+        # Check if model exists, if not train it
+        if not waste_reducer.is_aiwaste_model_already_trained():
+            print("⚙️ Training new model...")
+            waste_reducer.train()
+        else:
+            print("♻️ Loading existing model...")
+            waste_reducer.load_model_and_preprocessor_from_mongo()  
         print("✅ Model trained (or reused from memory)")
 
-        # 🧠 Load the trained model
-        loaded_model = waste_reducer.load_model()
-        if not loaded_model:
-            return Response({"error": "Failed to load the trained model."}, status=500)
+        # # 🧠 Load the trained model
+        # loaded_model = waste_reducer.load_model_and_preprocessor_from_mongo()
+        # if not loaded_model:
+        #     return Response({"error": "Failed to load the trained model."}, status=500)
 
         # 📦 Fetch product data
         df = waste_reducer._preprocessed_df
@@ -3955,11 +3972,7 @@ def get_expiry_forecast(user_id):
         
         
         prediction2 = waste_reducer.predict_all(df)
-        
-        # 🛡️ Clean up inf and nan values
         prediction2.replace([np.inf, -np.inf, np.nan], 0, inplace=True)
-
-        # 📤 Convert to list of dicts
         prediction2_row = prediction2.to_dict(orient='records')
 
         # ✅ Optionally log first 3 rows
@@ -4013,7 +4026,7 @@ def fetch_cached_predictions(request):
             {"$match": {"user_id": ObjectId(user_id)}},
             {"$project": {
                 "generated_at": 1,
-                "predictions": {"$slice": ["$predictions", 50]}  # ✅ Limit to first 50
+                "predictions": 1
             }}
         ]
 
@@ -4028,7 +4041,8 @@ def fetch_cached_predictions(request):
 
         if isinstance(generated_at, datetime):
             generated_at = generated_at.isoformat()
-
+        print(len(predictions))
+        # print("sendinf",predictions)
         return Response({
             "status": "success",
             "user_id": user_id,

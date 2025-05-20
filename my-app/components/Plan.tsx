@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import '@/styles/Plan.css'; // Import the new CSS file
 
 const Plan = () => {
@@ -21,7 +22,7 @@ const Plan = () => {
     ];
 
     return (
-        <div className="container">
+        <div id="pricing-section" className="container">
             <div className="plan-head">
                 <h2 className="title">Simple Plans For Everyone</h2>
                 <p className="subtitle">
@@ -76,10 +77,14 @@ const Plan = () => {
                 </div>
 
             </div>
-          
-            <button className="choose-button">
+                          <Link href="/login">
+
+            <button  className="choose-button">
                 Choose Plan
+              
             </button>
+                            </Link>
+
         </div>
     );
 };

@@ -1,4 +1,4 @@
-
+"use client"
 import Front from '@/components/Front';
 import LoginPage from '@/components/LoginPage';
 import NavbarWeb from '@/components/NavbarWeb';
@@ -12,10 +12,27 @@ import Phone from '@/components/Phone';
 import Laptop from '@/components/Laptop';
 import Plan from '@/components/Plan';
 import Help from '@/components/Help';
+import { useEffect } from 'react';
 
 import Testimonials from '@/components/Testimonials';
 import Footer from '@/components/Footer';
+const useScrollToHash = () => {
+
+ useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100); // slight delay to ensure render
+      }
+    }
+  }, []);
+};
 export default function Home() {
+    useScrollToHash(); // Add this hook
+
   return (
     <div className='Home'>
       <NavbarWeb />

@@ -2,108 +2,99 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from "react";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faClipboardList, faUsers, faCogs } from '@fortawesome/free-solid-svg-icons';
 import '../src/styles/NavbarWeb.css';
 // import ProfileButton2 from '@/components/ProfileButton2';
 // import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-
+import MainSiteProfileButton from './MainSiteProfileButton';
+// npm install next-auth
+import { useUser } from "@/components/UserContext"; // adjust the path as needed
+const scrollToSection = (id) => {
+  const section = document.querySelector(id);
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth' });
+  }
+};
 const NavbarWeb = () => {
   const pathname = usePathname();
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const router = useRouter();
-// Check authentication status and session expiry
-// const checkAuthStatus = () => {
-//   const userId = localStorage.getItem("userId");
-//   const loginTime = localStorage.getItem("loginTime");
-  
-//   if (userId && loginTime) {
-//     const currentTime = new Date().getTime();
-//     const elapsedTime = currentTime - parseInt(loginTime);
-//     const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-    
-//     if (elapsedTime > twentyFourHours) {
-//       // Session expired
-//       localStorage.removeItem("userId");
-//       localStorage.removeItem("loginTime");
-//       setIsLoggedIn(false);
-//       router.push('/login');
-//       return false;
-//     }
-//     return true;
-//   }
-//   return false;
-// };
+  const { user } = useUser();
+  const [storedUser, setStoredUser] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isClient, setIsClient] = useState(false); 
+  const isLoggedIn = !!user;
 
-// useEffect(() => {
-//   // Check auth status on component mount
-//   const isAuthenticated = checkAuthStatus();
-//   setIsLoggedIn(isAuthenticated);
+  console.log("user currentlu", storedUser)
+useEffect(() => {
+    setIsClient(true);
 
-//   // Set up periodic check every hour
-//   const interval = setInterval(() => {
-//     checkAuthStatus();
-//   }, 60 * 60 * 1000); // Check every hour
+    const userFromStorage = localStorage.getItem("user");
+    if (userFromStorage) {
+      try {
+        const parsedUser = JSON.parse(userFromStorage);
+        setStoredUser(parsedUser);
+        setUserId(parsedUser.id || parsedUser.userId || "N/A");
+        console.log("User from localStorage:", parsedUser);
+      } catch (e) {
+        console.error("Invalid user JSON in localStorage:", e);
+        localStorage.removeItem("user");
+      }
+    } else {
+      console.log("No user found in localStorage.");
+    }
+  }, []);
 
-//   return () => clearInterval(interval);
-// }, []);
 
   return (
-    <nav className="navbar">
-      <div className="logo">
-      <Link href="/">
-      <img src="/images/logoPro3.png" alt="Logo" className="logImg" />
-      </Link>
+    <nav className="navbarWeb">
+      <div className="logoWeb">
+        <Link href="/">
+          <img src="/images/logoPro3.png" alt="Logo" className="logImgWeb" />
+        </Link>
       </div>
-      <div className="menu">
-      <Link href="/dashboard">
-           Product 
-         </Link>
-         <Link href="/dashboard/inventory">
-           Solution
-         </Link>
-         <Link href="/dashboard/vendor">
+      <div className="menuWeb">
+        <a className="item" onClick={() => scrollToSection("#product-section")}>Product</a>
+        <a className="item" onClick={() => scrollToSection("#solution-section")}>Solution</a>
+        <a className="item" onClick={() => scrollToSection("#features-section")}>Features</a>
+        <a className="item" onClick={() => scrollToSection("#pricing-section")}>Pricing</a>
+        <a className="item" onClick={() => scrollToSection("#testimonials-section")}>Testimonials</a>
+
+        {/* <Link className='item' href="#product-section">
+          Product
+        </Link> */}
+        {/* <Link className='item' href="#solution-section">
+          Solution
+        </Link>
+        <Link className='item'href="#features-section">
           Features
-         </Link>
-         <Link href="/dashboard/insights">
-           Pricing
-         </Link>
-         <Link href="/">
-           Testimonials
-         </Link>
+        </Link>
+        <Link className='item'href="#pricing-section">
+          Pricing
+        </Link>
+        <Link className='item'href="#testimonials-section">
+          Testimonials
+        </Link> */}
       </div>
       <div className="authButtons">
-       
+        {isLoggedIn ? (
+          <MainSiteProfileButton />
+        ) : (
+          <>
             <Link href="/signup">
               <button className="signUp">Sign Up</button>
             </Link>
             <Link href="/login">
               <button className="logIn">Log In</button>
             </Link>
-         
+          </>
+        )}
       </div>
+
     </nav>
   );
 };
 
 export default NavbarWeb;
-{/* <Link href="/signup">
-<button className="signUp">Sign Up</button>
-</Link>
-<Link href="/login">
-<button className="logIn">Log In</button>
-</Link> */}
-// npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/fontawesome-svg-core
-// {isLoggedIn ? (
-//   <ProfileButton2 />
-// ) : (
-//   <>
-//     <Link href="/signup">
-//       <button className="signUp">Sign Up</button>
-//     </Link>
-//     <Link href="/login">
-//       <button className="logIn">Log In</button>
-//     </Link>
-//   </>
-// )}

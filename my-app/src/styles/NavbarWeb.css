@@ -12,7 +12,7 @@
 body { /* Or a more specific selector */
   font-family: 'Poppins', sans-serif;
 }
-.navbar {
+.navbarWeb {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,17 +22,17 @@ body { /* Or a more specific selector */
 }
 
 /* Logo */
-.logo{
+.logoWeb{
   padding: 1.5rem;
   cursor: pointer;
 }
-.logo .logImg {
+.logoWeb .logImgWeb {
   width: 100px;
   height: 40px;
 }
 
 /* Navigation links container */
-.menu {
+.menuWeb {
   display: flex;
   justify-content: center; /* Centers items horizontally */
   align-items: center; /* Centers items vertically */
@@ -43,14 +43,14 @@ body { /* Or a more specific selector */
 
 
 /* Navigation links */
-.menu a {
+.menuWeb .item {
   font-family: 'Poppins', sans-serif;
   font-weight: 400; /* Light font style */
   text-decoration: none;
   color: #000000;
   font-size: 1.2rem;
   align-items: center; /* Vertically centers items */
-
+cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 25px;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -85,10 +85,10 @@ body { /* Or a more specific selector */
   cursor: pointer;
   border-radius: 50px;
 }
-.icon {
+/* .icon {
   width: 20px;
   height: 20px;
   margin-right: 8px;
-}
+} */
 
 

@@ -3,16 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 import { useState,useEffect } from "react";
+import { signIn, signOut } from "next-auth/react";
 
 import Image from 'next/image';
 
 import "@/styles/LoginPage.css";
+import { useUser } from "@/components/UserContext"; // adjust the path as needed
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(""); // Can be error or success
   const [isError, setIsError] = useState(false); // To differentiate between error and success
+  const { user, setUser } = useUser();
 
   const [isLoading, setIsLoading] = useState(false);
 // Run once when page loads or React component mounts
@@ -72,7 +75,11 @@ const LoginPage = () => {
         localStorage.setItem("username", data.username || "");
         localStorage.setItem("loginTime", Date.now().toString());
         sessionStorage.setItem("justSignedUp", "true");
-  
+        localStorage.setItem("user", JSON.stringify(data));
+        setUser(data); // not user
+
+
+
         if (status === "incomplete") {
           setMessage("Your profile is incomplete. Please upload your dataset to proceed.");
           setIsError(true);

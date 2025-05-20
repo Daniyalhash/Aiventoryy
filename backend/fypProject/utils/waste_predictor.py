@@ -34,13 +34,20 @@ class AIWasteReducer:
         self.trained_model_waste = self.db["WasteForecasting"]
         self.df = self._get_data_from_db()
         self._ensure_preprocessed()
-        
+        self.fs = gridfs.GridFS(self.db)  # Use GridFS for storing large files
+
     def _get_data_from_db(self):
         print("⚡️ [FAST] Fetching minimal required data...")
+        today_str = datetime.utcnow().strftime("%Y-%m-%d")
 
         pipeline = [
             {"$match": {"user_id": ObjectId(self.user_id)}},
             {"$unwind": "$products"},
+            {
+            "$match": {
+                "products.expirydate": {"$gt": today_str}  # Filter non-expired products
+            }
+            },
             {"$project": {
                 "_id": 0,
                 "product_id": "$products.productname_id",
@@ -114,7 +121,46 @@ class AIWasteReducer:
         print("✅ Preprocessing completed.")
         return df[['product_id','productname' ,'category','expirydate', 'stockquantity', 'monthly_sales', 'timespan_months', 'units_will_sell_before_expiry']]
 
+    def save_model_and_preprocessor_to_mongo(self, model, preprocessor, model_name="aiwaste_model", preprocessor_name="aiwaste_preprocessor"):
+        """Save the model and preprocessor to MongoDB using GridFS"""
+        def save_object(obj, name):
+            with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+                joblib.dump(obj, tmp_file.name)
+                tmp_file.seek(0)
+                obj_bytes = tmp_file.read()
+            file_id = self.fs.put(obj_bytes, filename=name, user_id=self.user_id)
+            self.db.trained_model.update_one(
+                {"user_id": self.user_id, "model_name": name},
+                {"$set": {"model_file_id": file_id}},
+                upsert=True
+            )
 
+        save_object(model, model_name)
+        save_object(preprocessor, preprocessor_name)
+        print("✅ Model and preprocessor saved to MongoDB successfully.")
+
+    def load_model_and_preprocessor_from_mongo(self):
+        """Load AIWasteReducer model and preprocessor pipeline from MongoDB"""
+
+        print("📦 Loading AIWasteReducer model from MongoDB...")
+
+        model_data = self.db.trained_model.find_one({"user_id": self.user_id, "model_name": "aiwaste_model"})
+        if not model_data:
+            raise ValueError("🚫 No saved model found for this user.")
+
+        model_file_id = model_data["model_file_id"]
+        model_bytes = self.fs.get(model_file_id).read()
+
+        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+            tmp_file.write(model_bytes)
+            tmp_file.seek(0)
+            self.model = joblib.load(tmp_file.name)
+
+        print("✅ Model loaded successfully.")
+        return self.model  # Return the loaded model
+    def is_aiwaste_model_already_trained(self):
+        """Check if AIWasteReducer model already exists in MongoDB"""
+        return self.db.trained_model.find_one({"user_id": self.user_id, "model_name": "aiwaste_model"}) is not None
     
 
 
@@ -161,13 +207,14 @@ class AIWasteReducer:
 
         self.model = model
         AIWasteReducer._cache[cache_key] = model
-     
+        # Extract the fitted preprocessor
+        fitted_preprocessor = model.named_steps['preprocessor']
+
+        # Save both to MongoDB
+        self.save_model_and_preprocessor_to_mongo(model, fitted_preprocessor)
         return self.model
 
-    def load_model(self, path='ai_waste_model.pkl'):
-        self.model = joblib.load(path)
-        print("Model loaded successfully from disk.")
-        return self.model
+    
 
     def predict_and_flag(self, product):
         df = pd.DataFrame([product])

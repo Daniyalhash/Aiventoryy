@@ -11,7 +11,7 @@ const Testimonials = () => {
   }, []);
 
   return (
-    <div className="Testimonials-section">
+    <div id="testimonials-section" className="Testimonials-section">
       <div className="Testimonials-container">
         <div className="Testimonials-heading-main" data-aos="fade-up" data-aos-delay="100">
           <h2 className="Testimonials-heading">

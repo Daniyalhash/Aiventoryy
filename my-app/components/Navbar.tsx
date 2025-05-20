@@ -19,29 +19,29 @@ const Navbar = () => {
       </div>
       <div className="menu">
         <Link href="/dashboard" className={pathname === '/dashboard' ? 'active' : ''}>
-          <FontAwesomeIcon icon={faHome} className="icon" />
+          <FontAwesomeIcon icon={faHome} className="iconDas" />
           Dashboard
         </Link>
         <Link href="/dashboard/inventory" className={pathname === '/dashboard/inventory' ? 'active' : ''}>
-          <FontAwesomeIcon icon={faClipboardList} className="icon" />
+          <FontAwesomeIcon icon={faClipboardList} className="iconDas" />
           Inventory
         </Link>
      
         <Link href="/dashboard/vendor" className={pathname === '/dashboard/vendor' ? 'active' : ''}>
-          <FontAwesomeIcon icon={faUsers} className="icon" />
+          <FontAwesomeIcon icon={faUsers} className="iconDas" />
           Vendor
         </Link>
         <Link href="/dashboard/insights" className={pathname === '/dashboard/insights' ? 'active' : ''}>
-          <FontAwesomeIcon icon={faUsers} className="icon" />
+          <FontAwesomeIcon icon={faUsers} className="iconDas" />
           Insights
         </Link>
     
         <Link href="/dashboard/future" className={pathname === '/dashboard/future' ? 'active' : ''}>
-          <FontAwesomeIcon icon={faUsers} className="icon" />
+          <FontAwesomeIcon icon={faUsers} className="iconDas" />
           Future
         </Link>
         <Link href="/dashboard/setting" className={isSettingsActive ? 'active' : ''}>
-          <FontAwesomeIcon icon={faCogs} className="icon" />
+          <FontAwesomeIcon icon={faCogs} className="iconDas" />
           Settings
         </Link>
       </div>

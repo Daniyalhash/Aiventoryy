@@ -42,9 +42,17 @@ console.log("getting email",email)
   const handleClosePopup = () => {
     setIsPopupOpen(false);
   };
+console.log("f", userDetails?.email);
 const handleConfirmReset = () => {
   setIsPopupOpen(false);
-  router.push(`/signup?step=2&userId=${userId}&email=${encodeURIComponent(email)}`);
+  const targetEmail = email || userDetails?.email;
+
+  if (!targetEmail) {
+    alert("Email not found.");
+    return;
+  }
+  window.location.href = `/signup?step=2&userId=${userId}&email=${encodeURIComponent(targetEmail)}`; 
+  // router.push(`/signup?step=2&userId=${userId}&email=${encodeURIComponent(email)}`);
 };
 
 

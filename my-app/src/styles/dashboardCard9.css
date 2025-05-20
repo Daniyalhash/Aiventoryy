@@ -36,6 +36,61 @@
     font-size: 15px;
     cursor: pointer;
   }
+  .cardSide{
+    display: flex;
+  }
+ .cardSide {
+  display: flex;
+  gap: 1.5rem; /* Space between form fields */
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  margin-bottom: 1.5rem;
+}
+
+.form-group2 {
+  flex: 1 1 35%; /* Two per row with some space */
+  min-width: 200px; /* Prevent too narrow fields on small screens */
+  position: relative;
+}
+
+.form-group2 label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group2 input[type="text"],
+.form-group2 select {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-bottom: 2px solid #004b23;
+  outline: none;
+  font-size: 1rem;
+  color: #333;
+  background: transparent;
+  transition: border-bottom 0.3s ease-in-out;
+}
+
+.form-group2 input:focus,
+.form-group2 select:focus {
+  border-bottom-color: #007b55;
+}
+
+/* Optional: Add some nice focus animation for textarea if needed */
+.cardSide.form-group2 textarea {
+  padding: 0.8rem;
+  border: none;
+  border-bottom: 2px solid #004b23;
+  outline: none;
+  font-size: 1rem;
+  width: 100%;
+  color: #333;
+  transition: border-bottom 0.3s ease-in-out;
+  background: transparent;
+  resize: vertical;
+  min-height: 80px;
+}
   .iconArrow9 {
     background-color: #17412D;
     color: #ffffff;
@@ -64,17 +119,46 @@
   }
   
   
-  .tableWrapper9 {
+  /* .tableWrapper9 {
     flex: 1;
     overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
   }
   
   .tableWrapper9::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
-  }
+    display: none; 
+  } */
   
+
+  .tableWrapper9 {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+
+ 
+  /* Make sure it takes some height so centering works */
+min-height: 300px;
+  height: 100%;  /* Remove scrollbar hiding when loading or error, optional */
+}
+  
+.tableWrapper9::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Only center loading/error messages */
+.centered-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;  /* space to center vertically */
+}
+.loading-spinner, .error-message {
+  font-size: 1.2rem;
+  color: #555;
+}
+
   .orderTable9 {
     width: 100%;
     border-collapse: collapse;
@@ -349,3 +433,15 @@ justify-content: space-between;}
     transform: translateY(0);
   }
 }
+.load-more-btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.load-more-btn:hover {
+  background-color: #0056b3;
+}
+
