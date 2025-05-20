@@ -13,7 +13,7 @@ const Why = () => {
   }, []);
 
   return (
-    <div className="whyContainer">
+    <div id="solution-section" className="whyContainer">
       <h2>
         Why <span className="brand">A</span>
         <span className="brandSub">iventory</span>

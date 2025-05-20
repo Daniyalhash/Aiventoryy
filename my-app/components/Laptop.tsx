@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Laptop = () => {
   return (
-    <div className="Laptop-section">
+    <div id="tutorials" className="Laptop-section">
         <div className="Laptop-container">
             <Image
                  src="/images/laptop.png" // Adjust path if necessary

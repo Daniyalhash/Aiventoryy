@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import React from 'react';
+import Link from 'next/link';
 import "@/styles/LandingPage.css";
 
 const LandingPage = () => {
@@ -11,11 +12,12 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="landingContainer">
+    <div id="product-section" className="landingContainer">
       <h1 data-aos="fade-up">Explore New <br /> Inventory Solutions</h1>
       
-      <button className="getStarted" data-aos="zoom-in" data-aos-delay="200">
-        Get Started
+      <button  className="getStarted" data-aos="zoom-in" data-aos-delay="200">
+        <Link  className="getStarted" href="/signup">Get Started</Link>
+        
       </button>
 
       {/* Dashboard Image Section */}

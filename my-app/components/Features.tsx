@@ -118,7 +118,7 @@ export default function Features() {
   
 
   return (
-    <div className="features-section">
+    <div id="features-section"className="features-section">
         <div className="features-heading">
             <div className="features-heading-left">
                 <h2>
@@ -126,9 +126,9 @@ export default function Features() {
                 </h2>
             </div>
             <div className="features-heading-right">
-                <Link href="/dashboard" className={pathname === '/dashboard' ? 'active' : ''}>
+                <Link href="/#tutorials" className="features-link">
                     GO DEMO
-                    <FontAwesomeIcon icon={faArrowUp} className="icon" />
+                    <FontAwesomeIcon icon={faArrowUp} className="features-icon" />
                 </Link>
             </div>
            

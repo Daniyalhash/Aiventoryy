@@ -46,7 +46,7 @@
     color: #A9E6A0;
 }
 
-.features-heading-right a {
+.features-heading-right .features-link {
     color: black;
     padding: 10px 20px;
     border-radius: 10px;
@@ -63,8 +63,14 @@
 
     font-variant: underline;
 }
+.features-heading-right .features-icon{
+    border: 2px solid black; /* Thinner border */
+    padding: 10px; /* Reduced padding */
+    border-radius: 50%; /* Keep the same */
+    transform: rotate(35deg) translateX(10px);
 
-.features-heading-right .icon {
+}
+.features-heading-right .iconFeatures {
     border: 2px solid black; /* Thinner border */
     border-radius: 50%; /* Keep the same */
     padding: 10px; /* Reduced padding */

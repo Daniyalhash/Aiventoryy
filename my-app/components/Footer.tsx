@@ -6,7 +6,8 @@ import { FaApple, FaGooglePlay, FaLinkedin } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import '@/styles/Footer.css'; // Import the new CSS file
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+
+import { usePathname, useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 const Footer = () => {
@@ -47,10 +48,19 @@ const Footer = () => {
             <div>
                 <h3 className="link-title">Product</h3>
                 <ul className="link-list">
-                    <li>Overview</li>
-                    <li>Features</li>
-                    <li>Tutorials</li>
-                    <li>Pricing</li>
+                    <li>
+                        <Link href="#product-section">Overview</Link>
+                    </li>
+                     <li>
+                        <Link href="#features-section">Features</Link>
+                    </li>
+                     <li>
+                        <Link href="#tutorials">Tutorials</Link>
+                    </li>
+                     <li>
+                        <Link href="#pricing-section">Pricing</Link>
+                    </li>
+             
                 </ul>
             </div>
             <div>

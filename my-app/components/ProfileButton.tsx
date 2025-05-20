@@ -152,9 +152,9 @@ useEffect(() => {
     }
   };
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userId");
-    setUser(null); // Clear user from context
+    // localStorage.removeItem("authToken");
+    // localStorage.removeItem("userId");
+    // setUser(null); 
 
     window.location.href = "/";
   };
@@ -223,16 +223,16 @@ useEffect(() => {
            <p className="dropdownName">{displayShopName}</p>
            <p className="dropdownPhone">{displayEmail}</p>
             <div className="dropdownButton">
-              <Link href="/dashboard/setting/editProfile" className="logoutButton">
-                <FontAwesomeIcon icon={faEye} className="icon" />
+              <Link href="/dashboard/setting/editProfile" className="logoutButtonDas">
+                <FontAwesomeIcon icon={faEye} className="iconDas" />
                 Show Profile
               </Link>
-              <Link href="/dashboard/setting" className="logoutButton">
-                <FontAwesomeIcon icon={faCog} className="icon" />
+              <Link href="/dashboard/setting" className="logoutButtonDas">
+                <FontAwesomeIcon icon={faCog} className="iconDas" />
                 Settings
               </Link>
               <div className="lineDiv"></div>
-              <button className="logoutButton" onClick={handleLogout}>
+              <button className="logoutButtonDas" onClick={handleLogout}>
                 <FontAwesomeIcon icon={faRightFromBracket} className="IconLogout" />
                 Logout
               </button>

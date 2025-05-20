@@ -8,7 +8,7 @@
 }
 
 /* Profile Container */
-.profileContainer {
+.profileContainerWeb {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,20 +17,20 @@
 }
 
 /* Bell Section */
-.bellSection {
+.bellSectionWeb {
   display: flex;
   align-items: center;
   gap: 0px;
 }
 
-.bellIconContainer {
+.bellIconContainerWeb {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 4px; /* Reduced from 5px */
   cursor: pointer;}
 
-.bellIcon {
+.bellIconWeb {
   width: 46px;
   height: 36px;
   border-radius: 50%;
@@ -46,13 +46,13 @@
   transform: scale(1.05);
 } */
 
-.Iconbell {
+.IconbellWeb {
   font-size: 22px; /* Slightly reduced if needed */
   color: #17412D;
 
 }
 
-.divLine {
+.divLineWeb {
   width: 1.5px;
   height: 30px;
   background-color: rgba(174, 174, 174, 0.5);
@@ -60,7 +60,7 @@
 }
 
 /* Profile Section */
-.profile {
+.profileWeb {
   display: flex;
   align-items: center;
   border: 1px solid #17412D;
@@ -73,14 +73,14 @@
   max-width: 200px;
   overflow: hidden;
 }
-.bellIcon {
+.bellIconWeb {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.notificationBadge {
+.notificationBadgeWeb {
   position: absolute;
   top: 3px; /* Adjust as needed */
   right: 8px; /* Adjust as needed */
@@ -96,16 +96,16 @@
   justify-content: center;
   transform: translate(50%, -50%);
 }
-.profile:hover {
+.profileWeb:hover {
   background-color: #e6e6e6;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profileInfo {
+.profileInfoWeb {
   min-width: 0; /* Allows text truncation */
 }
 
-.username {
+.usernameWeb {
   font-weight: 500;
   color: #17412D;
   white-space: nowrap;
@@ -114,7 +114,7 @@
   max-width: 100px;
 }
 
-.profileIcon {
+.profileIconWeb {
   background: none;
   border: none;
   font-size: 0.85rem;
@@ -127,11 +127,11 @@
   transition: all 0.2s ease;
 }
 
-.profileIcon:hover {
+.profileIconWeb:hover {
   color: #17412D;
 }
 
-.Iconarrow {
+.IconarrowWeb{
   width: 18px;
   height: 18px;
 }
@@ -153,16 +153,16 @@
 }
 
 /* Dropdown-specific avatar styling */
-.dropdownAvatar {
+.dropdownAvatarWeb {
   display: block;
   border: 2px solid white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 /* Dropdown Styles */
-.dropdown {
+.dropdownWeb {
   position: absolute;
-  top: 70px;
-  right: 20px;
+  top: 90px;
+  right: 30px;
   width: 280px;
   background-color: white;
   border: 1px solid #e0e0e0;
@@ -178,14 +178,14 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.dropdownContent {
+.dropdownContentWeb {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
 
-.dropdownInitial {
+.dropdownInitialWeb {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -194,7 +194,7 @@
   background-color: #17412D; /* Default color */
 }
 
-.dropdownName {
+.dropdownNameWeb {
   font-weight: 600;
   font-size: 18px;
   color: #17412D;
@@ -206,7 +206,7 @@
   margin-bottom: 5px;
 }
 
-.dropdownPhone {
+.dropdownPhoneWeb {
   font-size: 14px;
   color: #666;
   text-align: center;
@@ -223,14 +223,14 @@
   border: 3px solid white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-.dropdownButton {
+.dropdownButtonWeb {
   width: 100%;
 }
 
-.logoutButtonDas {
+.logoutButtonWeb {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 90%;
   padding: 10px 15px;
   border: none;
   background: none;
@@ -244,18 +244,18 @@
   margin-bottom: 5px;
 }
 
-.logoutButtonDas:hover {
+.logoutButtonWeb:hover {
   background-color: #f0f0f0;
 }
 
-.logoutButtonDas .iconDas, .logoutButtonDas .IconLogout {
+.logoutButtonWeb .iconWeb, .logoutButtonWeb .IconLogoutWeb {
   margin-right: 12px;
   font-size: 16px;
   width: 20px;
   text-align: center;
 }
 
-.lineDiv {
+.lineDivWeb {
   height: 1px;
   background-color: rgba(0, 0, 0, 0.1);
   margin: 10px 0;
@@ -264,16 +264,16 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .profile {
+  .profileWeb {
     padding: 5px;
     max-width: 160px;
   }
   
-  .username {
+  .usernameWeb {
     max-width: 80px;
   }
   
-  .dropdown {
+  .dropdownWeb {
     width: 240px;
     right: 10px;
   }
