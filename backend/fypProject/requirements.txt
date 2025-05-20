@@ -6,7 +6,6 @@ joblib==1.4.2
 
 # MongoDB
 pymongo==4.10.1
-gridfs==0.4.1
 dnspython==2.6.1
 
 # Django & REST Framework
@@ -23,31 +22,14 @@ pytz==2024.1
 PyYAML==6.0.2
 requests==2.32.3
 
-# For deep learning (if used in DemandPredictor, otherwise remove)
-tensorflow==2.17.0
-keras==3.4.1
-h5py==3.11.0
-
-# For advanced ML models (if used)
-xgboost==3.0.0
-lightgbm==4.6.0
-
 # For model saving/loading
 protobuf==4.25.4
 
-# For progress bars/logging (if used)
+# For progress bars/logging
 tqdm==4.67.1
 
-# For scientific computing (if used in predictors)
+# For scientific computing
 scipy==1.14.0
 
-# For HTTP server (if using FastAPI/uvicorn, otherwise remove)
-fastapi==0.115.6
-uvicorn==0.34.0
-
-# For JWT authentication (if used)
+# For JWT authentication
 PyJWT==2.10.1
-
-# For CORS in Flask (if used)
-Flask==3.0.3
-Flask-Cors==4.0.1
