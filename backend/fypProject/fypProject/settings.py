@@ -144,7 +144,8 @@ CORS_ORIGIN_ALLOW_ALL = True  # For development; you can restrict in production
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (not recommended for production)
 # OR specify allowed origins
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Frontend origin
+    "http://localhost:3000",
+    "*"# Frontend origin
 ]
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
