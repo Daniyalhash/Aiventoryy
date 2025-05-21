@@ -1,7 +1,16 @@
-import type { NextConfig } from "next";
+// next.config.js
+import path from 'path';
 
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  webpack: (config: any) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname),
+    };
+    return config;
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
