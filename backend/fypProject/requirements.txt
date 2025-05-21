@@ -33,3 +33,6 @@ scipy==1.14.0
 
 # For JWT authentication
 PyJWT==2.10.1
+
+# For password hashing
+bcrypt==4.1.2
