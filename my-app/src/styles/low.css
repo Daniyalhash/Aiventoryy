@@ -22,7 +22,11 @@ width: 100%;  margin: 0 auto;
   margin: 0;
   font-weight: 600;
 }
-
+.search-head{
+  display: flex;
+  flex-direction: column;
+  margin-top: 0px;
+}
 /* Search Container */
 .search-container {
   position: relative;
@@ -39,6 +43,8 @@ width: 100%;  margin: 0 auto;
   cursor: pointer;
   font-size: 0.95rem;
   color: #333;
+    margin-top: 10px;
+
 }
 
 .checkbox-label input {
