@@ -1450,6 +1450,112 @@ def delete_received_order_invoice(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
+
+@api_view(['POST'])
+def automate_order(request):
+    """
+    Save a new invoice to the database with Karachi/Pakistan timezone handling.
+    """
+    try:
+        data = request.data
+        user_id = request.data.get('user_id')
+        vendor_id = request.data.get('vendor_id')
+        # Set Karachi timezone
+        karachi_tz = pytz_timezone('Asia/Karachi')
+        
+        # Validate required fields
+        required_fields = ["products", "vendor_id","vendor", "vendorPhone", "date", "user_id"]
+        if not all(field in data for field in required_fields):
+            return Response(
+                {"error": f"Missing required fields. Required: {', '.join(required_fields)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate products array
+        if not isinstance(data["products"], list) or len(data["products"]) == 0:
+            return Response(
+                {"error": "Products must be a non-empty array"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Calculate total amount
+        try:
+            total_amount = sum(
+                float(p.get("price", 0)) * int(p.get("quantity", 0))
+                for p in data["products"]
+            )
+        except (ValueError, TypeError) as e:
+            return Response(
+                {"error": f"Invalid product data: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Parse and validate date (assuming input is in Karachi time)
+        try:
+            # If date comes as string (e.g., "2023-12-31")
+            invoice_date_naive = datetime.strptime(data["date"], "%Y-%m-%d")
+            invoice_date = karachi_tz.localize(invoice_date_naive)
+        except ValueError as e:
+            return Response(
+                {"error": f"Invalid date format. Use YYYY-MM-DD: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create new invoice document with Karachi time
+        invoice = {
+            "user_id": user_id,
+            "vendor_id":data["vendor_id"],  # Convert vendor_id to ObjectId
+
+            "products": [{
+                "name": p["name"].strip(),
+                "category": p.get("category", "").strip(),
+                "quantity": int(p["quantity"]),
+                "price": float(p["price"]),
+            } for p in data["products"]],
+            "vendor": data["vendor"].strip(),
+            "vendorPhone": data["vendorPhone"],
+            "date": invoice_date,
+            "total_amount": round(total_amount, 2),
+            "created_at": datetime.now(karachi_tz),  # Current Karachi time
+            "status": "confirmed",
+            "timezone": "Asia/Karachi"  # Store the timezone for reference
+        }
+        # Check for duplicate invoice
+        existing_invoice = invoices_collection.find_one({
+            "user_id": user_id,
+            "vendor": data["vendor"].strip(),
+            "products.name": data["products"][0]["name"].strip(),
+            "date": invoice_date
+        })
+
+        if existing_invoice:
+            return Response(
+                {"message": "Invoice already exists", "invoice_id": str(existing_invoice["_id"])},
+                status=status.HTTP_200_OK
+            )
+        # Insert into invoice database
+        result = invoices_collection.insert_one(invoice)
+        invoice["_id"] = result.inserted_id  # Add the _id to reuse it in openOrders
+        
+        #insert into open order
+        openOrders_collection.insert_one(invoice)
+
+        
+        return Response({
+            "message": "Invoice and order created successfully",
+            "invoice_id": str(result.inserted_id),
+            "total_amount": invoice["total_amount"],
+            "date": invoice_date.strftime("%Y-%m-%d %H:%M:%S %Z%z"),
+            "created_at": invoice["created_at"].strftime("%Y-%m-%d %H:%M:%S %Z%z")
+        }, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response(
+            {"error": f"Server error: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )   
+
+
 @api_view(['POST'])
 def save_invoice(request):
     """
@@ -1786,12 +1892,12 @@ def confirm_invoice(request, invoice_id):
                 status=status.HTTP_400_BAD_REQUEST
             )
         # First check if invoice already exists in openOrders
-        existing_order = openOrders_collection.find_one({"_id": ObjectId(invoice_id)})
-        if existing_order:
-            return Response(
-                {"error": "Order already placed"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # existing_order = openOrders_collection.find_one({"_id": ObjectId(invoice_id)})
+        # if existing_order:
+        #     return Response(
+        #         {"error": "Order already placed"},
+        #         status=status.HTTP_400_BAD_REQUEST
+        #     )
         # Update status only if invoice belongs to user
         result = invoices_collection.update_one(
             {
@@ -1811,7 +1917,25 @@ def confirm_invoice(request, invoice_id):
             confirmed_invoice = invoices_collection.find_one({"_id": ObjectId(invoice_id)})
 
             if confirmed_invoice:
-                openOrders_collection.insert_one(confirmed_invoice)
+                # Assuming the date comes in the invoice data
+                # Generate new ObjectId for openOrders
+                # Create a copy of the invoice for openOrders
+                open_order = confirmed_invoice.copy()
+                
+                date_str = open_order.get('date')
+                if isinstance(date_str, str):
+                    # Parse string date to datetime
+                    invoice_date = datetime.strptime(date_str, "%Y-%m-%d")
+                elif isinstance(date_str, datetime):
+                    invoice_date = date_str
+                else:
+                    # Default to current date if no valid date found
+                    invoice_date = datetime.utcnow()
+                open_order['date'] = invoice_date
+                open_order.pop('_id',None)
+
+                openOrders_collection.insert_one(open_order)
+                
             return Response(
                 {
                     "message": "Invoice confirmed successfully",

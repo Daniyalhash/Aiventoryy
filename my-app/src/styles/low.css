@@ -68,7 +68,12 @@ width: 100%;  margin: 0 auto;
   transform: rotate(45deg);
   background: transparent;
 }
-
+.automate-mode-label {
+  font-size: 14px;
+  color: #004b23;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
 .checkbox-label input:checked + .custom-checkbox {
   background-color: #007bff;
   border-color: #007bff;
