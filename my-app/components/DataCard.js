@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import UserAvatar from "@/components/UserAvatar"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faDatabase, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
 import '@/Styles/UserProfileCard.css'
