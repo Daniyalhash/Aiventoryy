@@ -6,8 +6,7 @@ import { fetchCategories, fetchProductsByCategory } from "@/utils/api";
 import ProfitMarginChart from "@/components/ProfitMarginChart";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useSWR from 'swr';
-import { faPlus, faHome, faTimes, faSearch, faChartLine, faBoxOpen, faTruck, faFilter, faTrash } from '@fortawesome/free-solid-svg-icons';
-import ButtonFrame4 from "./ButtonFrame4";
+import { faPlus, faTimes, faSearch, faChartLine, faBoxOpen, faTruck, faFilter, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function ProductBenchmarkSection() {
@@ -17,8 +16,6 @@ export default function ProductBenchmarkSection() {
   const [products, setProducts] = useState([]);
   // const [product, setProduct] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [product, setProduct] = useState([]);
-  const [searchResults, setSearchResults] = useState([]); // For storing product search results
   const [UseCategory, setUseCategory] = useState("");
   const [chartData2, setChartData2] = useState<Array<{ name: string; value: number }>>([]);
   const [chartData, setChartData] = useState<Array<{ name: string; value: number }>>([]);
@@ -30,7 +27,6 @@ export default function ProductBenchmarkSection() {
   const [range, setRange] = useState('1-5'); // Default range
   const [range2, setRange2] = useState('1-5'); // Default range
   const [allProducts, setAllProducts] = useState([]); // For storing all products
-  const [searchText2, setSearchText2] = useState(''); // For tracking the search text
 
   const [searchText, setSearchText] = useState('');
   const [message, setMessage] = useState(""); // Can be error or success
@@ -42,7 +38,7 @@ export default function ProductBenchmarkSection() {
 
   // fetching just categories using SWR
 
-  const { data: categoryData, error: swrError, isLoading } = useSWR(
+  const { data: categoryData } = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
     {
@@ -81,9 +77,8 @@ export default function ProductBenchmarkSection() {
 
 
   const {
-    data: topProductsData,
-    error: topProductsError,
-    mutate: mutateTopProducts
+    data: topProductsData
+   
   } = useSWR(
     selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
     async ([_, userId, category]) => {
@@ -257,11 +252,11 @@ export default function ProductBenchmarkSection() {
     // Store the selected product
   };
 
-  const updateRangeData = (range, data, setFilteredData) => {
-    const [min, max] = range.split('-').map(Number);
-    const filtered = data.filter((_, index) => index >= min - 1 && index <= max - 1);
-    setFilteredData(filtered);
-  };
+  // const updateRangeData = (range, data, setFilteredData) => {
+  //   const [min, max] = range.split('-').map(Number);
+  //   const filtered = data.filter((_, index) => index >= min - 1 && index <= max - 1);
+  //   setFilteredData(filtered);
+  // };
   const filteredSuggestions = products.filter(product =>
     product.productname.toLowerCase().includes(searchText.toLowerCase())
   );

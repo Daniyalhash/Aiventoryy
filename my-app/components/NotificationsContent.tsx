@@ -6,7 +6,7 @@ import {
   faTriangleExclamation,
   faCircleXmark,
   faTrash,
-  faCheck,
+
   faTimes,
   faCheckSquare,
   faSquare,
