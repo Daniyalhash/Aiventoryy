@@ -1,14 +1,14 @@
 import React, { useState, useEffect,useCallback } from "react";
 import axios from "axios";
 import "@/styles/form.css";
-interface LogEntry {
-  _id: string;
-  timestamp: string;
-  entity_type: string;
-  action: string;
-  entity_id?: string;
-  metadata?: Record<string, any>;
-}
+// interface LogEntry {
+//   _id: string;
+//   timestamp: string;
+//   entity_type: string;
+//   action: string;
+//   entity_id?: string;
+//   metadata?: Record<string, any>;
+// }
 interface ActivityLog {
   id: string;
   action: string;
