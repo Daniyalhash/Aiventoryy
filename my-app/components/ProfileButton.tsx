@@ -18,7 +18,6 @@ import { useUser } from "./UserContext";
 const ProfileButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isArrowUp, setIsArrowUp] = useState(false);
-  const [userDetails, setUserDetails] = useState({ username: "", email: "" }); // State for user details
   const dropdownRef = useRef(null);
   const profileButtonRef = useRef(null);
   const { user, setUser } = useUser();
@@ -59,7 +58,7 @@ const ProfileButton = () => {
     } catch (error) {
       console.error("Error fetching user details:", error.response?.data?.error || error.message);
     }
-    }, [setUser]);
+}, [setUser, userId]);
  // Expose refresh function
 useEffect(() => {
     window.updateNavbarUser = fetchUserData;
