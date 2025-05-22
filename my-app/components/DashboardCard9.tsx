@@ -27,7 +27,7 @@ interface DashboardCard9Props {
   title: string;
   subTitle: string;
 }
-const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
+const DashboardCard9: React.FC<DashboardCard9Props> = ({ title }) => {
   const [showPopup, setShowPopup] = useState(false);
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -47,7 +47,7 @@ const fetchInvoices = useCallback(async () => {
       });
       // Handle the open orders
       if (response.data && response.data.open_orders && Array.isArray(response.data.open_orders.data)) {
-        setOpenOrders(response.data.open_orders.data.map(order => ({
+        setOpenOrders(response.data.open_orders.data.map((order: any) => ({
           ...order,
           id: order._id
         })));
@@ -56,7 +56,7 @@ const fetchInvoices = useCallback(async () => {
       }
 
       if (Array.isArray(response2.data?.orders)) {
-      setInvoices(response2.data.orders.map(inv => ({
+      setInvoices(response2.data.orders.map((inv: any) => ({
         ...inv,
         id: inv._id
       })));
@@ -72,7 +72,7 @@ const fetchInvoices = useCallback(async () => {
  }, [userId]);
 
 
-  const handleDelete = async (invoiceId) => {
+  const handleDelete = async (invoiceId: string) => {
     setIsUpdating(true);
     console.log('Starting handleDelete with:', { invoiceId, userId });
     setMessage("");
@@ -98,7 +98,7 @@ const fetchInvoices = useCallback(async () => {
     }
   };
 
-  const handleDeleteReceivedOrder = async (invoiceId) => {
+  const handleDeleteReceivedOrder = async (invoiceId: string) => {
     setIsUpdating(true);
     console.log('Starting handleDeleteReceivedOrder with:', { invoiceId, userId });
     setMessage("");
@@ -128,7 +128,7 @@ const fetchInvoices = useCallback(async () => {
 
 
 
-  const handleReceived = async (invoiceId, vendor_id) => {
+  const handleReceived = async (invoiceId: string, vendor_id: string) => {
     setIsUpdating(true);
     console.log('Starting handleReceived with:', { invoiceId, vendor_id, userId });
     setMessage(""); // Reset message before processing
@@ -182,7 +182,11 @@ const fetchInvoices = useCallback(async () => {
       setMessage("Failed to process receipt. Please try again.");
       setIsError(true);
       console.error("Error processing receipt:", error);
-      setMessage(error.response?.data?.error || "Failed to process receipt. Please try again.");
+      if (typeof error === "object" && error !== null && "response" in error && typeof (error as any).response === "object" && (error as any).response !== null && "data" in (error as any).response) {
+        setMessage((error as any).response.data?.error || "Failed to process receipt. Please try again.");
+      } else {
+        setMessage("Failed to process receipt. Please try again.");
+      }
       setIsError(true);
     } finally {
       setIsUpdating(false);
@@ -195,7 +199,7 @@ const fetchInvoices = useCallback(async () => {
 
   }, [userId,fetchInvoices]);  // Make sure userId is properly memoized or stable
 
-  const toggleActions = (id) => {
+  const toggleActions = (id: string | null) => {
     setOpenActionRow(openActionRow === id ? null : id);
   };
   // Function to handle deleting an invoice
@@ -225,7 +229,7 @@ const fetchInvoices = useCallback(async () => {
           <VendorReliabilityTooltip />
         </div>
         <h3 className='cardTitle19' onClick={() => setShowPopup(true)} style={{ cursor: "pointer", textDecoration: "underline" }}>
-          {subTitle}
+         
         </h3>
       </div>
 
@@ -246,7 +250,7 @@ const fetchInvoices = useCallback(async () => {
           <tbody>
             {openOrders.length === 0 ? (
               <tr>
-                <td colSpan="8" style={{ padding: "40px 0" }}>
+                <td  style={{ padding: "40px 0" }}>
                   <div className="emptyStateBox">
                     <p>🚫 No open orders placed yet</p>
                     <small>Add a new order to get started</small>

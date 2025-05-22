@@ -1,9 +1,14 @@
 import React from "react";
 import "@/styles/buttonAction.css"; // Import your CSS styles
 
-const ButtonAction2 = ({ action, onFileUpload }) => {
-  const handleFileChange2 = (event) => {
-    const file = event.target.files[0];
+type ButtonAction2Props = {
+  action: string;
+  onFileUpload: (file: File) => void;
+};
+
+const ButtonAction2 = ({ action, onFileUpload }: ButtonAction2Props) => {
+  const handleFileChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
     if (file) {
       onFileUpload(file); // Trigger the shared upload logic
       console.log("Uploaded file:", file.name);

@@ -125,7 +125,6 @@ export default function Future() {
         onMonthSelect={(selectedMonth: string) => setSelectedMonth(selectedMonth)}
         onGranularitySelect={(selectedGranularity: string) => setSelectedGranularity(selectedGranularity)}
         onPredict={handlePredict}
-        selectedProduct={selectedProduct}
         selectedCategory={selectedCategory}
       />
       {/* Loading Spinner (shown when isLoading is true) */}
@@ -139,14 +138,9 @@ export default function Future() {
           <div className="futureSub">
             <Cards4
               predictedValue={predictedValue}
-              isLoading={isLoading}
               sellingPirce={sellingPrice}
               last_month_sales={last_month_sales}
-              predictionError={predictionError}
-              selectedProduct={selectedProduct}
-              selectedCategory={selectedCategory}
               selectedMonth={selectedMonth}
-              historicalData={historicalData}
             />
           </div>
           <Cards3

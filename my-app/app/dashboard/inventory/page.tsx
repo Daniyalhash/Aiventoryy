@@ -17,6 +17,7 @@ interface InventoryData {
   price: number;
   vendor: string;
   lastUpdated: string;
+  [key: string]: string | number; // Add index signature for compatibility
 }
 
 // interface ApiResponse {
@@ -109,8 +110,7 @@ const [stats, setStats] = useState<InventoryStats | null>(null);
           </div>
              <DashboardCard10
               title="AI Waste Reducer"
-              link="/dashboard/vendor"
-              subTitle="Monitor expiry risks & suggested discounts"
+             
             />
           </>
       

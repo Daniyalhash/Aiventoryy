@@ -10,7 +10,16 @@ import useSWR from 'swr';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faPlus, faBoxOpen, faFilter, faCalendarAlt, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
 
-const ButtonFrame3 = ({
+type ButtonFrame3Props = {
+  onProductSelect: (productName: string) => void;
+  onCategorySelect: (category: string) => void;
+  onPredict: (productName: string, category: string, month: string, granularity: string) => Promise<any>;
+  selectedCategory: string | null;
+  onMonthSelect: (month: string) => void;
+  onGranularitySelect: (granularity: string) => void;
+};
+
+const ButtonFrame3: React.FC<ButtonFrame3Props> = ({
   onProductSelect,
   onCategorySelect,
   onPredict,

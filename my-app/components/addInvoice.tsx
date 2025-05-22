@@ -19,15 +19,32 @@ import "@/styles/addInvoice.css";
 // }
 const AddInvoice: React.FC = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  interface Product {
+    product_id: string;
+    productname: string;
+    category: string;
+    stockquantity: number;
+    costprice?: number;
+    sellingprice?: number;
+    price?: number;
+    barcode?: string;
+  }
+  
+  const [categories, setCategories] = useState<string[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", isError: false });
   const [loadingVendors, setLoadingVendors] = useState(false);
   // const [loadingProducts, setLoadingProducts] = useState(false);
 
-  const [vendors, setVendors] = useState([]);
+  interface Vendor {
+    vendor_id: string;
+    vendor: string;
+    vendorPhone?: string;
+    // Add other fields if needed
+  }
+  const [vendors, setVendors] = useState<Vendor[]>([]);
 
  
   const { data: categoryData} = useSWR(
@@ -63,7 +80,7 @@ const AddInvoice: React.FC = () => {
     };
   }, [userId]);
 
-  const fetchVendorsByCategory = async (userId, category) => {
+  const fetchVendorsByCategory = async (userId: string, category: string) => {
     try {
       console.log("Fetching vendors for:", { userId, category }); // Debug input
 
@@ -85,7 +102,7 @@ const AddInvoice: React.FC = () => {
     }
   };
 
-  const fetchProductsByCategory = async (userId, category) => {
+  const fetchProductsByCategory = async (userId: string, category: string) => {
     const response = await fetch(
       `http://localhost:8000/aiventory/products-by-category/?userId=${userId}&category=${category}`
     );
@@ -120,7 +137,7 @@ const AddInvoice: React.FC = () => {
 // Logging with sample rows
       console.log(`✅ Loaded ${data.products?.length || 0} products`);
       console.log('Sample products (first 5):', 
-        data.products?.slice(0, 5).map(p => ({
+        data.products?.slice(0, 5).map((p: any) => ({
           name: p.productname,
           category: p.category,
           price: p.costprice,
@@ -186,7 +203,7 @@ useEffect(() => {
 
 
   // Add this handler for vendor selection
-  const handleVendorSelect = (vendorId) => {
+  const handleVendorSelect = (vendorId: string) => {
     const selectedVendor = vendors.find(v => v.vendor_id === vendorId);
     if (selectedVendor) {
       setFormData(prev => ({
@@ -202,7 +219,7 @@ useEffect(() => {
 
 
   // Add this handler for product selection
-  const handleProductSelect = (index, productName) => {
+  const handleProductSelect = (index: number, productName: string) => {
     const selectedProduct = products.find(p => p.productname === productName);
     if (selectedProduct) {
       const updatedProducts = [...formData.products];
@@ -224,7 +241,10 @@ useEffect(() => {
     }
   };
   
-  const handleProductChange = (index, e) => {
+  const handleProductChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     const updatedProducts = [...formData.products];
     updatedProducts[index] = {
@@ -238,7 +258,7 @@ useEffect(() => {
     }));
   };
 
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const category = e.target.value;
     setSelectedCategory(category);
     // Update category for all products
@@ -268,7 +288,7 @@ useEffect(() => {
     }));
   };
 
-  const removeProductField = (index) => {
+  const removeProductField = (index: number) => {
     if (formData.products.length > 1) {
       const updatedProducts = [...formData.products];
       updatedProducts.splice(index, 1);
@@ -279,7 +299,7 @@ useEffect(() => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage({ text: "", isError: false });
