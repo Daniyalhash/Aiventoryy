@@ -18,7 +18,8 @@ export interface Vendor {
   address: string;
   status: string;
   created_at: string;
-  [key: string]: any;
+  [key: string]: unknown;
+
 }
 
 export interface VendorStats {

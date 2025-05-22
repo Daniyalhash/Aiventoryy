@@ -19,11 +19,11 @@ interface InventoryData {
   lastUpdated: string;
 }
 
-interface ApiResponse {
-  success: boolean;
-  data: InventoryData[];
-  error?: string;
-}
+// interface ApiResponse {
+//   success: boolean;
+//   data: InventoryData[];
+//   error?: string;
+// }
 interface InventoryStats {
   total_products: number;
   total_unique_products: number;
