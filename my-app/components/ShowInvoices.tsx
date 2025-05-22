@@ -58,9 +58,9 @@ const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [message, setMessage] = useState(""); // Can be error or success
   const [isError, setIsError] = useState(false); // To differentiate between error and success
   const [isAddingInvoice, setIsAddingInvoice] = useState(false);
-  const [userData, setUserData] = useState<UserData | null>(null);
+  // const [userData, setUserData] = useState<UserData | null>(null);
   // const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   
   const fetchInvoices = useCallback(async () => {
     const userId = localStorage.getItem('userId');
@@ -98,10 +98,10 @@ const fetchUserData = useCallback(async () => {
       const response = await axios.get('http://127.0.0.1:8000/aiventory/get-user-details/', {
         params: { user_id: userId }
       });
-      setUserData(response.data);
+      
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message);
+      console.error('Error fetching user data:', error);
       }
     }
   }, []);

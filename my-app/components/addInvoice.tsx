@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import useSWR from 'swr';
 import { fetchCategories } from "@/utils/api";
 import "@/styles/addInvoice.css";
-interface Product {
-  product_id: string;
-  name: string;
-  category: string;
-  stockquantity: number;
-  price: number;
-}
+// interface Product {
+//   product_id: string;
+//   name: string;
+//   category: string;
+//   stockquantity: number;
+//   price: number;
+// }
 
 // interface FormData {
 //   vendor_id: string;
