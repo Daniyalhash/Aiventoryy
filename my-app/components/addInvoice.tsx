@@ -17,7 +17,7 @@ import "@/styles/addInvoice.css";
 //   date: string;
 //   products: Product[];
 // }
-const AddInvoice = () => {
+const AddInvoice: React.FC = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -139,6 +139,19 @@ const AddInvoice = () => {
     loadProducts();
   }, [selectedCategory, userId]);
 const selectedProductCategory = formData.products[0]?.category;
+const [, setTotalAmount] = useState(0);
+
+// Add this useEffect after your other useEffect hooks, before the return statement
+useEffect(() => {
+  const calculateTotal = () => {
+    const total = formData.products.reduce((sum, product) => {
+      return sum + (product.price * product.stockquantity);
+    }, 0);
+    setTotalAmount(total);
+  };
+
+  calculateTotal();
+}, [formData.products]);
 
   useEffect(() => {
     const loadVendors = async () => {
@@ -210,6 +223,7 @@ const selectedProductCategory = formData.products[0]?.category;
       }));
     }
   };
+  
   const handleProductChange = (index, e) => {
     const { name, value } = e.target;
     const updatedProducts = [...formData.products];
@@ -272,7 +286,7 @@ const selectedProductCategory = formData.products[0]?.category;
 
     try {
       // Validate form
-      if (!formData.vendor_id || !formData.vendor || formData.products.some(p => !p.name || p.quantity <= 0)) {
+if (!formData.vendor_id || !formData.vendor || formData.products.some(p => !p.name || p.stockquantity <= 0)) {
         throw new Error("Please fill all required fields with valid values");
       }
 

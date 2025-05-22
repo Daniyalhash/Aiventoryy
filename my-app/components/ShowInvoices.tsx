@@ -24,11 +24,11 @@ interface Invoice {
   status: string;
   created_at: string;
 }
-interface UserData {
-  id: string;
-  username: string;
-  email: string;
-}
+// interface UserData {
+//   id: string;
+//   username: string;
+//   email: string;
+// }
 interface EditingInvoice extends Invoice {
   id: string;
 }
@@ -95,7 +95,7 @@ const fetchUserData = useCallback(async () => {
     if (!userId) return;
 
     try {
-      const response = await axios.get('http://127.0.0.1:8000/aiventory/get-user-details/', {
+      await axios.get('http://127.0.0.1:8000/aiventory/get-user-details/', {
         params: { user_id: userId }
       });
       
