@@ -1,5 +1,5 @@
 // components/SectionB.tsx
-import '../src/styles/InventoryOver.css';
+import '@/styles/InventoryOver.css';
 export default function InventoryOver2() {
   return (
     <section className="section2">

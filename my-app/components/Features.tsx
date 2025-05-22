@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import "@/styles/Features.css"; // Import your CSS styles
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 const features = [
@@ -101,7 +100,6 @@ const features = [
 
 export default function Features() {
     const [selectedFeature, setSelectedFeature] = useState(1);
-    const pathname = usePathname();
     const featureListRef = useRef(null);
 
     useEffect(() => {

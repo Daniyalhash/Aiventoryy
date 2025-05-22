@@ -1,6 +1,5 @@
-import '../src/styles/InsightsOver.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import '@/styles/InsightsOver.css';
+
 
 export default function InsightsOver({ onRefresh }: { onRefresh: () => void }) {
   return (

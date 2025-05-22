@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faClipboardList, faUsers, faCogs } from '@fortawesome/free-solid-svg-icons';
 import ProfileButton from './ProfileButton';
 import '../src/styles/navbar.css';
-
+import Image from 'next/image';
 const Navbar = () => {
   const pathname = usePathname();
   // Check if current path starts with '/dashboard/setting'
@@ -15,7 +15,20 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="logo">
-        <img src="/images/logoPro.png" alt="Logo" className="logImg" />
+        <Image 
+        src="/images/logoPro.png" 
+        alt="Logo" 
+        className="logImg" 
+        width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          priority 
+          
+        />
       </div>
       <div className="menu">
         <Link href="/dashboard" className={pathname === '/dashboard' ? 'active' : ''}>

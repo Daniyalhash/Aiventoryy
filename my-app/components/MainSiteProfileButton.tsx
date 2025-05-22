@@ -1,11 +1,11 @@
 // components/MainSiteProfileButton.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faRightFromBracket, faUser,faBell, faQuestionCircle,  faEye, faCog, faDashboard } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faRightFromBracket, faDashboard } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from './UserContext';
 import '@/styles/profileButton3.css'; // reuse same styles
-import { signIn, signOut } from "next-auth/react";
+import {  signOut } from "next-auth/react";
 import UserAvatar from "./UserAvatar";
 import axios from "axios";
 
@@ -14,7 +14,6 @@ const MainSiteProfileButton = () => {
   const [isArrowUp, setIsArrowUp] = useState(false);
   const dropdownRef = useRef(null);
     const [userId, setUserId] = useState(null);
-  const [userDetails, setUserDetails] = useState({ username: "", email: "" }); // State for user details
 
   const profileButtonRef = useRef(null);
   const { user, setUser } = useUser();
@@ -35,7 +34,7 @@ const displayName = user?.username || "Anonymous";
   };
 
     // Fetch user data when the component mounts or when userId changes
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
 
     try {
       if (userId) {
@@ -48,14 +47,15 @@ const displayName = user?.username || "Anonymous";
     } catch (error) {
       console.error("Error fetching user details:", error.response?.data?.error || error.message);
     }
-  };
- // Expose refresh function
- useEffect(() => {
-  window.updateNavbarUser = fetchUserData;
-  return () => {
-    window.updateNavbarUser = null;
-  };
-}, []);
+ }, [userId, setUser]);
+
+  // Update useEffect dependencies
+  useEffect(() => {
+    window.updateNavbarUser = fetchUserData;
+    return () => {
+      window.updateNavbarUser = null;
+    };
+  }, [fetchUserData]);
 
 // Initial data fetch
 useEffect(() => {
