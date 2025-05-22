@@ -10,13 +10,13 @@ interface Product {
   price: number;
 }
 
-interface FormData {
-  vendor_id: string;
-  vendor: string;
-  vendorPhone: string;
-  date: string;
-  products: Product[];
-}
+// interface FormData {
+//   vendor_id: string;
+//   vendor: string;
+//   vendorPhone: string;
+//   date: string;
+//   products: Product[];
+// }
 const AddInvoice = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [categories, setCategories] = useState([]);
