@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "@/styles/form.css";
+interface AxiosError {
+  response?: {
+    data?: {
+      error?: string;
+    };
+  };
+  message?: string;
+}
+
 const ActivityProduct = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
   const [logs, setLogs] = useState([]);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
-
+useEffect(() => {
   const fetchLogs = async () => {
     if (!userId) {
       setMessage("User ID not found. Please log in.");
@@ -29,15 +38,17 @@ const ActivityProduct = () => {
         setMessage("No logs found for this user.");
         setIsError(true);
       }
-    } catch (error) {
-      let errorMsg = "Failed to fetch logs.";
-      if (typeof error === "object" && error !== null) {
-        if ("response" in error && typeof (error as any).response?.data?.error === "string") {
-          errorMsg = (error as any).response.data.error;
-        } else if ("message" in error && typeof (error as any).message === "string") {
-          errorMsg = (error as any).message;
-        }
-      }
+    } catch (error: unknown) {
+  let errorMsg = "Failed to fetch logs.";
+
+  if (typeof error === "object" && error !== null) {
+    const err = error as AxiosError;
+    if (err.response?.data?.error) {
+      errorMsg = err.response.data.error;
+    } else if (err.message) {
+      errorMsg = err.message;
+    }
+  }
       setMessage(errorMsg);
       setIsError(true);
       setLogs([]);
@@ -45,9 +56,8 @@ const ActivityProduct = () => {
     }
   };
 
-  useEffect(() => {
-    fetchLogs();
-  }, [userId]);
+  fetchLogs();
+}, [userId]);
 
   return (
     <div className="search-form-container">

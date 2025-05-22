@@ -3,11 +3,11 @@ import React from "react";
 import teamData from "@/components/Team"
 import '@/styles/Aboutuss.css'; // Import the new CSS file
 import Image from "next/image";
-interface TeamMember {
-  image: string;
-  name: string;
-  role: string;
-}
+// interface TeamMember {
+//   image: string;
+//   name: string;
+//   role: string;
+// }
 const AboutWeb = () => {
 
   return (
