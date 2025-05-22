@@ -2,7 +2,7 @@ import '../src/styles/dashboardCard4.css';
 import React, { useState } from 'react';
 
 
-const DashboardCard4 = ({ title, value, description,onRangeChange, link, bgColor, graphContent }) => {
+const DashboardCard4 = ({ title, description,onRangeChange, bgColor, graphContent }) => {
   const [selectedRange, setSelectedRange] = useState('Day 5'); // Default range
     const generateRangeOptions = () => {
       return ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5','Day 6', 'Day 7', 'Day 8', 'Day 9', 'Day 10',

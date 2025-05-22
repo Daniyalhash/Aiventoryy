@@ -29,7 +29,7 @@ Chart.register(
   CategoryScale
 );
 
-const DashboardCard11 = ({ title, link, subTitle }) => {
+const DashboardCard11 = ({ title}) => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [message, setMessage] = useState(""); // Success/error message
   const [isError, setIsError] = useState(false);
