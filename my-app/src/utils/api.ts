@@ -22,12 +22,12 @@ export const fetchTotalProducts = async (userId) => {
   }
 };
 
-export const fetchbestDemand = async ([_unused, userId]) => {
+export const fetchbestDemand = async ([, userId]) => {
   const response = await api.get('/bestSales/', { params: { user_id: userId } });
   return response.data;
 };
 
-export const fetchSales = async ([_unused, userId]) => {
+export const fetchSales = async ([, userId]) => {
   const response = await api.get('/get_monthly_sales/', { params: { user_id: userId } });
   return response.data;
 };

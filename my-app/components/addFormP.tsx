@@ -3,32 +3,32 @@ import useSWR from 'swr';
 import { fetchCategories } from "@/utils/api";
 import "@/styles/form.css";
 
-interface Vendor {
-  vendor_id: string;
-  vendor: string;
-}
+// interface Vendor {
+//   vendor_id: string;
+//   vendor: string;
+// }
 
-interface FormFields {
-  userId: string | null;
-  productname_id: string;
-  productName: string;
-  category: string;
-  subcategory: string;
-  stockquantity: string;
-  reorderthreshold: string;
-  costprice: string;
-  sellingprice: string;
-  timespan: string;
-  expirydate: string;
-  monthly_sales: string;
-  Barcode: string;
-  vendor_id: string;
-  productSize: string;
-  sale_date: string;
-  season: string;
-  last_updated: string;
-}
-const addFormP = () => {
+// interface FormFields {
+//   userId: string | null;
+//   productname_id: string;
+//   productName: string;
+//   category: string;
+//   subcategory: string;
+//   stockquantity: string;
+//   reorderthreshold: string;
+//   costprice: string;
+//   sellingprice: string;
+//   timespan: string;
+//   expirydate: string;
+//   monthly_sales: string;
+//   Barcode: string;
+//   vendor_id: string;
+//   productSize: string;
+//   sale_date: string;
+//   season: string;
+//   last_updated: string;
+// }
+const AddFormP = () => {
 
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
@@ -115,7 +115,7 @@ const addFormP = () => {
   });
 
   // Inside your component
-  const [selectedVendorId, setSelectedVendorId] = useState("");
+  // const [selectedVendorId, setSelectedVendorId] = useState("");
 
 
   useEffect(() => {
@@ -144,7 +144,7 @@ const addFormP = () => {
 
 
   const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormFields((prev) => ({
@@ -419,4 +419,4 @@ const addFormP = () => {
   );
 };
 
-export default addFormP;
+export default AddFormP;
