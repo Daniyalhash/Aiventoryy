@@ -158,7 +158,7 @@ const LoginPage = () => {
             Log In
           </button>
           <p className="login-text">
-            Don't have an account? <a href="/signup" className="login-text-link">Sign up</a>
+           Don&apos;t have an account? <a href="/signup" className="login-text-link">Sign up</a>
           </p>
         </form>
 

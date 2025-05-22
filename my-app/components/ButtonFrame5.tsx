@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from "react";
 import Button from "@/components/Button";
 import {
   faPlus,  faMagnifyingGlass,

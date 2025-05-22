@@ -54,7 +54,7 @@ const ButtonFrame3 = ({
       setCategories(categoryData.categories || []);
     }
     if (lastSalesData) {
-      const lastMonth = lastSalesData.last_month; // Format: "March 2025"
+      // const lastMonth = lastSalesData.last_month; // Format: "March 2025"
       const months = lastSalesData.available_months || [];
       setAvailableMonths(months);
 
@@ -65,25 +65,21 @@ const ButtonFrame3 = ({
 
 
   const {
-    data: productsData,
-
-
-  } = useSWR(
-    selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
-    async ([_, userId, category]) => {
-      const response = await axios.get(
-        'http://127.0.0.1:8000/aiventory/get-top-products-by-category/',
-        { params: { user_id: userId, category } }
-      );
-      return response.data.products || [];
-
-
-    },
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: 30000, // Cache for 30s
-    }
-  );
+  data: productsData,
+} = useSWR(
+  selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
+  async ([key, userId, category]) => {
+    const response = await axios.get(
+      'http://127.0.0.1:8000/aiventory/get-top-products-by-category/',
+      { params: { user_id: userId, category } }
+    );
+    return response.data.products || [];
+  },
+  {
+    revalidateOnFocus: false,
+    dedupingInterval: 30000,
+  }
+);
   // Update suggested products when data changes
   useEffect(() => {
     if (productsData) {
@@ -120,6 +116,7 @@ const ButtonFrame3 = ({
     try {
       // Simulate prediction logic (replace with actual API call)
       const result = await onPredict(productInput, selectedCategory, selectedMonth, selectedGranularity);
+    console.log('Prediction result:', result); // Use the result or handle it appropriately
 
       // Store the prediction result
     } catch (error) {
@@ -130,11 +127,11 @@ const ButtonFrame3 = ({
     }
   };
   // Handle category selection
-  const handleCategorySelect = (category) => {
-    setProductInput(""); // Reset product input when category changes
-    onCategorySelect(category);
-    setCategoryDropdownOpen(false);
-  };
+  // const handleCategorySelect = (category) => {
+  //   setProductInput(""); // Reset product input when category changes
+  //   onCategorySelect(category);
+  //   setCategoryDropdownOpen(false);
+  // };
   // Handle product selection
   const handleProductSelect = (product) => {
     setProductInput(product.productname); // Show name in input

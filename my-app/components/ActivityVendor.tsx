@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "@/styles/form.css";
+interface LogEntry {
+  _id: string;
+  timestamp: string;
+  entity_type: string;
+  action: string;
+  entity_id?: string;
+  metadata?: Record<string, any>;
+}
+
 const ActivityVendor = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-  const [logs, setLogs] = useState([]);
+const [logs, setLogs] = useState<LogEntry[]>([]);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
