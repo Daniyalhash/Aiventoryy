@@ -175,7 +175,7 @@ const PlaceholderContent = () => (
                 </div>
                 <div className="step">
                   <div className="step-icon">3</div>
-                  <p>Click "Predict" to see your forecast</p>
+                  <p>Click &quot;Predict&quot; to see your forecast</p>
                 </div>
               </div>
               <div className="sample-visualization">
