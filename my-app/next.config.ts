@@ -13,4 +13,7 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+
+// http://seal-app-8m3g5.ondigitalocean.app
+
+// NEXT_PUBLIC_API_URL
