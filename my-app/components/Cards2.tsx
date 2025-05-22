@@ -3,11 +3,9 @@ import axios from 'axios';
 import DashboardCard2 from '@/components/DashboardCard2';
 import CompetitorComparisonChart from '@/components/CompetitorComparisonChart';
 import SimpleStockPieChart from '@/components/SimpleStockPieChart';
-import SalesTrendChart from '@/components/SalesTrendChart';
 
 import useSWR from 'swr';
 import { fetchDashboardVisuals,fetchSales } from '@/utils/api';
-import SalesBarChart from './SalesBarChart';
 import DashboardCard8 from './DashboardCard8';
 
 const Cards2 = () => {
@@ -16,7 +14,6 @@ const Cards2 = () => {
   const [openOrders, setOpenOrders] = useState<any[]>([]);
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-  const [invoices, setInvoices] = useState<any[]>([]);
   const [message, setMessage] = useState(""); // Can be error or success
   const [isError, setIsError] = useState(false); // To differentiate between error and success
   const fetchInvoices = async () => {

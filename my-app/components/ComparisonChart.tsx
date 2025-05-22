@@ -10,8 +10,8 @@ const ComparisonChart = ({ data }) => {
       </div>
     );
   }
-  const truncateName = (name, length = 10) =>
-    name.length > length ? `${name.substring(0, length)}...` : name;
+  // const truncateName = (name, length = 10) =>
+  //   name.length > length ? `${name.substring(0, length)}...` : name;
   // Custom shape for the bars to highlight the first (target) product
   const CustomBar = (props) => {
     const { fill, x, y, width, height, name } = props;

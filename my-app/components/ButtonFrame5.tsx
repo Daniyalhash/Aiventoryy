@@ -2,32 +2,25 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from "@/components/Button";
 import {
-  faPlus, faTrash, faEdit, faMagnifyingGlass,
-  faArrowDownAZ,
-  faDownload,
-  faFileImport, faFilter, faTrashAlt,
+  faPlus,  faMagnifyingGlass,
+  faTrashAlt,
   faRotate,
   faFileExport
 } from "@fortawesome/free-solid-svg-icons";
 import '@/styles/buttonFrame2.css';
 import Popup2 from '@/components/Popup2'; // Import the Popup component
-import { fetchCategories, fetchProductsByCategory } from "@/utils/api";
-import useSWR from 'swr';
 import SimpleForm from "./addFormP";
 import DelForm from "./DelFormP";
 import UpdateForm from "./UpdateFormP";
 import SearchForm from "./SearchFormP";
 import ExportProductFile from "./ExportProductFile";
-import ActivityVendor from "./ActivityVendor";
 import ActivityProduct from "./ActivityProduct";
 
-const  ButtonFrame = () => {
-  const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
+const  ButtonFrame5 = () => {
 
 
 
 //
-const [vendorName, setVendorName] = useState("");
 
   // fetching just categories using SWR
 
@@ -153,4 +146,4 @@ const [vendorName, setVendorName] = useState("");
   );
 };
 
-export default ButtonFrame;
+export default ButtonFrame5;

@@ -44,7 +44,12 @@ useEffect(() => {
 
   return (
     <div className="search-form-container">
-     
+          <div className={`messageContainer ${message ? 'show' : ''} ${isError ? 'error' : 'success'}`}>
+        <div className="message-content">
+          <span className="close-icon" onClick={() => setMessage("")}>✖</span>
+          {message}
+        </div>
+      </div>
 <div style={{ maxWidth: 600, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
       {logs.length === 0 && <p>No logs to show.</p>}
 

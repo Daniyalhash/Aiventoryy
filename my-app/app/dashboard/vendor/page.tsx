@@ -1,33 +1,39 @@
 "use client";
-// app/dashboard/page.tsx
 import VendorOver from "@/components/VendorOver"
-// import ShowCSVData from "@/components/ShowCSVData";
 
-import ButtonFrame2 from "@/components/ButtonFrame2";
 import "@/styles/vendor.css";
 import ShowDataset2 from "@/components/ShowCSVData";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import VisualGroupInventory from "@/components/VisualGroupInventory";
-import VendorManagementAnalysis from "@/components/VendorManagementAnalysis";
+
 import DashboardCard9 from "@/components/DashboardCard9";
 import ButtonFrame from "@/components/ButtonFrame";
 import StatsCards2 from "@/components/StatsCards2";
 import DashboardCard11 from "@/components/DashboardCard11";
+export interface Vendor {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  status: string;
+  created_at: string;
+  [key: string]: any;
+}
 
+export interface VendorStats {
+  totalVendor: number;
+  totalVendorLinks: number;
+  totalVendorNotLinks: number;
+}
 export default function Vendor() {
-  const [action, setAction] = useState<string | null>(null);
-  const [dataset, setDataset] = useState<string[][] | null>(null);
+ 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState<any[]>([]); // To store the product data
-  const [columns, setColumns] = useState([]); // Store column names
-  const [openActionRow, setOpenActionRow] = useState(null);
   const [stats, setStats] = useState<any>(null); // Store stats from response2
 
-  const toggleActions = (id) => {
-    setOpenActionRow(openActionRow === id ? null : id);
-  };
+
 
   const userId = localStorage.getItem("userId");
 
@@ -35,43 +41,39 @@ export default function Vendor() {
     const fetchDataset = async () => {
       setLoading(true); // Set loading to true before fetching
       try {
-        console.log("user id for data", userId);
-        const response = await axios.get("http://127.0.0.1:8000/aiventory/get-vendor/", {
-          params: { user_id: userId },
-        });
-        console.log("user id for data", userId);
-        const response2 = await axios.get("http://127.0.0.1:8000/aiventory/get_vendor_summary/", {
-          params: { user_id: userId },
-        });
-        // console.log("Fetched vendor Dataset:", response.data);
-        console.log("Fetched values:", response2.data);
-
-        // Ensure that the response structure is correct
-        if (response.data && response.data.vendors) {
-          // Use response.data.vendors instead of response.data.products
-          setVendors(response.data.vendors.flat()); // Flatten the array if it's nested
-          // Extract columns dynamically from the first vendor
-
+        const [vendorResponse, statsResponse] = await Promise.all([
+          axios.get("http://127.0.0.1:8000/aiventory/get-vendor/", {
+            params: { user_id: userId },
+          }),
+          axios.get("http://127.0.0.1:8000/aiventory/get_vendor_summary/", {
+            params: { user_id: userId },
+          })
+        ]);
+        if (vendorResponse.data?.vendors) {
+          setVendors(vendorResponse.data.vendors.flat());
         } else {
           setError("No vendor found.");
         }
-        if (response2.data && response2.data.data) {
-          setStats(response2.data.data);
+
+        if (statsResponse.data?.data) {
+          setStats(statsResponse.data.data);
         } else {
           setError("No stats found.");
         }
-        setError(null); // Reset any previous errors
+        
+        setError(null);
       } catch (err) {
-        console.error("Error fetching dataset:", err);
-        setError(err.response?.data?.error || "Failed to fetch dataset.");
+        const error = err as Error;
+        console.error("Error fetching dataset:", error);
+        setError(error.message || "Failed to fetch dataset.");
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
 
     if (userId) fetchDataset();
   }, [userId]);
-
+  
   return (
     <div className="VendorPage">
       {/* Vendor Header Section */}

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import '../src/styles/dashboardCard2.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faClipboardList, faUsers, faArrowUp, faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 const DashboardCard2 = ({ title, value, description, link, bgColor, graphContent }) => {
   return (
     <div className={`card2 ${bgColor}`}>

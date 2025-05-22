@@ -1,6 +1,5 @@
 "use client"
-import Front from '@/components/Front';
-import LoginPage from '@/components/LoginPage';
+
 import NavbarWeb from '@/components/NavbarWeb';
 import LandingPage from '@/components/LandingPage';
 import Text from '@/components/Text';
@@ -11,7 +10,6 @@ import '@/styles/globals.css';
 import Phone from '@/components/Phone';
 import Laptop from '@/components/Laptop';
 import Plan from '@/components/Plan';
-import Help from '@/components/Help';
 import { useEffect } from 'react';
 
 import Testimonials from '@/components/Testimonials';

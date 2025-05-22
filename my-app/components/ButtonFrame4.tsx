@@ -18,7 +18,6 @@ const ButtonFrame3 = ({
   onMonthSelect,
   onGranularitySelect, // Add this prop
 }) => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [isMonthDropdownOpen, setMonthDropdownOpen] = useState(false);
   const [selectedGranularity, setSelectedGranularity] = useState("month");
@@ -32,14 +31,14 @@ const ButtonFrame3 = ({
 
 
   // Fetch categories using SWR
-  const { data: categoryData, error: categoryError } = useSWR(
+  const { data: categoryData } = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
     { revalidateOnFocus: false }
   );
 
   // Fetch last recorded sales month using SWR
-  const { data: lastSalesData, error: lastSalesError } = useSWR(
+  const { data: lastSalesData} = useSWR(
     userId ? ["last-sales-month", userId] : null,
     () => fetchAvailableMonths(userId),
     { revalidateOnFocus: false }
@@ -50,7 +49,7 @@ const ButtonFrame3 = ({
       setCategories(categoryData.categories || []);
     }
     if (lastSalesData) {
-      const lastMonth = lastSalesData.last_month; // Format: "March 2025"
+      // const lastMonth = lastSalesData.last_month; // Format: "March 2025"
       const months = lastSalesData.available_months || [];
       setAvailableMonths(months);
 
