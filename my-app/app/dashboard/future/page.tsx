@@ -3,12 +3,10 @@
 
 
 "use client";
-import { useState, useEffect } from 'react';
-import DashboardCard from '@/components/DashboardCard';
+import { useState } from 'react';
 import FutureOver from '@/components/FutureOver';
 import Cards4 from '@/components/Cards4';
 import Cards3 from '@/components/Cards3';
-import Cards5 from '@/components/Cards5';
 import "@/styles/futurePage.css";
 import ButtonFrame3 from '@/components/ButtonFrame3';
 import axios from 'axios';
@@ -19,12 +17,10 @@ export default function Future() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [predictedValue, setPredictedValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [predictionError, setPredictionError] = useState(null);
-  const [products, setProducts] = useState([]);
+  const [predictionError] = useState<string | null>(null);
   const [categories, setCategories] = useState([]);
   const [sellingPrice, setsellingPrice] = useState(null);
   const [last_month_sales, setlast_month_sales] = useState(null);
-  const [topValue, setTopValue] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedGranularity, setSelectedGranularity] = useState(null);
   const [historicalData, setHistoricalData] = useState("daily");
@@ -33,21 +29,13 @@ export default function Future() {
   const [hasPrediction, setHasPrediction] = useState(false); // Add this new state
 
 
-  const handleProductSelect = () => {
-    // In a real app, you would show a modal or dropdown to select product
-    const sampleProduct = products.length > 0 ? products[0].name : "Sample Product";
-    setSelectedProduct(sampleProduct);
-  };
 
-  const handleCategorySelect = () => {
-    // In a real app, you would show a modal or dropdown to select category
-    const sampleCategory = categories.length > 0 ? categories[0] : "Veg";
-    setSelectedCategory(selectedCategory);
-  };
 
-  const handlePredict = async (product, category, selectedMonth,selectedGranularity) => {
-      console.log("Values are going in ",category)
-      console.log("Values are going in ",categories)
+  const handlePredict = async (product: string,
+    category: string,
+    selectedMonth: string) => {
+    console.log("Values are going in ", category)
+    console.log("Values are going in ", categories)
 
     if (!product) {
       setMessage("Please select a product");
@@ -82,19 +70,17 @@ export default function Future() {
         category: category,
         selectedMonth: monthName,
         prev_month_sales: last_month_sales || 0,
-      prev_2_month_sales: 0, // Example: Populate with actual data
-      prev_3_month_sales: 0,
-      rolling_avg_3m: 0,
-      rolling_avg_6m: 0,
-      sales_diff_1m: 0
+        prev_2_month_sales: 0, // Example: Populate with actual data
+        prev_3_month_sales: 0,
+        rolling_avg_3m: 0,
+        rolling_avg_6m: 0,
+        sales_diff_1m: 0
       });
-      setCategories(category)//this getting coorect categry
-      console.log("in page categor",category)
-      console.log("se;;ingPrice in ",response.data.selling_price)
-      console.log("se;;last_month_sales in",response.data.last_month_sales)
-       // Set seasonal data from response
+      setCategories([category]);
+     
+      // Set seasonal data from response
       setlast_month_sales(response.data.last_month_sales)
-setHistoricalData(response.data.historical_data)
+      setHistoricalData(response.data.historical_data)
       setsellingPrice(response.data.selling_price)
       setPredictedValue(response.data.prediction);
       setHasPrediction(true); // Set this to true after successful prediction
@@ -109,15 +95,7 @@ setHistoricalData(response.data.historical_data)
       setIsLoading(false);  // <-- Set loading to false when done
     }
   };
-  console.log("userId in page", userId); // This will help you verify that `userId` is not undefined or null.
-  console.log("selectedCategory in main",selectedCategory)
-  console.log("selectedProduct in main",selectedProduct)
-  console.log("Values are going in ",selectedCategory)
-  console.log("Values are going in ",categories)
-  console.log("last_month_sales in main",last_month_sales)
-  console.log("selected Month in main",selectedMonth)
-  console.log("selected Granularity in main page",selectedGranularity)
-  console.log("predictionError",predictionError)
+ 
   return (
     <div className="futurePage">
       <div className={`messageContainer ${message ? 'show' : 'hide'} ${isError ? 'error' : 'success'}`}>
@@ -127,11 +105,11 @@ setHistoricalData(response.data.historical_data)
         </div>
       </div>
 
-  
+
 
       <FutureOver />
-      
-      <ButtonFrame3 
+
+      <ButtonFrame3
         onProductSelect={(product) => setSelectedProduct(product)}
         onCategorySelect={(category) => setSelectedCategory(category)}
         onMonthSelect={(selectedMonth) => setSelectedMonth(selectedMonth)}
@@ -140,16 +118,16 @@ setHistoricalData(response.data.historical_data)
         selectedProduct={selectedProduct}
         selectedCategory={selectedCategory}
       />
-          {/* Loading Spinner (shown when isLoading is true) */}
-    {isLoading && (
-      <div className="spinner-container">
-        <div className="loading-spinner"></div>
-      </div>
-    )}
+      {/* Loading Spinner (shown when isLoading is true) */}
+      {isLoading && (
+        <div className="spinner-container">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
       {hasPrediction && !isLoading ? (
         <>
           <div className="futureSub">
-            <Cards4 
+            <Cards4
               predictedValue={predictedValue}
               isLoading={isLoading}
               sellingPirce={sellingPrice}
@@ -161,7 +139,7 @@ setHistoricalData(response.data.historical_data)
               historicalData={historicalData}
             />
           </div>
-          <Cards3 
+          <Cards3
             predictedValue={predictedValue}
             isLoading={isLoading}
             sellingPirce={sellingPrice}
@@ -175,99 +153,103 @@ setHistoricalData(response.data.historical_data)
           />
         </>
       ) : (
-        !isLoading && (  // <-- Only show placeholder if not loading
-
-        <div className="prediction-placeholder">
-          <div className="placeholder-content">
-            <h2>Sales Prediction Dashboard</h2>
-            <p>Get accurate sales forecasts by selecting your product, category, and time period.</p>
-            <div className="placeholder-steps">
-              <div className="step">
-                <div className="step-icon">1</div>
-                <p>Select a product and category</p>
-              </div>
-              <div className="step">
-                <div className="step-icon">2</div>
-                <p>Choose a month and day</p>
-              </div>
-              <div className="step">
-                <div className="step-icon">3</div>
-                <p>Click "Predict" to see your forecast</p>
-              </div>
-            </div>
-            <div className="sample-visualization">
-  <svg width="100%" height="240" viewBox="0 0 500 240" className="sample-chart">
-    {/* X-axis */}
-    <line x1="50" y1="200" x2="450" y2="200" stroke="#17412D" strokeWidth="2" />
-    {/* Y-axis */}
-    <line x1="50" y1="200" x2="50" y2="50" stroke="#17412D" strokeWidth="2" />
-    
-    {/* Grid lines */}
-    <line x1="50" y1="170" x2="450" y2="170" stroke="#e0e0e0" strokeWidth="1" strokeDasharray="5,5" />
-    <line x1="50" y1="140" x2="450" y2="140" stroke="#e0e0e0" strokeWidth="1" strokeDasharray="5,5" />
-    <line x1="50" y1="110" x2="450" y2="110" stroke="#e0e0e0" strokeWidth="1" strokeDasharray="5,5" />
-    <line x1="50" y1="80" x2="450" y2="80" stroke="#e0e0e0" strokeWidth="1" strokeDasharray="5,5" />
-    
-    {/* Axis labels */}
-    <text x="30" y="80" fill="#555" fontSize="12" textAnchor="end">400</text>
-    <text x="30" y="110" fill="#555" fontSize="12" textAnchor="end">300</text>
-    <text x="30" y="140" fill="#555" fontSize="12" textAnchor="end">200</text>
-    <text x="30" y="170" fill="#555" fontSize="12" textAnchor="end">100</text>
-    <text x="30" y="200" fill="#555" fontSize="12" textAnchor="end">0</text>
-    
-    <text x="125" y="220" fill="#555" fontSize="12" textAnchor="middle">Jan</text>
-    <text x="200" y="220" fill="#555" fontSize="12" textAnchor="middle">Feb</text>
-    <text x="275" y="220" fill="#555" fontSize="12" textAnchor="middle">Mar</text>
-    <text x="350" y="220" fill="#555" fontSize="12" textAnchor="middle">Apr</text>
-    <text x="425" y="220" fill="#555" fontSize="12" textAnchor="middle">May</text>
-    
-    {/* Chart title */}
-    <text x="250" y="30" fill="#17412D" fontSize="16" fontWeight="bold" textAnchor="middle">Sample Sales Prediction</text>
-    
-    {/* Historical data line */}
-    <polyline 
-      points="125,170 200,140 275,110 350,80" 
-      fill="none" 
-      stroke="#9FE870" 
-      strokeWidth="3" 
-      strokeLinejoin="round"
-    />
-    
-    {/* Predicted data line (dashed) */}
-    <polyline 
-      points="350,80 425,50" 
-      fill="none" 
-      stroke="#17412D" 
-      strokeWidth="3" 
-      strokeDasharray="8,4"
-      strokeLinejoin="round"
-    />
-    
-    {/* Data points */}
-    <circle cx="125" cy="170" r="5" fill="#9FE870" />
-    <circle cx="200" cy="140" r="5" fill="#9FE870" />
-    <circle cx="275" cy="110" r="5" fill="#9FE870" />
-    <circle cx="350" cy="80" r="5" fill="#9FE870" />
-    <circle cx="425" cy="50" r="5" fill="#17412D" />
-    
-    {/* Legend */}
-    <rect x="350" y="30" width="15" height="3" fill="#9FE870" />
-    <text x="370" y="33" fill="#555" fontSize="12">Historical</text>
-    <rect x="350" y="45" width="15" height="3" fill="#17412D" />
-    <text x="370" y="48" fill="#555" fontSize="12">Predicted</text>
-    
-    {/* Prediction highlight */}
-    <rect x="410" y="40" width="30" height="20" rx="2" fill="#17412D" fillOpacity="0.1" />
-    <text x="425" y="55" fill="#17412D" fontSize="12" textAnchor="middle">+32%</text>
-  </svg>
-</div>
-          </div>
-        </div>
-        )
+        !isLoading && <PlaceholderContent />
       )}
     </div>
   );
 }
+          
+const PlaceholderContent = () => (
+  <div className="prediction-placeholder">
+            <div className="placeholder-content">
+              <h2>Sales Prediction Dashboard</h2>
+              <p>Get accurate sales forecasts by selecting your product, category, and time period.</p>
+              <div className="placeholder-steps">
+                <div className="step">
+                  <div className="step-icon">1</div>
+                  <p>Select a product and category</p>
+                </div>
+                <div className="step">
+                  <div className="step-icon">2</div>
+                  <p>Choose a month and day</p>
+                </div>
+                <div className="step">
+                  <div className="step-icon">3</div>
+                  <p>Click "Predict" to see your forecast</p>
+                </div>
+              </div>
+              <div className="sample-visualization">
+                <svg width="100%" height="240" viewBox="0 0 500 240" className="sample-chart">
+                  {/* X-axis */}
+                  <line x1="50" y1="200" x2="450" y2="200" stroke="#17412D" strokeWidth="2" />
+                  {/* Y-axis */}
+                  <line x1="50" y1="200" x2="50" y2="50" stroke="#17412D" strokeWidth="2" />
+
+                  {/* Grid lines */}
+                  <line x1="50" y1="170" x2="450" y2="170" stroke="#e0e0e0" strokeWidth="1" strokeDasharray="5,5" />
+                  <line x1="50" y1="140" x2="450" y2="140" stroke="#e0e0e0" strokeWidth="1" strokeDasharray="5,5" />
+                  <line x1="50" y1="110" x2="450" y2="110" stroke="#e0e0e0" strokeWidth="1" strokeDasharray="5,5" />
+                  <line x1="50" y1="80" x2="450" y2="80" stroke="#e0e0e0" strokeWidth="1" strokeDasharray="5,5" />
+
+                  {/* Axis labels */}
+                  <text x="30" y="80" fill="#555" fontSize="12" textAnchor="end">400</text>
+                  <text x="30" y="110" fill="#555" fontSize="12" textAnchor="end">300</text>
+                  <text x="30" y="140" fill="#555" fontSize="12" textAnchor="end">200</text>
+                  <text x="30" y="170" fill="#555" fontSize="12" textAnchor="end">100</text>
+                  <text x="30" y="200" fill="#555" fontSize="12" textAnchor="end">0</text>
+
+                  <text x="125" y="220" fill="#555" fontSize="12" textAnchor="middle">Jan</text>
+                  <text x="200" y="220" fill="#555" fontSize="12" textAnchor="middle">Feb</text>
+                  <text x="275" y="220" fill="#555" fontSize="12" textAnchor="middle">Mar</text>
+                  <text x="350" y="220" fill="#555" fontSize="12" textAnchor="middle">Apr</text>
+                  <text x="425" y="220" fill="#555" fontSize="12" textAnchor="middle">May</text>
+
+                  {/* Chart title */}
+                  <text x="250" y="30" fill="#17412D" fontSize="16" fontWeight="bold" textAnchor="middle">Sample Sales Prediction</text>
+
+                  {/* Historical data line */}
+                  <polyline
+                    points="125,170 200,140 275,110 350,80"
+                    fill="none"
+                    stroke="#9FE870"
+                    strokeWidth="3"
+                    strokeLinejoin="round"
+                  />
+
+                  {/* Predicted data line (dashed) */}
+                  <polyline
+                    points="350,80 425,50"
+                    fill="none"
+                    stroke="#17412D"
+                    strokeWidth="3"
+                    strokeDasharray="8,4"
+                    strokeLinejoin="round"
+                  />
+
+                  {/* Data points */}
+                  <circle cx="125" cy="170" r="5" fill="#9FE870" />
+                  <circle cx="200" cy="140" r="5" fill="#9FE870" />
+                  <circle cx="275" cy="110" r="5" fill="#9FE870" />
+                  <circle cx="350" cy="80" r="5" fill="#9FE870" />
+                  <circle cx="425" cy="50" r="5" fill="#17412D" />
+
+                  {/* Legend */}
+                  <rect x="350" y="30" width="15" height="3" fill="#9FE870" />
+                  <text x="370" y="33" fill="#555" fontSize="12">Historical</text>
+                  <rect x="350" y="45" width="15" height="3" fill="#17412D" />
+                  <text x="370" y="48" fill="#555" fontSize="12">Predicted</text>
+
+                  {/* Prediction highlight */}
+                  <rect x="410" y="40" width="30" height="20" rx="2" fill="#17412D" fillOpacity="0.1" />
+                  <text x="425" y="55" fill="#17412D" fontSize="12" textAnchor="middle">+32%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        )
+     
+    
+  
 
 
 
