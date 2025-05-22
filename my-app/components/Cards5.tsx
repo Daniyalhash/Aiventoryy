@@ -1,4 +1,4 @@
-import React,  from 'react';
+import React from 'react';
 
 import '../src/styles/dashboardCard6.css';
 

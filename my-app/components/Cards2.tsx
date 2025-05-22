@@ -5,24 +5,25 @@ import CompetitorComparisonChart from '@/components/CompetitorComparisonChart';
 import SimpleStockPieChart from '@/components/SimpleStockPieChart';
 
 import useSWR from 'swr';
-import { fetchDashboardVisuals,fetchSales } from '@/utils/api';
+import { fetchDashboardVisuals, fetchSales } from '@/utils/api';
 import DashboardCard8 from './DashboardCard8';
 
 const Cards2 = () => {
-  
+
   const [isLoading, setIsLoading] = useState(true);
-  const [openOrders, setOpenOrders] = useState<any[]>([]);
+  const [openOrders, setOpenOrders] = useState<number>(0);
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [message, setMessage] = useState(""); // Can be error or success
   const [isError, setIsError] = useState(false); // To differentiate between error and success
+  useEffect(() => {
   const fetchInvoices = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
         params: { user_id: userId }
       });
       console.log("Open order count:", response.data.openOrderLen);
-      
+
       if (response.data && typeof response.data.openOrderLen === 'number') {
         setOpenOrders(response.data.openOrderLen);
       } else {
@@ -35,12 +36,11 @@ const Cards2 = () => {
       setOpenOrders(0);
     }
   };
-  
-    useEffect(() => {
 
-      fetchInvoices();
-    }, [userId]);
-    console.log("open orders",openOrders)
+   if (userId) {
+    fetchInvoices();
+  }
+}, [userId]);
   // Retrieve userId from localStorage (only in client-side)
 
   // Default stock data in case API fails
@@ -51,9 +51,12 @@ const Cards2 = () => {
   };
 
   // Use SWR for fetching benchmark data
-  const { data: benchmarkData, error } = useSWR(
-    userId ? ['get-dashboard-visuals', userId] : null, 
-    () => fetchDashboardVisuals(userId!), 
+// Define the correct type for benchmark data, or use 'any' as a fallback
+type BenchmarkType = any; // Replace 'any' with the actual type if known
+
+const { data: benchmarkData, error } = useSWR<BenchmarkType>(
+    userId ? ['get-dashboard-visuals', userId] : null,
+    () => fetchDashboardVisuals(userId!),
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false,
@@ -63,9 +66,9 @@ const Cards2 = () => {
     }
   );
   const { data: salesData, SalesError } = useSWR(
-    userId ? ['get_monthly_sales', userId] : null, 
+    userId ? ['get_monthly_sales', userId] : null,
     fetchSales, // don't wrap it
-  
+
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false,
@@ -74,14 +77,14 @@ const Cards2 = () => {
       }
     }
   );
-  console.log("past data",salesData)
+  console.log("past data", salesData)
   useEffect(() => {
     if (SalesError) {
       setIsLoading(false);
       setIsError(true);
-      
+
       let userFriendlyMessage = "We're having trouble loading your analytics data. ";
-      
+
       if (SalesError.message.includes("401")) {
         userFriendlyMessage += "Your session might have expired. Please refresh the page or log in again.";
       } else if (SalesError.message.includes("404")) {
@@ -91,7 +94,7 @@ const Cards2 = () => {
       } else {
         userFriendlyMessage += "Please try refreshing the page. Contact support if this continues.";
       }
-      
+
       setMessage(userFriendlyMessage);
     } else if (salesData) {
       setIsLoading(false);
@@ -104,9 +107,9 @@ const Cards2 = () => {
     if (error) {
       setIsLoading(false);
       setIsError(true);
-      
+
       let userFriendlyMessage = "We're having trouble loading your analytics. ";
-      
+
       if (error.message.includes("401")) {
         userFriendlyMessage += "Your session might have expired. Please refresh the page or log in again.";
       } else if (error.message.includes("404")) {
@@ -116,7 +119,7 @@ const Cards2 = () => {
       } else {
         userFriendlyMessage += "Please try refreshing the page. Contact support if this continues.";
       }
-      
+
       setMessage(userFriendlyMessage);
     } else if (benchmarkData) {
       setIsLoading(false);
@@ -135,7 +138,6 @@ const Cards2 = () => {
       </div>
     );
   }
-  const vendorOrders = -0;
 
   return (
     <div className="LargecardSection">
@@ -146,8 +148,8 @@ const Cards2 = () => {
             <span className="close-icon" onClick={() => setMessage("")}>✖</span>
             {message}
             {isError && (
-              <button 
-                className="retry-button" 
+              <button
+                className="retry-button"
                 onClick={() => window.location.reload()}
               >
                 Try Again
@@ -157,37 +159,37 @@ const Cards2 = () => {
         </div>
       )}
 
-  
-      
-{openOrders === 0 ? (
-  <DashboardCard2
-    title="Stock Analysis"
-    value={0}
-    link="/dashboard/insights"
-    bgColor="bg-custom-third"
-    graphContent={
-      <SimpleStockPieChart 
-        data={defaultStockData} 
-        isDefaultData={!!error}
-      />
-    }
-  />
-) : (
-  <DashboardCard8
-    title="Vendor Orders"
-    link="/dashboard/vendor"
-  />
-)}
 
 
-<DashboardCard2
+      {openOrders === 0 ? (
+        <DashboardCard2
+          title="Stock Analysis"
+          value={0}
+          link="/dashboard/insights"
+          bgColor="bg-custom-third"
+          graphContent={
+            <SimpleStockPieChart
+              data={defaultStockData}
+              isDefaultData={!!error}
+            />
+          }
+        />
+      ) : (
+        <DashboardCard8
+          title="Vendor Orders"
+          link="/dashboard/vendor"
+        />
+      )}
+
+
+      <DashboardCard2
         title="Product Benchmarking"
         value={0}
         link="/dashboard/insights"
         bgColor="bg-custom-one"
         graphContent={
-          <CompetitorComparisonChart 
-            data={benchmarkData || []} 
+          <CompetitorComparisonChart
+            data={benchmarkData || []}
             fallbackMessage={error ? "Couldn't load benchmark data" : undefined}
           />
         }
