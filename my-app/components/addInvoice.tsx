@@ -1,8 +1,22 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import useSWR from 'swr';
-import { fetchCategories, fetchProductsByCategory } from "@/utils/api";
+import { fetchCategories } from "@/utils/api";
 import "@/styles/addInvoice.css";
+interface Product {
+  product_id: string;
+  name: string;
+  category: string;
+  stockquantity: number;
+  price: number;
+}
 
+interface FormData {
+  vendor_id: string;
+  vendor: string;
+  vendorPhone: string;
+  date: string;
+  products: Product[];
+}
 const AddInvoice = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [categories, setCategories] = useState([]);
@@ -11,15 +25,12 @@ const AddInvoice = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", isError: false });
   const [loadingVendors, setLoadingVendors] = useState(false);
-  const [loadingProducts, setLoadingProducts] = useState(false);
+  // const [loadingProducts, setLoadingProducts] = useState(false);
 
   const [vendors, setVendors] = useState([]);
 
-  const [isError, setIsError] = useState(false);
-  // fetching just categories using SWR
-
-  // Fetch categories
-  const { data: categoryData, error: swrError } = useSWR(
+ 
+  const { data: categoryData} = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
     {
@@ -103,7 +114,7 @@ const AddInvoice = () => {
     const loadProducts = async () => {
       if (!selectedCategory || !userId) return;
 
-      setLoadingProducts(true);
+      // setLoadingProducts(true);
       try {
         const data = await fetchProductsByCategory(userId, selectedCategory);
 // Logging with sample rows
@@ -121,12 +132,13 @@ const AddInvoice = () => {
         console.error("Error loading products:", err);
         setProducts([]);
       } finally {
-        setLoadingProducts(false);
+        // setLoadingProducts(false);
       }
     };
 
     loadProducts();
   }, [selectedCategory, userId]);
+const selectedProductCategory = formData.products[0]?.category;
 
   useEffect(() => {
     const loadVendors = async () => {
@@ -156,24 +168,10 @@ const AddInvoice = () => {
     };
 
     loadVendors();
-  }, [formData.products[0]?.category, userId]);
+  }, [selectedProductCategory, userId]);
 
 
 
-  // // Fetch products when category changes
-  // useEffect(() => {
-  //   if (selectedCategory && userId) {
-  //     const fetchProducts = async () => {
-  //       try {
-  //         const productsData = await fetchProductsByCategory(userId, selectedCategory);
-  //         setProducts(productsData.products || []);
-  //       } catch (error) {
-  //         console.error("Error fetching products:", error);
-  //       }
-  //     };
-  //     fetchProducts();
-  //   }
-  // }, [selectedCategory, userId]);
 
   // Add this handler for vendor selection
   const handleVendorSelect = (vendorId) => {
@@ -189,13 +187,7 @@ const AddInvoice = () => {
   };
 
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+
 
   // Add this handler for product selection
   const handleProductSelect = (index, productName) => {

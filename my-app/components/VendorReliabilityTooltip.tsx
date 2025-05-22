@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import {  faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 
 // Somewhere inside your component
 const VendorReliabilityTooltip = () => {

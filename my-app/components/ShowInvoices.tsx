@@ -1,18 +1,32 @@
 import '@/styles/ShowInvoice.css';
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash, faCheck, faTimes, faEdit, faDownload } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { useUser } from "./UserContext";
 import axios from "axios";
 import AddInvoice from '@/components/addInvoice';
+import Image from 'next/image';
+interface Product {
+  name: string;
+  category: string;
+  quantity: number;
+  price: number;
+}
 
-
+interface Invoice {
+  _id: string;
+  id: string;
+  vendor: string;
+  vendorPhone?: string;
+  date: string;
+  formatted_date: string;
+  products: Product[];
+}
+type EditingInvoice = Invoice | null;
 export default function ShowInvoices() {
-  const [editedProducts, setEditedProducts] = useState<ProductType[]>([]);
+  const [editedProducts, setEditedProducts] = useState<Product[]>([]);
 
   const [invoices, setInvoices] = useState<any[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -21,8 +35,8 @@ export default function ShowInvoices() {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingInvoice, setEditingInvoice] = useState<any>(null);
-  const [quantity, setQuantity] = useState<number>(0);
-  const [price, setPrice] = useState<number>(0);
+  // const [quantity, setQuantity] = useState<number>(0);
+  // const [price, setPrice] = useState<number>(0);
   const pdfRef = useRef<HTMLDivElement>(null);
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [pdfSelectedInvoice, setPdfSelectedInvoice] = useState<number | null>(null);
@@ -73,10 +87,17 @@ export default function ShowInvoices() {
   };
 
   useEffect(() => {
-    fetchUserData();
-    fetchInvoices();
-  }, [userId]);
+    const initializeData = async () => {
+      await Promise.all([
+        fetchUserData(),
+        fetchInvoices()
+      ]);
+    };
 
+    if (userId) {
+      initializeData();
+    }
+  }, [userId]);
   const generatePDF = async (id: number) => {
 
     setPdfSelectedInvoice(id);
@@ -170,23 +191,24 @@ export default function ShowInvoices() {
       console.error("Error deleting invoices:", error);
     }
   };
-  const handleEditInvoice = (invoice: any) => {
+  const handleEditInvoice = (invoice: Invoice) => {
     setEditingInvoice(invoice);
-    setQuantity(invoice.products[0]?.quantity || 0);
-    setPrice(invoice.products[0]?.price || 0);
+    // setQuantity(invoice.products[0]?.quantity || 0);
+    // setPrice(invoice.products[0]?.price || 0);
 
+    setEditedProducts(invoice.products);
     setIsEditMode(true);
   };
-useEffect(() => {
-  if (editingInvoice) {
-    setEditedProducts(editingInvoice.products);
-  }
-}, [editingInvoice]);
-const handleProductChange = (index: number, field: string, value: any) => {
-  const updatedProducts = [...editedProducts];
-  updatedProducts[index] = { ...updatedProducts[index], [field]: value };
-  setEditedProducts(updatedProducts);
-};
+  useEffect(() => {
+    if (editingInvoice) {
+      setEditedProducts(editingInvoice.products);
+    }
+  }, [editingInvoice]);
+  const handleProductChange = (index: number, field: string, value: any) => {
+    const updatedProducts = [...editedProducts];
+    updatedProducts[index] = { ...updatedProducts[index], [field]: value };
+    setEditedProducts(updatedProducts);
+  };
 
   const openManualInvoice = () => {
     setIsAddingInvoice(true);
@@ -433,72 +455,72 @@ const handleProductChange = (index: number, field: string, value: any) => {
         </div>
 
         {isEditMode && editingInvoice && (
-  <div className="modal-overlayY">
-    <div className="modal-contentY">
-      <h3>Edit Invoice #{editingInvoice._id}</h3>
+          <div className="modal-overlayY">
+            <div className="modal-contentY">
+              <h3>Edit Invoice #{editingInvoice._id}</h3>
 
-      {editedProducts.map((product, idx) => (
-        <div key={idx} className="product-edit-section">
-          <h4>Product {idx + 1}</h4>
+              {editedProducts.map((product, idx) => (
+                <div key={idx} className="product-edit-section">
+                  <h4>Product {idx + 1}</h4>
 
-          <div className="form-group">
-            <label>Product Name</label>
-            <input
-              type="text"
-              value={product.name}
-              readOnly
-              className="read-only-input"
-            />
+                  <div className="form-group">
+                    <label>Product Name</label>
+                    <input
+                      type="text"
+                      value={product.name}
+                      readOnly
+                      className="read-only-input"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Quantity</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={product.quantity}
+                      onChange={(e) =>
+                        handleProductChange(idx, 'quantity', parseInt(e.target.value) || 0)
+                      }
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Unit Price</label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={product.price}
+                      onChange={(e) =>
+                        handleProductChange(idx, 'price', parseFloat(e.target.value) || 0)
+                      }
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Total</label>
+                    <input
+                      type="text"
+                      value={`$${(product.quantity * product.price).toFixed(2)}`}
+                      readOnly
+                      className="read-only-input"
+                    />
+                  </div>
+                </div>
+              ))}
+
+              <div className="modal-actions">
+                <button onClick={() => setIsEditMode(false)} className="cancel-button">
+                  Cancel
+                </button>
+                <button onClick={saveEditedInvoice} className="save-button">
+                  Save Changes
+                </button>
+              </div>
+            </div>
           </div>
-
-          <div className="form-group">
-            <label>Quantity</label>
-            <input
-              type="number"
-              min="1"
-              value={product.quantity}
-              onChange={(e) =>
-                handleProductChange(idx, 'quantity', parseInt(e.target.value) || 0)
-              }
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Unit Price</label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={product.price}
-              onChange={(e) =>
-                handleProductChange(idx, 'price', parseFloat(e.target.value) || 0)
-              }
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Total</label>
-            <input
-              type="text"
-              value={`$${(product.quantity * product.price).toFixed(2)}`}
-              readOnly
-              className="read-only-input"
-            />
-          </div>
-        </div>
-      ))}
-
-      <div className="modal-actions">
-        <button onClick={() => setIsEditMode(false)} className="cancel-button">
-          Cancel
-        </button>
-        <button onClick={saveEditedInvoice} className="save-button">
-          Save Changes
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        )}
 
 
         {/* Confirmation Popup */}
@@ -566,7 +588,11 @@ const handleProductChange = (index: number, field: string, value: any) => {
                 {/* PDF content template */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
                   <div>
-                    <img src="/images/logoPro.png" alt="Logo" style={{ height: '50px' }} />
+                    <Image src="/images/logoPro.png"
+                      alt="Logo"
+                      width={100}
+                      height={50} 
+                      hidden/>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <h2 style={{ color: '#17412d', marginBottom: '10px' }}>INVOICE</h2>
@@ -600,23 +626,23 @@ const handleProductChange = (index: number, field: string, value: any) => {
                       <th style={{ padding: '10px', textAlign: 'right' }}>Amount</th>
                     </tr>
                   </thead>
-                 <tbody>
-  {currentInvoice.products.map((product, index) => {
-    const amount = product.price * product.quantity;
-    return (
-      <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
-        <td style={{ padding: '10px' }}>{index + 1}</td>
-        <td style={{ padding: '10px' }}>
-          <strong>{product.name}</strong><br />
-          <small>Category: {product.category}</small>
-        </td>
-        <td style={{ padding: '10px', textAlign: 'right' }}>{product.quantity}</td>
-        <td style={{ padding: '10px', textAlign: 'right' }}>${product.price.toFixed(2)}</td>
-        <td style={{ padding: '10px', textAlign: 'right' }}>${amount.toFixed(2)}</td>
-      </tr>
-    );
-  })}
-</tbody>
+                  <tbody>
+                    {currentInvoice.products.map((product, index) => {
+                      const amount = product.price * product.quantity;
+                      return (
+                        <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
+                          <td style={{ padding: '10px' }}>{index + 1}</td>
+                          <td style={{ padding: '10px' }}>
+                            <strong>{product.name}</strong><br />
+                            <small>Category: {product.category}</small>
+                          </td>
+                          <td style={{ padding: '10px', textAlign: 'right' }}>{product.quantity}</td>
+                          <td style={{ padding: '10px', textAlign: 'right' }}>${product.price.toFixed(2)}</td>
+                          <td style={{ padding: '10px', textAlign: 'right' }}>${amount.toFixed(2)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
 
                 </table>
 

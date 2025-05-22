@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "@/styles/showCSVData.css";
-import axios from "axios";
-
-const ShowCSVData2 = ({ dataset }: { dataset: any[] }) => {
+interface VendorData {
+  _id?: string;
+  vendor: string;
+  DeliveryTime: number;
+  ReliabilityScore: number;
+}
+const ShowCSVData2: React.FC<{ dataset: VendorData[] }> = ({ dataset }) => {
   return (
     <div>
       {dataset && dataset.length > 0 ? (

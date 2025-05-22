@@ -1,8 +1,5 @@
-// components/ShowInvoices.tsx
 import '@/styles/ShowInvoice.css';
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,7 +8,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-// import Vendor from '../app/dashboard/vendor/page';
+interface Product {
+  name: string;
+  category: string;
+  quantity: number;
+  price: number;
+}
+
+interface Invoice {
+  _id: string;
+  id: number;
+  vendor: string;
+  date: string;
+  products: Product[];
+}
 export default function ShowInvoices() {
   const searchParams = useSearchParams();
 
@@ -19,17 +29,14 @@ export default function ShowInvoices() {
   const category = searchParams.get("category");
   const stockquantity = searchParams.get("stockquantity");
   const vendor = searchParams.get("vendor");
-  const vendorPhone = searchParams.get("vendorPhone");
-  const deliveryTime = searchParams.get("deliveryTime");
-  const reliabilityScore = searchParams.get("reliabilityScore"); 
+
   
   
   
   const [invoices, setInvoices] = useState<any[]>([]); // Use any[] for flexibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<number | null>(null);
-  const [selectedInvoices, setSelectedInvoices] = useState<number[]>([]);
-  const [isDeleteMode, setIsDeleteMode] = useState(false);
+  
   const pdfRef = useRef<HTMLDivElement>(null);
   const savedInvoices = useRef(new Set());
 
@@ -40,7 +47,6 @@ export default function ShowInvoices() {
       if (!response.ok) throw new Error("Failed to fetch invoices");
   
       const data = await response.json();
-      console.log("Fetched invoices:", data);
   
       // Extract the invoices array from the response
       setInvoices(data.invoices || []); // Ensure it's always an array
@@ -51,8 +57,7 @@ export default function ShowInvoices() {
   };
   
   useEffect(() => {
-    console.log("Received values:", { vendor, productname, category, stockquantity });
-    console.log("Updated invoices state:", invoices);
+    
 
     if (vendor && productname && category && stockquantity) {
       const invoiceId = `${vendor}-${productname}-${category}-${stockquantity}`; // Unique ID
@@ -63,7 +68,8 @@ export default function ShowInvoices() {
         return;
       }
   
-      const newInvoice = {
+      const newInvoice: Invoice = {
+        _id: `${vendor.trim()}-${productname.trim()}-${category.trim()}-${Date.now()}`, // Generate a unique _id
         id: invoices.length + 1,
         vendor: vendor.trim(),
         date: new Date().toISOString().split("T")[0], // Format date as YYYY-MM-DD
@@ -87,7 +93,7 @@ export default function ShowInvoices() {
     }
     fetchInvoices();
 
-  }, [vendor, productname, category, stockquantity]);
+  }, [vendor, productname, category, stockquantity, invoices.length]);
   // Function to generate PDF
   const generatePDF = async (id: number) => {
     setSelectedInvoiceId(id);

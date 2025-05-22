@@ -1,17 +1,41 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import useSWR from 'swr';
-import { fetchCategories, fetchProductsByCategory } from "@/utils/api";
+import { fetchCategories } from "@/utils/api";
 import "@/styles/form.css";
+
+interface Vendor {
+  vendor_id: string;
+  vendor: string;
+}
+
+interface FormFields {
+  userId: string | null;
+  productname_id: string;
+  productName: string;
+  category: string;
+  subcategory: string;
+  stockquantity: string;
+  reorderthreshold: string;
+  costprice: string;
+  sellingprice: string;
+  timespan: string;
+  expirydate: string;
+  monthly_sales: string;
+  Barcode: string;
+  vendor_id: string;
+  productSize: string;
+  sale_date: string;
+  season: string;
+  last_updated: string;
+}
 const addFormP = () => {
 
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [categories, setCategories] = useState([]);
   const [isError, setIsError] = useState(false);
-  // fetching just categories using SWR
   const [vendors, setVendors] = useState([]);
-  const [loadingVendors, setLoadingVendors] = useState(false);
-  const { data: categoryData, error: swrError, isLoading } = useSWR(
+  const { data: categoryData } = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
     {
@@ -45,7 +69,7 @@ const addFormP = () => {
     };
   }, [userId]);
 
-  const fetchVendorsByCategory = async (userId, category) => {
+  const fetchVendorsByCategory = async (userId: string, category: string) => {
     const response = await fetch(`http://localhost:8000/aiventory/vendors-by-category/?userId=${userId}&category=${category}`);
     if (!response.ok) throw new Error("Failed to fetch vendors");
     return await response.json();
@@ -98,17 +122,14 @@ const addFormP = () => {
     const loadVendors = async () => {
       if (!formFields.category || !userId) return;
 
-      setLoadingVendors(true);
       try {
         const data = await fetchVendorsByCategory(userId, formFields.category);
         setVendors(data.vendors || []);
-        console.log("Vendors: ", data.vendors);
       } catch (err) {
         console.error("Error fetching vendors:", err);
-        setVendors([]);
-      } finally {
-        setLoadingVendors(false);
-      }
+        setMessage("Error fetching vendors")
+        setIsError(true)
+      } 
     };
 
     loadVendors();

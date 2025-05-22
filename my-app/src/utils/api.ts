@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { use } from 'react';
 
 // Base API instance
 const api = axios.create({
@@ -22,27 +21,16 @@ export const fetchTotalProducts = async (userId) => {
     throw error;
   }
 };
-// Fetch demadn API
-// export const fetchbestDemand = async (userId) => {
-//   if (!userId) throw new Error('User ID is required');
 
-//   try {
-//     const response = await api.get('/bestSales/', { params: { user_id: userId } });
-//     return response.data; // Return data directly
-//   } catch (error) {
-//     console.error("Error fetching demand best  products:", error);
-//     throw error;
-//   }
-// };
-export const fetchbestDemand = async ([_, userId]) => {
+export const fetchbestDemand = async ([_unused, userId]) => {
   const response = await api.get('/bestSales/', { params: { user_id: userId } });
   return response.data;
 };
-export const fetchSales = async ([_, userId]) => {
+
+export const fetchSales = async ([_unused, userId]) => {
   const response = await api.get('/get_monthly_sales/', { params: { user_id: userId } });
   return response.data;
 };
-
 
 
 

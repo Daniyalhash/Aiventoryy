@@ -2,9 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import {
-  PieChart,
-  Pie,
-  Cell,
+ 
   Tooltip,
   BarChart,
   Bar,
@@ -14,8 +12,29 @@ import {
   LineChart,
   Line,
 } from "recharts";
+
 import "@/styles/visualGroupInventory.css"; // Import CSS styles
 
+interface VendorReliability {
+  vendor: string;
+  reliability_score: number;
+}
+
+interface VendorDelivery {
+  vendor: string;
+  delivery_time: number;
+}
+
+interface VisualData {
+  top_reliability_vendors: VendorReliability[];
+  top_delivery_vendors: VendorDelivery[];
+}
+
+interface ChartData {
+  vendor: string;
+  reliability?: number;
+  time?: number;
+}
 const VendorManagementAnalysis = () => {
   const [visualData, setVisualData] = useState<any>(null);
   const [reliabilityScores, setReliabilityScores] = useState<any[]>([]);
@@ -27,41 +46,45 @@ const VendorManagementAnalysis = () => {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    // Fetching the visual data from the backend
-    axios
-      .get(`http://127.0.0.1:8000/aiventory/get-vendor-visuals/?user_id=${userId}`, {
-        signal,
-      })
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<{ data: VisualData }>(
+          `http://127.0.0.1:8000/aiventory/get-vendor-visuals/?user_id=${userId}`,
+          { signal }
+        );
+
         setVisualData(response.data);
-        console.log("vendor analysis",response.data)
-        // Extracting reliability scores and delivery times
-    // Safely extract reliability scores and delivery times
-    // Safely extract reliability scores and delivery times
-    const reliability = (response.data.top_reliability_vendors || []).map((vendor) => ({
-      vendor: vendor.vendor, // Vendor name
-      reliability: vendor.reliability_score, // Reliability score
-    }));
-    setReliabilityScores(reliability);
-    console.log("Reliability Data:", reliability);
 
-    const delivery = (response.data.top_delivery_vendors || []).map((vendor) => ({
-      vendor: vendor.vendor, // Vendor name
-      time: vendor.delivery_time, // Delivery time
-    }));
-    setDeliveryTime(delivery);
-    console.log("Delivery Data:", delivery);
-      })
-      .catch((error) => {
+        const reliability = (response.data.top_reliability_vendors || []).map((vendor) => ({
+          vendor: vendor.vendor,
+          reliability: vendor.reliability_score,
+        }));
+        setReliabilityScores(reliability);
+
+        const delivery = (response.data.top_delivery_vendors || []).map((vendor) => ({
+          vendor: vendor.vendor,
+          time: vendor.delivery_time,
+        }));
+        setDeliveryTime(delivery);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError(error.response?.data?.message || "Failed to fetch data");
+        } else {
+          setError("An unexpected error occurred");
+        }
         console.error("Error fetching visual data:", error);
-        setError("Failed to fetch data");
-      });
+      }
+    };
 
-    // Cleanup function to abort the request if the component unmounts
+    if (userId) {
+      fetchData();
+    }
+
     return () => {
       controller.abort();
     };
   }, [userId]);
+
 
   if (error) {
     return <p className="error">{error}</p>;
@@ -71,7 +94,6 @@ const VendorManagementAnalysis = () => {
     return <p>Loading visuals...</p>; // Simple loading message
   }
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
     <div className="vendor-management-container">

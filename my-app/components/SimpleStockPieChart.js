@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import React from "react";
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { motion } from "framer-motion";
 import '@/styles/simplePie.css'
 import useSWR from 'swr';
 import { fetchStockData } from '@/utils/api';
-const SimpleStockPieChart = ({ data, isDefaultData }) => {
+const SimpleStockPieChart = ({  isDefaultData }) => {
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
   console.log("User ID from localStorage:", userId);
  // Fetch stock data using SWR
- const { data: benchmarks, error } = useSWR(
+ const { data: benchmarks } = useSWR(
   userId ? ['get-stock-levels', userId] : null, 
   () => fetchStockData(userId), 
   {

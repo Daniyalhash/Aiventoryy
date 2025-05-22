@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "@/styles/showCSVData.css";
-import axios from "axios";
 
+// Define interface for dataset items
+interface DatasetItem {
+  [key: string]: string | number | null;
+}
 const ShowCSVData = ({ dataset }: { dataset: any[] }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [message, setMessage] = useState("");
@@ -34,7 +37,7 @@ const ShowCSVData = ({ dataset }: { dataset: any[] }) => {
       <div className="empty-state">
         <div className="empty-icon">📊</div>
         <h3>No Data Available</h3>
-        <p>We couldn't find any data to display.</p>
+        <p>We couldn&apos;t find any data to display.</p>
         <button 
           className="retry-button"
           onClick={() => window.location.reload()}
