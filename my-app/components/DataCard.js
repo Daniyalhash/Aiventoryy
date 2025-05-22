@@ -5,15 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faDatabase, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import '@/styles/UserProfileCard.css';
+
+
 const DataCard = ({ userId ,email}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
-console.log("getting email",email)
   const [isEditing, setIsEditing] = useState(false);
   //   const [tempUser, setTempUser] = useState({ ...user });
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState({ text: '', type: '' });
-  const router = useRouter();
+    const [message, setMessage] = useState({ text: '', type: '' }); // Optional: use in UI
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -21,11 +22,12 @@ console.log("getting email",email)
         const response = await axios.get(`http://127.0.0.1:8000/aiventory/get-user-details/`, {
           params: { user_id: userId }
         });
-        console.log(response.data);
+        console.log(message)
         setUserDetails(response.data);
       } catch (error) {
         console.error("Error fetching user details:", error);
         setMessage({ text: 'Failed to load user data', type: 'error' });
+
       } finally {
         setIsLoading(false);
       }
@@ -68,9 +70,8 @@ const handleConfirmReset = () => {
 
             disabled={isLoading}
           >
-            <FontAwesomeIcon icon={isEditing ? faTimes : faDatabase} />
-            {isEditing ? 'Cancel' : 'Upload Data'}
-          </button>
+            <FontAwesomeIcon icon={faDatabase} />
+   Upload Data          </button>
         </div>
       </div>
 

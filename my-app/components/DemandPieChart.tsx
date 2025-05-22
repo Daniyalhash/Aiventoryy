@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const PredictedDemandChart = ({ selectedRange, predictedValue, productName, category }) => {
+const PredictedDemandChart = ({ selectedRange, predictedValue}) => {
   // Example historical data (you can replace this with actual API data)
   const historicalData = [
     { date: '2023-04-01', sales: 50 },

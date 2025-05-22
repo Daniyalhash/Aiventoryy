@@ -87,6 +87,7 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }) => {
     let uploadTimeout = setTimeout(() => {
       xhr.abort();
       setMessage("Upload timed out. Please try again.");
+      
       setIsError(true)
       setIsUploading(false);
       setUploadProgress(0);
@@ -230,15 +231,15 @@ useEffect(() => {
           <div className="columnsList">
             <div className="columnDefinition">
               <div className="columnItem">
-                <p>                <strong>productname</strong>: Name of the product (e.g., "Organic Apples")
+                <p>                <strong>productname</strong>: Name of the product (e.g., Organic Apples)
                 </p>
               </div>
               <div className="columnItem">
-                <p>                <strong>category</strong>: Main category (e.g., "Fruits", "Vegetables")
+                <p>                <strong>category</strong>: Main category (e.g., Fruits, Vegetables)
                 </p>
               </div>
               <div className="columnItem">
-                <p>                <strong>subcategory</strong>: Specific type (e.g., "Apples", "Leafy Greens")
+                <p>                <strong>subcategory</strong>: Specific type (e.g., Apples, Leafy Greens)
                 </p>
               </div>
               <div className="columnItem">
