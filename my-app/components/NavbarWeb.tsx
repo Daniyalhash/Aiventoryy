@@ -4,39 +4,37 @@
 import Link from 'next/link';
 import { useEffect, useState } from "react";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faClipboardList, faUsers, faCogs } from '@fortawesome/free-solid-svg-icons';
-import '../src/styles/NavbarWeb.css';
-// import ProfileButton2 from '@/components/ProfileButton2';
-// import { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+
+import '@/styles/NavbarWeb.css';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import MainSiteProfileButton from './MainSiteProfileButton';
 // npm install next-auth
 import { useUser } from "@/components/UserContext"; // adjust the path as needed
-const scrollToSection = (id) => {
-  const section = document.querySelector(id);
+const scrollToSection = (sectionId: string): void => {
+  const section = document.querySelector(sectionId);
   if (section) {
     section.scrollIntoView({ behavior: 'smooth' });
   }
 };
+interface ParsedUser {
+  id?: string;
+  userId?: string;
+}
 const NavbarWeb = () => {
-  const pathname = usePathname();
   const { user } = useUser();
-  const [storedUser, setStoredUser] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [isClient, setIsClient] = useState(false); 
+  const [storedUser, setStoredUser] = useState<ParsedUser | null>(null);
+ 
   const isLoggedIn = !!user;
 
   console.log("user currentlu", storedUser)
-useEffect(() => {
-    setIsClient(true);
-
+  useEffect(() => {
+   
     const userFromStorage = localStorage.getItem("user");
     if (userFromStorage) {
       try {
         const parsedUser = JSON.parse(userFromStorage);
         setStoredUser(parsedUser);
-        setUserId(parsedUser.id || parsedUser.userId || "N/A");
         console.log("User from localStorage:", parsedUser);
       } catch (e) {
         console.error("Invalid user JSON in localStorage:", e);
@@ -52,7 +50,20 @@ useEffect(() => {
     <nav className="navbarWeb">
       <div className="logoWeb">
         <Link href="/">
-          <img src="/images/logoPro3.png" alt="Logo" className="logImgWeb" />
+          <Image 
+          src="/images/logoPro3.png"
+           alt="Logo"
+            className="logImgWeb"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          priority
+            
+            />
         </Link>
       </div>
       <div className="menuWeb">
@@ -62,21 +73,7 @@ useEffect(() => {
         <a className="item" onClick={() => scrollToSection("#pricing-section")}>Pricing</a>
         <a className="item" onClick={() => scrollToSection("#testimonials-section")}>Testimonials</a>
 
-        {/* <Link className='item' href="#product-section">
-          Product
-        </Link> */}
-        {/* <Link className='item' href="#solution-section">
-          Solution
-        </Link>
-        <Link className='item'href="#features-section">
-          Features
-        </Link>
-        <Link className='item'href="#pricing-section">
-          Pricing
-        </Link>
-        <Link className='item'href="#testimonials-section">
-          Testimonials
-        </Link> */}
+     
       </div>
       <div className="authButtons">
         {isLoggedIn ? (

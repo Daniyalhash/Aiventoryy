@@ -11,7 +11,7 @@ import {
   Area
 } from 'recharts';
 
-const PredictedDemandChart = ({ selectedRange, predictedValue, productName, category }) => {
+const PredictedDemandChart = ({ selectedRange, predictedValue}) => {
   // Function to generate random daily demand data based on predicted value
   const generateMonthlyData = (totalDemand) => {
     if (!totalDemand) return [];
