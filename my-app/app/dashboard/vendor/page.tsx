@@ -30,8 +30,8 @@ export default function Vendor() {
  
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [vendors, setVendors] = useState<any[]>([]); // To store the product data
-  const [stats, setStats] = useState<any>(null); // Store stats from response2
+const [vendors, setVendors] = useState<Vendor[]>([]);
+const [stats, setStats] = useState<VendorStats | null>(null);
 
 
 
