@@ -5,7 +5,14 @@ import Link from 'next/link';
 import { fetchTotalProducts } from '@/utils/api'; // Import API function
 import '../src/styles/dashboardCard6.css';
 
-const Cards4 = ({
+interface Cards4Props {
+  predictedValue: number | null;
+  sellingPirce: number | null;
+  last_month_sales: number | null;
+  selectedMonth: string;
+}
+
+const Cards4: React.FC<Cards4Props> = ({
   predictedValue,
   sellingPirce,
   last_month_sales,

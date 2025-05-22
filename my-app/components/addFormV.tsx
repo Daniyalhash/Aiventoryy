@@ -71,7 +71,7 @@ const SimpleForm = () => {
     last_updated: generateCurrentDateTime(),
   });
   const [message, setMessage] = useState<string | null>(null);
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormFields((prev) => ({
       ...prev,
@@ -79,7 +79,7 @@ const SimpleForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {

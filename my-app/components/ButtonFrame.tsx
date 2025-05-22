@@ -24,14 +24,19 @@ const  ButtonFrame = () => {
   // fetching just categories using SWR
 
 
-  const [popupConfig, setPopupConfig] = useState({
+  const [popupConfig, setPopupConfig] = useState<{
+    isOpen: boolean;
+    head: string;
+    title: string;
+    content: React.ReactNode | null;
+  }>({
     isOpen: false,
     head: '', // Main heading
     title: '', // Subheading
     content: null, // Dynamic content
   });
   // Function to open the popup
-  const openPopup = (head, title, content) => {
+  const openPopup = (head: string, title: string, content: React.ReactNode) => {
     setPopupConfig({
       isOpen: true,
       head,

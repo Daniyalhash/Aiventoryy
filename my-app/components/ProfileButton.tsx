@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback,useRef } from "react";
+import React, { useState, useEffect,useRef,useCallback  } from "react";
 import axios from "axios";
 import '@/styles/profileButton.css';
 import Link from 'next/link';
@@ -15,16 +15,22 @@ interface Notification {
 }
 import FeatureGuide from '@/components/FeatureGuide';
 import { useUser } from "./UserContext";
+
 const ProfileButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isArrowUp, setIsArrowUp] = useState(false);
-  const dropdownRef = useRef(null);
-  const profileButtonRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const profileButtonRef = useRef<HTMLDivElement>(null);
   const { user, setUser } = useUser();
+    const [userId, setUserId] = useState<string | null>(null);
+
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const userId = localStorage.getItem("userId"); // Get userId from localStorage
-  // Get first letter of username
+  useEffect(() => {
+    // Only access localStorage on client side
+    const storedUserId = window.localStorage.getItem("userId");
+    setUserId(storedUserId);
+  }, []);  // Get first letter of username
   const [showFeatureGuide, setShowFeatureGuide] = useState(false);
   // Get display username with fallbacks
   // const displayName = user?.username || "Anonymous";
@@ -45,8 +51,7 @@ const ProfileButton = () => {
 
 
   // Fetch user data when the component mounts or when userId changes
-  const fetchUserData = useCallback(async () => {
-
+ const fetchUserData = useCallback(async () => {
     try {
       if (userId) {
         console.log(`Fetching data for userId: ${userId}`);
@@ -58,14 +63,14 @@ const ProfileButton = () => {
     } catch (error) {
       console.error("Error fetching user details:", error.response?.data?.error || error.message);
     }
-}, [setUser, userId]);
+  }, [setUser, userId]);
  // Expose refresh function
-useEffect(() => {
-    window.updateNavbarUser = fetchUserData;
-    return () => {
-      window.updateNavbarUser = null;
-    };
-  }, [fetchUserData]);
+// useEffect(() => {
+//     window.updateNavbarUser = fetchUserData;
+//     return () => {
+//       window.updateNavbarUser = null;
+//     };
+//   }, [fetchUserData]);
 
 // Initial data fetch
   useEffect(() => {
@@ -74,12 +79,12 @@ useEffect(() => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
+        !dropdownRef.current.contains(event.target as Node) &&
         profileButtonRef.current &&
-        !profileButtonRef.current.contains(event.target)
+        !profileButtonRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
         setIsArrowUp(false);
@@ -154,6 +159,7 @@ useEffect(() => {
     // localStorage.removeItem("authToken");
     // localStorage.removeItem("userId");
     // setUser(null); 
+      // window.localStorage.removeItem("userId");
 
     window.location.href = "/";
   };

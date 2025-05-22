@@ -18,7 +18,7 @@ export default function DashboardPage() {
     // Check if user just signed up (using sessionStorage)
     const justSignedUp = typeof window !== 'undefined' 
       ? sessionStorage.getItem('justSignedUp') 
-      : null;
+      : null
     
     // Get username from localStorage
     const storedUsername = typeof window !== 'undefined' 

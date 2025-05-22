@@ -34,7 +34,11 @@ const AddFormP = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [categories, setCategories] = useState([]);
   const [isError, setIsError] = useState(false);
-  const [vendors, setVendors] = useState([]);
+  interface Vendor {
+    vendor_id: string;
+    vendor: string;
+  }
+  const [vendors, setVendors] = useState<Vendor[]>([]);
   const { data: categoryData } = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
@@ -145,7 +149,7 @@ const AddFormP = () => {
 
   const [message, setMessage] = useState<string | null>(null);
   // const [error, setError] = useState(null);
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormFields((prev) => ({
       ...prev,
@@ -153,7 +157,7 @@ const AddFormP = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {

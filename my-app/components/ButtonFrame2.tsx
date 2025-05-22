@@ -4,7 +4,7 @@ import React, { useState,useRef } from 'react';
 import Button from "@/components/Button";
 import {
   faPlus,  faMagnifyingGlass,
- faTrashAlt,
+  faTrashAlt,
   faRotate
 } from "@fortawesome/free-solid-svg-icons"; import '@/styles/buttonFrame.css';
 import Popup from '@/components/Popup'; // Import the Popup component
@@ -22,14 +22,19 @@ const ButtonFrame2 = () => {
   });
   // Debugging: See updates in real-time
 
-  const [popupConfig, setPopupConfig] = useState({
+  const [popupConfig, setPopupConfig] = useState<{
+    isOpen: boolean;
+    head: string;
+    title: string;
+    content: React.ReactNode | null;
+  }>({
     isOpen: false,
     head: '', // Main heading
     title: '', // Subheading
     content: null, // Dynamic content
   });
   // Function to open the popup
-  const openPopup = (head, title, content) => {
+  const openPopup = (head: string, title: string, content: React.ReactNode) => {
     setPopupConfig({
       isOpen: true,
       head,
@@ -50,7 +55,7 @@ const ButtonFrame2 = () => {
   // Handle Input Change
 
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent default form submission
 
    // Get all form values from refs
