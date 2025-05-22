@@ -13,15 +13,12 @@ interface ActivityLog {
   id: string;
   action: string;
   timestamp: string;
-  entity_type: string;
-  entity_id?: string;
   details: {
     vendorName?: string;
     productName?: string;
     quantity?: number;
     status?: string;
   };
-  metadata?: Record<string, any>;
 }
 const ActivityVendor: React.FC = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
@@ -58,7 +55,7 @@ const ActivityVendor: React.FC = () => {
 
       {logs.map((log) => (
         <div
-          key={log.id}
+          key={log._id}
           style={{
             borderLeft: "3px solid #4caf50",
             paddingLeft: 15,
