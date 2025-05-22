@@ -11,11 +11,16 @@ import "@/styles/futurePage.css";
 import ButtonFrame3 from '@/components/ButtonFrame3';
 import axios from 'axios';
 import { AxiosError } from 'axios';  // Add this import at the top
+interface Product {
+  id: string;
+  name: string;
+  // add other product properties as needed
+}
 
 export default function Future() {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [predictedValue, setPredictedValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [predictionError] = useState<string | null>(null);
@@ -23,7 +28,7 @@ export default function Future() {
   const [sellingPrice, setsellingPrice] = useState(null);
   const [last_month_sales, setlast_month_sales] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedGranularity, setSelectedGranularity] = useState(null);
+  const [selectedGranularity, setSelectedGranularity] = useState<string | null>(null);
   const [historicalData, setHistoricalData] = useState("daily");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -114,11 +119,11 @@ export default function Future() {
 
       <FutureOver />
 
-      <ButtonFrame3
-        onProductSelect={(product) => setSelectedProduct(product)}
-        onCategorySelect={(category) => setSelectedCategory(category)}
-        onMonthSelect={(selectedMonth) => setSelectedMonth(selectedMonth)}
-        onGranularitySelect={(selectedGranularity) => setSelectedGranularity(selectedGranularity)}
+     <ButtonFrame3
+        onProductSelect={(product: string) => setSelectedProduct(product)}
+        onCategorySelect={(category: string) => setSelectedCategory(category)}
+        onMonthSelect={(selectedMonth: string) => setSelectedMonth(selectedMonth)}
+        onGranularitySelect={(selectedGranularity: string) => setSelectedGranularity(selectedGranularity)}
         onPredict={handlePredict}
         selectedProduct={selectedProduct}
         selectedCategory={selectedCategory}
