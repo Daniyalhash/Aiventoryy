@@ -4,7 +4,7 @@ import axios from 'axios';
 import UserAvatar from "@/components/UserAvatar"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
-import '@/Styles/UserProfileCard.css'
+import '@/styles/UserProfileCard.css'
 import { useUser } from './UserContext';
 // Email validation function
 const validateEmail = (email) => {
