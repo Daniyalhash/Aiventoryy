@@ -1,5 +1,4 @@
 import Navbar from '../../components/Navbar';
-import SectionB from '../../components/DashboardOver';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 

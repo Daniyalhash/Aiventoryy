@@ -8,106 +8,118 @@ const ActivityProduct = () => {
   const [isError, setIsError] = useState(false);
 
   const fetchLogs = async () => {
-  if (!userId) {
-    setMessage("User ID not found. Please log in.");
-    setIsError(true);
-    return;
-  }
-  try {
-    const response = await axios.get("http://localhost:8000/aiventory/get_logs/", {
-      params: { user_id: userId, entity_type: "product" }
-    });
-
-    const data = response.data.logs || [];
-    console.log(data)
-    if (data.length > 0) {
-      setLogs(data);
-      setMessage(`${data.length} log(s) retrieved.`);
-      setIsError(false);
-    } else {
-      setLogs([]);
-      setMessage("No logs found for this user.");
+    if (!userId) {
+      setMessage("User ID not found. Please log in.");
       setIsError(true);
+      return;
     }
-  } catch (error) {
-    const errorMsg = error.response?.data?.error || error.message || "Failed to fetch logs.";
-    setMessage(errorMsg);
-    setIsError(true);
-    setLogs([]);
-    console.error("Fetch Logs Error:", errorMsg);
-  }
-};
+    try {
+      const response = await axios.get("http://localhost:8000/aiventory/get_logs/", {
+        params: { user_id: userId, entity_type: "product" }
+      });
 
-useEffect(() => {
-  fetchLogs();
-}, [userId]);
+      const data = response.data.logs || [];
+      console.log(data)
+      if (data.length > 0) {
+        setLogs(data);
+        setMessage(`${data.length} log(s) retrieved.`);
+        setIsError(false);
+      } else {
+        setLogs([]);
+        setMessage("No logs found for this user.");
+        setIsError(true);
+      }
+    } catch (error) {
+      let errorMsg = "Failed to fetch logs.";
+      if (typeof error === "object" && error !== null) {
+        if ("response" in error && typeof (error as any).response?.data?.error === "string") {
+          errorMsg = (error as any).response.data.error;
+        } else if ("message" in error && typeof (error as any).message === "string") {
+          errorMsg = (error as any).message;
+        }
+      }
+      setMessage(errorMsg);
+      setIsError(true);
+      setLogs([]);
+      console.error("Fetch Logs Error:", errorMsg);
+    }
+  };
+
+  useEffect(() => {
+    fetchLogs();
+  }, [userId]);
 
   return (
     <div className="search-form-container">
-     
-<div style={{ maxWidth: 600, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
-      {logs.length === 0 && <p>No logs to show.</p>}
-
-      {logs.map((log) => (
-        <div
-          key={log._id}
-          style={{
-            borderLeft: "3px solid #4caf50",
-            paddingLeft: 15,
-            marginBottom: 20,
-            position: "relative",
-          }}
-        >
-          {/* Circle marker */}
-          <div
-            style={{
-              width: 12,
-              height: 12,
-              borderRadius: "50%",
-              backgroundColor: "#4caf50",
-              position: "absolute",
-              left: -8,
-              top: 5,
-            }}
-          ></div>
-
-          <div style={{ color: "#666", fontSize: 14, marginBottom: 5 }}>
-            {log.timestamp}
-          </div>
-
-          <div style={{ fontWeight: "bold", fontSize: 16, color: "#333" }}>
-            {log.entity_type.charAt(0).toUpperCase() + log.entity_type.slice(1)}{" "}
-            &nbsp;
-            <span style={{ color: "#888", fontWeight: "normal" }}>
-              → {log.action.charAt(0).toUpperCase() + log.action.slice(1)}
-            </span>
-            &nbsp;
-  <span style={{ color: "#888", fontWeight: "normal" }}>
-    → {log.entity_id ? log.entity_id.charAt(0).toUpperCase() + log.entity_id.slice(1) : "N/A"}
-  </span>
-            
-          </div>
-
-          {/* Optional metadata preview */}
-          {log.metadata && Object.keys(log.metadata).length > 0 && (
-            <pre
-              style={{
-                backgroundColor: "#f5f5f5",
-                padding: 8,
-                borderRadius: 4,
-                marginTop: 6,
-                fontSize: 13,
-                overflowX: "auto",
-              }}
-            >
-              {JSON.stringify(log.metadata, null, 2)}
-            </pre>
-          )}
+     <div className={`messageContainer ${message ? 'show' : ''} ${isError ? 'error' : 'success'}`}>
+        <div className="message-content">
+          <span className="close-icon" onClick={() => setMessage("")}>✖</span>
+          {message}
         </div>
-      ))}
-    </div>
- 
-      
+      </div>
+      <div style={{ maxWidth: 600, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
+        {logs.length === 0 && <p>No logs to show.</p>}
+
+        {logs.map((log) => (
+          <div
+            key={log._id}
+            style={{
+              borderLeft: "3px solid #4caf50",
+              paddingLeft: 15,
+              marginBottom: 20,
+              position: "relative",
+            }}
+          >
+            {/* Circle marker */}
+            <div
+              style={{
+                width: 12,
+                height: 12,
+                borderRadius: "50%",
+                backgroundColor: "#4caf50",
+                position: "absolute",
+                left: -8,
+                top: 5,
+              }}
+            ></div>
+
+            <div style={{ color: "#666", fontSize: 14, marginBottom: 5 }}>
+              {log.timestamp}
+            </div>
+
+            <div style={{ fontWeight: "bold", fontSize: 16, color: "#333" }}>
+              {log.entity_type.charAt(0).toUpperCase() + log.entity_type.slice(1)}{" "}
+              &nbsp;
+              <span style={{ color: "#888", fontWeight: "normal" }}>
+                → {log.action.charAt(0).toUpperCase() + log.action.slice(1)}
+              </span>
+              &nbsp;
+              <span style={{ color: "#888", fontWeight: "normal" }}>
+                → {log.entity_id ? log.entity_id.charAt(0).toUpperCase() + log.entity_id.slice(1) : "N/A"}
+              </span>
+
+            </div>
+
+            {/* Optional metadata preview */}
+            {log.metadata && Object.keys(log.metadata).length > 0 && (
+              <pre
+                style={{
+                  backgroundColor: "#f5f5f5",
+                  padding: 8,
+                  borderRadius: 4,
+                  marginTop: 6,
+                  fontSize: 13,
+                  overflowX: "auto",
+                }}
+              >
+                {JSON.stringify(log.metadata, null, 2)}
+              </pre>
+            )}
+          </div>
+        ))}
+      </div>
+
+
     </div>
   );
 };

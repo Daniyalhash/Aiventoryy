@@ -6,7 +6,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import '@/styles/LoginPage.css';
 import { useRouter } from 'next/navigation';
-
+interface ResetPasswordResponse {
+  message: string;
+  status: number;
+}
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -32,7 +35,7 @@ const ResetPasswordPage = () => {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/aiventory/reset-password/', {
+      const response = await axios.post<ResetPasswordResponse>('http://127.0.0.1:8000/aiventory/reset-password/', {
         token,
         newPassword: password,
       });
@@ -45,8 +48,10 @@ const ResetPasswordPage = () => {
         }, 2000);
       }
     } catch (err) {
-      setMessage('Failed to reset password. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to reset password. Please try again.';
+      setMessage(errorMessage);
       setIsError(true);
+      console.error('Reset password error:', err);
     }
   };
 
@@ -55,7 +60,11 @@ const ResetPasswordPage = () => {
       <div className="loginLeft">
         <div className="logocontainer">
           <div className="logo">
-            <img src="/images/logoPro.png" alt="Logo" className="logImg" hidden />
+            <Image 
+            src="/images/logoPro.png"
+             alt="Logo"
+              className="logImg"
+               hidden />
           </div>
         </div>
 

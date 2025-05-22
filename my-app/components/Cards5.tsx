@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import DashboardCard6 from '@/components/DashboardCard6';
-import DemandChart from '@/components/DemandPieChart'; // Assuming you corrected the import
+import React,  from 'react';
+
 import '../src/styles/dashboardCard6.css';
 
 

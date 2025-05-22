@@ -4,12 +4,11 @@ import axios from 'axios';
 
 import '@/styles/buttonFrame.css';
 import { fetchCategories, fetchAvailableMonths } from "@/utils/api";
-import { fetchProductsByCategory } from "@/utils/api";
 
 import React, { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faPlus,faBoxOpen, faFilter, faCalendarAlt, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faPlus, faBoxOpen, faFilter, faCalendarAlt, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
 
 const ButtonFrame3 = ({
   onProductSelect,
@@ -19,7 +18,6 @@ const ButtonFrame3 = ({
   onMonthSelect,
   onGranularitySelect, // Add this prop
 }) => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [isMonthDropdownOpen, setMonthDropdownOpen] = useState(false);
   const [selectedGranularity, setSelectedGranularity] = useState("month");
@@ -29,25 +27,23 @@ const ButtonFrame3 = ({
   const [availableMonths, setAvailableMonths] = useState([]);
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [suggestedProducts, setSuggestedProducts] = useState([]);
-  const [isProductSelected, setIsProductSelected] = useState(false); // Add state for product selection
   const [selectedProduct, setSelectedProduct] = useState(null); // Added this line
 
 
-  const [predictionResult, setPredictionResult] = useState(null); // Track prediction result
   const [isPredicting, setIsPredicting] = useState(false); // Track prediction status
-  const [loading, setLoading] = useState(false); // Track loading state
+
 
 
 
   // Fetch categories using SWR
-  const { data: categoryData, error: categoryError } = useSWR(
+  const { data: categoryData } = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
     { revalidateOnFocus: false }
   );
 
   // Fetch last recorded sales month using SWR
-  const { data: lastSalesData, error: lastSalesError } = useSWR(
+  const { data: lastSalesData } = useSWR(
     userId ? ["last-sales-month", userId] : null,
     () => fetchAvailableMonths(userId),
     { revalidateOnFocus: false }
@@ -70,8 +66,8 @@ const ButtonFrame3 = ({
 
   const {
     data: productsData,
-    error: productsError,
-    isLoading: productsLoading
+
+
   } = useSWR(
     selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
     async ([_, userId, category]) => {
@@ -117,7 +113,6 @@ const ButtonFrame3 = ({
     if (!productInput || !selectedCategory || !selectedMonth) return;
 
     // Clear previous prediction result
-    setPredictionResult(null);
 
     // Disable the button and show loading state
     setIsPredicting(true);
@@ -127,7 +122,6 @@ const ButtonFrame3 = ({
       const result = await onPredict(productInput, selectedCategory, selectedMonth, selectedGranularity);
 
       // Store the prediction result
-      setPredictionResult(result);
     } catch (error) {
       console.error("Prediction failed:", error);
     } finally {
@@ -137,9 +131,7 @@ const ButtonFrame3 = ({
   };
   // Handle category selection
   const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
     setProductInput(""); // Reset product input when category changes
-    setIsProductSelected(false);
     onCategorySelect(category);
     setCategoryDropdownOpen(false);
   };
@@ -148,7 +140,6 @@ const ButtonFrame3 = ({
     setProductInput(product.productname); // Show name in input
     onProductSelect(product.productname); // Inform parent
     setSelectedProduct(product);
-    setIsProductSelected(true);
   };
 
   console.log("selectedMonth", selectedMonth)
@@ -160,7 +151,7 @@ const ButtonFrame3 = ({
       {/* Category Dropdown */}
       <div className="buttonUpper">
         <div className="dropdown-wrapper">
-          
+
           <Button
             text={
               <div className="dropdown-button-content">
@@ -170,7 +161,7 @@ const ButtonFrame3 = ({
             }
             icon={faFilter}
             onClick={() => setCategoryDropdownOpen(!isCategoryDropdownOpen)}
-            isDropdown={true}
+
           />
           {isCategoryDropdownOpen && (
             <div className="dropdown-menu category-dropdown">
@@ -221,7 +212,7 @@ const ButtonFrame3 = ({
             placeholder="Enter product name"
             className="product-input-field"
           />
-          
+
         </div>
         {/* Granularity Selection (Radio Buttons) */}
         <div className="granularity-container">
@@ -297,7 +288,7 @@ const ButtonFrame3 = ({
         />
       </div>
       <div className="buttonDowner">
-        {loading ? (
+        {productsData === undefined ? (
           <div className="loading-state">
             <div className="loading-dots">
               <div className="dot"></div>
@@ -330,14 +321,20 @@ const ButtonFrame3 = ({
                   </div>
                 ))
               ) : (
-               <div className="empty-state">
-        <FontAwesomeIcon icon={faBoxOpen} className="empty-icon" />
-        <p className="empty-message">
-          {productInput 
-            ? `No products found for "${productInput}"`
-            : `Product Suggestions will show here`}
-        </p>
-      </div>
+                <div className="empty-state">
+                  <FontAwesomeIcon icon={faBoxOpen} className="empty-icon" />
+                  <p className="empty-message">
+                     {!selectedCategory 
+        ? "Please select a category to view products"
+        : productInput 
+          ? `No products found matching "${productInput}" in ${selectedCategory}`
+          : `No products available in ${selectedCategory}. Try selecting a different category.`
+      }
+                  </p>
+                   <p className="empty-submessage">
+      {selectedCategory && "You can also try searching with a different keyword"}
+    </p>
+                </div>
               )}
 
             </div>

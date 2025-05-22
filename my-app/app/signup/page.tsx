@@ -3,26 +3,18 @@ import UserCredentials from '@/components/UserCredentials';
 import DatasetUpload from '@/components/DatasetUpload';
 import DashboardButton from '@/components/DashboardButton';
 import '@/styles/SignupPage.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+
 import Link from "next/link";
 import Image from 'next/image';
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
-import {
-  faUser,
-  faChevronLeft,
-  faEdit,
-  faCamera,
-  faSave,
-} from "@fortawesome/free-solid-svg-icons";
+
 const SignupPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const userIdFromUrl = searchParams.get("userId");
   const emailFromUrl = searchParams.get("email");
-  // Determine initial step from URL query parameters
   const initialStep = searchParams.get("step") ? parseInt(searchParams.get("step"), 10) : 1;
   const [step, setStep] = useState(initialStep);
   const [formData, setFormData] = useState({ email: "" });

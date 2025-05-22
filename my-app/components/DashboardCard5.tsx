@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import '../src/styles/customCard2.css';
 
 export default function DashboardCard5({main, subTitle,value,value2,guidance, description, link,description2,percentage, bgColor }) {

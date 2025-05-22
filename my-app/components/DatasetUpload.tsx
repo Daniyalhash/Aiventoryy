@@ -1,7 +1,7 @@
 import '@/styles/SignupPage.css';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {  faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const DatasetUpload = ({ userId, emailId, onUploadComplete }) => {

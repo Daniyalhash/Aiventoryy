@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import '../src/styles/dashboardCard11.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faTrash, faChartLine,faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine,faSearch } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import {
   Chart,

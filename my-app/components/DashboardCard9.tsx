@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 import '../src/styles/dashboardCard9.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faTrash } from '@fortawesome/free-solid-svg-icons';

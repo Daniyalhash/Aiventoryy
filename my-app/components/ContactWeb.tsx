@@ -1,5 +1,6 @@
 import React from "react";
 import "@/styles/Contact.css";
+import Image from 'next/image';
 
 const Contact = () => {
   return (
@@ -20,7 +21,9 @@ const Contact = () => {
       </div>
 
       <div className="contact-right">
-        <img src="/images/telephone.png" alt="Contact" className="contact-image" />
+        
+  
+        <Image src="/images/telephone.png" alt="Contact" className="contact-image" />
         <div className="contact-info">
           <div className="info-box">
             <span className="info-icon">📧</span>

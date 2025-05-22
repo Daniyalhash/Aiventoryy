@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 import '../src/styles/dashboardCard9.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
-import { fetchCategories, fetchProductsByCategory } from "@/utils/api";
+import { fetchCategories } from "@/utils/api";
 import useSWR from 'swr';
 
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 
 
 
 const DashboardCard10 = ({ title, link, subTitle }) => {
-  const [action, setAction] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [visibleCount, setVisibleCount] = useState(10);
 
@@ -21,16 +16,14 @@ const DashboardCard10 = ({ title, link, subTitle }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredPredictions, setFilteredPredictions] = useState<Prediction[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("Toothpaste");
-  const [products, setProducts] = useState<any[]>([]);
   const [predictions, setPredictions] = useState<any[]>([]);
   const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
 
-  const [stats, setStats] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
 
-  const { data: categoryData, error: swrError, isLoading } = useSWR(
+  const { data: categoryData } = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
     {
@@ -142,7 +135,7 @@ const DashboardCard10 = ({ title, link, subTitle }) => {
 }
 
 // Use inside component:
-const debouncedSearchTerm = useDebounce(searchTerm, 300);
+// const debouncedSearchTerm = useDebounce(searchTerm, 300);
   return (
     <div className="card9">
       {message && (
@@ -199,7 +192,7 @@ const debouncedSearchTerm = useDebounce(searchTerm, 300);
       <div className="tableWrapper9">
        {loading ? (
     <div className="centered-message">
-      <div className="loading-spinner">Loading...</div>
+      <div className="loading-spinner"></div>
     </div>
   ) : error ? (
     <div className="centered-message">

@@ -1,18 +1,13 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from "react";
 import Button from "@/components/Button";
 import {
-  faPlus, faTrash, faEdit, faMagnifyingGlass,
-  faArrowDownAZ,
-  faDownload,
-  faFileImport, faFilter, faTrashAlt,
+  faPlus, faMagnifyingGlass,
+   faTrashAlt,
   faRotate,
   faFileExport
 } from "@fortawesome/free-solid-svg-icons";
 import '@/styles/buttonFrame2.css';
 import Popup from '@/components/Popup'; // Import the Popup component
-import { fetchCategories, fetchProductsByCategory } from "@/utils/api";
-import useSWR from 'swr';
 import SimpleForm from "./addFormV";
 import DelForm from "./DelFormV";
 import UpdateForm from "./UpdateFormV";
@@ -21,12 +16,10 @@ import ExportVendorFile from "./ExportVendorFile";
 import ActivityVendor from "./ActivityVendor";
 
 const  ButtonFrame = () => {
-  const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
 
 
 
 //
-const [vendorName, setVendorName] = useState("");
 
   // fetching just categories using SWR
 

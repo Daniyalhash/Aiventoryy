@@ -1,6 +1,5 @@
 "use client";
 // app/dashboard/page.tsx
-import DashboardCard from '@/components/DashboardCard';
 import SectionHeading from '@/components/DashboardOver';
 import Cards from '@/components/Cards';
 import Cards2 from '@/components/Cards2';  // This is correct import, remove duplicate
@@ -49,8 +48,7 @@ export default function DashboardPage() {
         <div className="welcome-message">
           <div className="welcome-content">
             <div className="welcome-icon">👋</div>
-            {/* <h2>Welcome{username ? `, ${username}` : ''}!</h2> */}
-            <h2>Welcome</h2>
+            <h2>Welcome{username ? `, ${username}` : ''}!</h2>
             {/* <p>Your dashboard is ready</p> */}
           </div>
         </div>

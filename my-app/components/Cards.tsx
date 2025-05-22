@@ -1,97 +1,4 @@
-// import React, { useState } from 'react';
-// import DashboardCard3 from '@/components/DashboardCard3';
-// import Link from 'next/link';
-// import useSWR from 'swr';
-// import { fetchTotalProducts } from '@/utils/api'; // Import API function
 
-// const Cards = () => {
-//   // State for success/error messages
-//   const [message, setMessage] = useState("");
-//   const [isError, setIsError] = useState(false);
-
-//   // Retrieve userId from localStorage (only on client-side)
-//   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-
-//   // Use SWR for data fetching
-//   const { data, error } = useSWR(userId ? ['get-total-products', userId] : null, 
-//     () => fetchTotalProducts(userId!), 
-//     {
-//       revalidateOnFocus: false, // Prevents refetching when switching tabs
-//       shouldRetryOnError: false, // Avoids unnecessary retries on failure
-//     }
-//   );
-
-//   // Handle errors from SWR or API
-//   if (error) {
-//     let errorMessage = "An unexpected error occurred. Please try again later.";
-
-//     // Check if the error has a specific message from the API
-//     if (error.message) {
-//       errorMessage = error.message;
-//     }
-
- 
-//   }
-
-//   // Handle loading state
-//   if (!data) {
-//     return <p>Loading...</p>;
-//   }
-
-//   return (
-//     <div className="cardSection">
-//       {/* Success/Error Message Container */}
-//       <div className={`messageContainer ${message ? 'show' : 'hide'} ${isError ? 'error' : 'success'}`}>
-//         <div className="message-content">
-//           <span className="close-icon" onClick={() => setMessage("")}>✖</span>
-//           {message}
-//         </div>
-//       </div>
-
-//       {/* Dashboard Cards */}
-//       <DashboardCard3
-//         title="Automate Vendors"
-//         value={data.total_vendors || "N/A"}
-//         description="Vendors"
-//         link="/dashboard/vendor"
-//         bgColor="#9FE870"
-//         as={Link}
-//         href="/dashboard/vendors"
-//         // promotion='Top Vendor'
-//       >
-//         <span className="arrow right" />
-//       </DashboardCard3>
-
-//       <DashboardCard3
-//         title="Total Products"
-//         value={data.total_unique_products || "N/A"}
-//         description="Size of Inventory"
-//         link="/dashboard/inventory"
-//         bgColor="green-card"
-//         as={Link}
-//         arrow="right"
-//         // promotion='Top Vendor'
-//       >
-//         <span className="arrow right" />
-//       </DashboardCard3>
-
-//       <DashboardCard3
-//         title="Expiry Products"
-//         value={data.expired_products_list || "N/A"}
-//         description="Low stock product"
-//         link="/dashboard/inventory"
-//         bgColor="green-card"
-//         arrow="right"
-//         as={Link}
-//         // promotion='Top Vendor'
-//       >
-//         <span className="arrow right" />
-//       </DashboardCard3>
-//     </div>
-//   );
-// };
-
-// export default Cards;
 import React, { useState, useEffect } from 'react';
 import DashboardCard3 from '@/components/DashboardCard3';
 import Link from 'next/link';
@@ -125,18 +32,7 @@ const Cards = () => {
     userId ? ['bestSales', userId] : null,
     fetchbestDemand
   );
-  
-// const { data: bestData, error: bestError } = useSWR(
-//   userId ? ['bestSales', userId] : null,
-//   fetchbestDemand,
-//   {
-//     revalidateOnFocus: false,
-//     shouldRetryOnError: false,
-//     onErrorRetry: (error) => {
-//       if (error.status === 404 || error.status === 401) return;
-//     }
-//   }
-// );
+
   useEffect(() => {
     console.log("📦 bestData received from backend:", bestData); // ✅ Add this
 
