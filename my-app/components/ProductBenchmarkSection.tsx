@@ -33,7 +33,7 @@ export default function ProductBenchmarkSection() {
   const [isError, setIsError] = useState(false); // To differentiate between error and success
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-  const [isAnimating, setIsAnimating] = useState(false);
+const [isAnimating] = useState(false);
 
 
   // fetching just categories using SWR
@@ -81,7 +81,7 @@ export default function ProductBenchmarkSection() {
    
   } = useSWR(
     selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
-    async ([_, userId, category]) => {
+async ([, userId, category]) => {
       const response = await axios.get(
         'http://127.0.0.1:8000/aiventory/get-top-products-by-category/',
         { params: { user_id: userId, category } }

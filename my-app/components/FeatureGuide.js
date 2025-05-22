@@ -8,10 +8,10 @@ const FeatureGuide = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
   const overlayRef = useRef();
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsVisible(false);
     setTimeout(onClose, 300); // Match this with CSS transition duration
-  };
+  }, [onClose]);
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {

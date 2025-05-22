@@ -17,7 +17,7 @@ const MainSiteProfileButton = () => {
 
   const profileButtonRef = useRef(null);
   const { user, setUser } = useUser();
-const displayName = user?.username || "Anonymous";
+// const displayName = user?.username || "Anonymous";
   const displayEmail = user?.email || "N/A";
   const displayShopName = user?.shopname || "N/A";
   // Generate a random color based on the initial
@@ -60,7 +60,8 @@ const displayName = user?.username || "Anonymous";
 // Initial data fetch
 useEffect(() => {
   fetchUserData();
-}, [userId]);
+}, [fetchUserData]);
+
   useEffect(() => {
     const id = localStorage.getItem("userId");
     if (id) setUserId(id);

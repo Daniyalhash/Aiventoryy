@@ -16,12 +16,12 @@ interface DashboardCard8Props {
   link: string;
 }
 
-const DashboardCard8 = ({ title, link  }) => {
+
+const DashboardCard8: React.FC<DashboardCard8Props> = ({ title, link }) => {
   
   const [openOrders, setOpenOrders] = useState<Order[]>([]);
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-  const [message, setMessage] = useState(""); // Can be error or success
   const fetchInvoices = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
@@ -40,7 +40,6 @@ const DashboardCard8 = ({ title, link  }) => {
         setOpenOrders([]);
       }
     } catch (error) {
-      setMessage("Failed to load open orders. Please try again.");
       
       console.error("Error fetching open orders:", error);
       setOpenOrders([]);

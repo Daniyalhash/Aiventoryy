@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import axios from "axios";
 import "@/styles/form.css";
 interface LogEntry {
@@ -9,17 +9,25 @@ interface LogEntry {
   entity_id?: string;
   metadata?: Record<string, any>;
 }
-
-const ActivityVendor = () => {
+interface ActivityLog {
+  id: string;
+  action: string;
+  timestamp: string;
+  details: {
+    vendorName?: string;
+    productName?: string;
+    quantity?: number;
+    status?: string;
+  };
+}
+const ActivityVendor: React.FC = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-const [logs, setLogs] = useState<LogEntry[]>([]);
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [logs, setLogs] = useState<ActivityLog[]>([]);
 
-  const fetchLogs = async () => {
+
+  const fetchLogs = useCallback(async () => {
   if (!userId) {
-    setMessage("User ID not found. Please log in.");
-    setIsError(true);
+    
     return;
   }
   try {
@@ -27,38 +35,21 @@ const [logs, setLogs] = useState<LogEntry[]>([]);
       params: { user_id: userId, entity_type: "vendor" }
     });
 
-    const data = response.data.logs || [];
-    console.log(data)
-    if (data.length > 0) {
-      setLogs(data);
-      setMessage(`${data.length} log(s) retrieved.`);
-      setIsError(false);
-    } else {
-      setLogs([]);
-      setMessage("No logs found for this user.");
-      setIsError(true);
+       setLogs(response.data.logs);
+    } catch (error) {
+      console.error('Error fetching logs:', error);
     }
-  } catch (error) {
-    const errorMsg = error.response?.data?.error || error.message || "Failed to fetch logs.";
-    setMessage(errorMsg);
-    setIsError(true);
-    setLogs([]);
-    console.error("Fetch Logs Error:", errorMsg);
-  }
-};
+  }, [userId]);
 
-useEffect(() => {
-  fetchLogs();
-}, [userId]);
+
+  useEffect(() => {
+    fetchLogs();
+  }, [fetchLogs]); // Added fetchLogs to dependencies
+
 
   return (
     <div className="search-form-container">
-          <div className={`messageContainer ${message ? 'show' : ''} ${isError ? 'error' : 'success'}`}>
-        <div className="message-content">
-          <span className="close-icon" onClick={() => setMessage("")}>✖</span>
-          {message}
-        </div>
-      </div>
+  
 <div style={{ maxWidth: 600, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
       {logs.length === 0 && <p>No logs to show.</p>}
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
@@ -37,16 +37,14 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [openActionRow, setOpenActionRow] = useState<string | null>(null);
 
-  const fetchInvoices = async () => {
+const fetchInvoices = useCallback(async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
         params: { user_id: userId }
       });
-      console.log('open orders response:', response.data.open_orders);
       const response2 = await axios.get("http://127.0.0.1:8000/aiventory/get_user_received_orders/", {
         params: { user_id: userId }
       });
-      console.log('open orders response2:', response2.data);
       // Handle the open orders
       if (response.data && response.data.open_orders && Array.isArray(response.data.open_orders.data)) {
         setOpenOrders(response.data.open_orders.data.map(order => ({
@@ -57,23 +55,21 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
         setOpenOrders([]);
       }
 
-      // Handle the received orders
-      if (response2.data && Array.isArray(response2.data.orders)) {
-        setInvoices(response2.data.orders.map(inv => ({
-          ...inv,
-          id: inv._id
-        })));
-      } else {
-        setInvoices([]);
-      }
+      if (Array.isArray(response2.data?.orders)) {
+      setInvoices(response2.data.orders.map(inv => ({
+        ...inv,
+        id: inv._id
+      })));
+    } else {
+      setInvoices([]);
+    }
     } catch (error) {
       setMessage("Failed to load open orders. Please try again.");
       setIsError(true);
       console.error("Error fetching open orders:", error);
       setOpenOrders([]);
     }
-  };
-  console.log('Invoices:', invoices);
+ }, [userId]);
 
 
   const handleDelete = async (invoiceId) => {
@@ -203,12 +199,7 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
     setOpenActionRow(openActionRow === id ? null : id);
   };
   // Function to handle deleting an invoice
-  const memoizedFetchInvoices = React.useCallback(fetchInvoices, [userId]);
-  useEffect(() => {
-    if (userId) {
-      memoizedFetchInvoices();
-    }
-  }, [userId, memoizedFetchInvoices]);
+ 
 
   return (
     <div className="card9">

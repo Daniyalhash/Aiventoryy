@@ -84,7 +84,7 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }) => {
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1:8000/aiventory/upload_dataset/", true);
-    let uploadTimeout = setTimeout(() => {
+    const uploadTimeout = setTimeout(() => {
       xhr.abort();
       setMessage("Upload timed out. Please try again.");
       

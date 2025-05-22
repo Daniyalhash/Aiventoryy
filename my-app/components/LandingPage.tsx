@@ -52,6 +52,8 @@ const LandingPage = () => {
         <Image 
           src="/images/arrow3.png" 
           className="responsive-image"
+                    alt="Decorative arrow" // Added alt text
+
           width={0}
           height={0}
           sizes="100vw"

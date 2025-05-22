@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import "@/styles/form.css";
 
-interface ExportResult {
-  filename: string;
-  success: boolean;
-  message: string;
-}
+// interface ExportResult {
+//   filename: string;
+//   success: boolean;
+//   message: string;
+// }
 const ExportVendorFile = () => {
   
   const [message, setMessage] = useState("");
