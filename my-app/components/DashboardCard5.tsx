@@ -1,6 +1,6 @@
 import '../src/styles/customCard2.css';
 
-export default function DashboardCard5({main, subTitle,value,value2,guidance, description, link,description2,percentage, bgColor }) {
+export default function DashboardCard5({main, subTitle,value,value2,guidance, description,description2,percentage, bgColor }) {
   return (
     <div className={`cardC5 compare2 ${bgColor}`}>
       {/* Background Overlay */}

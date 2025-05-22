@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 
 const DashboardCard7 = ({ 
   title, 
-  value, 
+  
   description,
   onRangeChange, 
-  link, 
+  
   bgColor, 
   graphContent,
   granularity = 'day' // Default to 'day', but can pass 'month'

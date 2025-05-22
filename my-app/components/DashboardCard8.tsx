@@ -1,18 +1,27 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import '../src/styles/dashboardCard8.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
-const DashboardCard8 = ({ title, link , style }) => {
+type Order = {
+  id: string;
+  products: { name: string; quantity: number; price: number }[];
+  vendor: string;
+};
+
+interface DashboardCard8Props {
+  title: string;
+  link: string;
+}
+
+const DashboardCard8 = ({ title, link  }) => {
   
-  const [openOrders, setOpenOrders] = useState<any[]>([]);
+  const [openOrders, setOpenOrders] = useState<Order[]>([]);
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-  const [invoices, setInvoices] = useState<any[]>([]);
   const [message, setMessage] = useState(""); // Can be error or success
-  const [isError, setIsError] = useState(false); // To differentiate between error and success
   const fetchInvoices = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
@@ -32,7 +41,7 @@ const DashboardCard8 = ({ title, link , style }) => {
       }
     } catch (error) {
       setMessage("Failed to load open orders. Please try again.");
-      setIsError(true);
+      
       console.error("Error fetching open orders:", error);
       setOpenOrders([]);
     }
@@ -41,11 +50,8 @@ const DashboardCard8 = ({ title, link , style }) => {
 
       fetchInvoices();
     }, [userId]);
-  const [openActionRow, setOpenActionRow] = useState(null);
 
-  const toggleActions = (id) => {
-    setOpenActionRow(openActionRow === id ? null : id);
-  };
+  
 
   return (
     <div className="card8">
