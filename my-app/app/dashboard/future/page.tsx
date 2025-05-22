@@ -18,7 +18,7 @@ export default function Future() {
   const [predictedValue, setPredictedValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [predictionError] = useState<string | null>(null);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [sellingPrice, setsellingPrice] = useState(null);
   const [last_month_sales, setlast_month_sales] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState('');
@@ -31,9 +31,7 @@ export default function Future() {
 
 
 
-  const handlePredict = async (product: string,
-    category: string,
-    selectedMonth: string) => {
+  const handlePredict = async (product: string, category: string, selectedMonth: string) => {
     console.log("Values are going in ", category)
     console.log("Values are going in ", categories)
 
