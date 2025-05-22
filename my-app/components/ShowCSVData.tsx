@@ -5,7 +5,11 @@ import "@/styles/showCSVData.css";
 interface DatasetItem {
   [key: string]: string | number | null;
 }
-const ShowCSVData = ({ dataset }: { dataset: any[] }) => {
+
+interface ShowCSVDataProps {
+  dataset: DatasetItem[];
+}
+const ShowCSVData: React.FC<ShowCSVDataProps> = ({ dataset }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);

@@ -21,7 +21,7 @@ export default function ProfitMarginChart({ data, targetProduct }) {
 
   // Custom shape for the scatter points
   const CustomScatterPoint = (props) => {
-    const { cx, cy, payload, fill, r } = props;
+  const { cx, cy, payload } = props;
     
     return (
       <g>
