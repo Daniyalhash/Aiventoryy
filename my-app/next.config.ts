@@ -5,11 +5,13 @@ import path from 'path';
 const nextConfig = {
   reactStrictMode: true,
   webpack: (config: any) => {
-    config.resolve.alias = {
+     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, 'src'),
-      '@styles': path.resolve(__dirname, 'src/styles'),
-      '@components': path.resolve(__dirname, '/components'),
+      '@/styles': path.resolve(__dirname, 'src/styles'),
+      '@/components': path.resolve(__dirname, 'components'),
+      '@/utils': path.resolve(__dirname, 'src/utils'),
+      '@/animations': path.resolve(__dirname, 'src/animations'),
     };
     return config;
   },
