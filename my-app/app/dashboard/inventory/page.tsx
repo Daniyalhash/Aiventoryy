@@ -9,11 +9,31 @@ import { useState, useEffect } from "react";
 import StatsCards from "@/components/StatsCards";
 import DashboardCard10 from "@/components/DashboardCard10";
 
+interface InventoryData {
+  id: string;
+  productName: string;
+  category: string;
+  quantity: number;
+  price: number;
+  vendor: string;
+  lastUpdated: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  data: InventoryData[];
+  error?: string;
+}
+interface InventoryStats {
+  total_products: number;
+  total_unique_products: number;
+  total_expired: number;
+}
 
 function Inventory() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [products, setProducts] = useState<any[]>([]);
-  const [stats, setStats] = useState<any>(null); // Store stats from response2
+  const [products, setProducts] = useState<InventoryData[]>([]);
+const [stats, setStats] = useState<InventoryStats | null>(null);
   const [error, setError] = useState<string | null>(null);
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
