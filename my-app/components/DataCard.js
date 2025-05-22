@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faDatabase, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
-import '@/styles/UserProfileCard.css'
+import '@/Styles/UserProfileCard.css'
 import { useRouter } from 'next/navigation';
 const DataCard = ({ userId ,email}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
