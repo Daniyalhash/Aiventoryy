@@ -14,7 +14,7 @@ const ProfileButton2 = () => {
   const dropdownRef = useRef(null);
   const profileButtonRef = useRef(null);
   const { user, setUser } = useUser();
-  const userId = localStorage.getItem("userId"); // Get userId from localStorage
+  // const userId = localStorage.getItem("userId"); // Get userId from localStorage
   // Get first letter of username
   const [showFeatureGuide, setShowFeatureGuide] = useState(false);
   // Get display username with fallbacks

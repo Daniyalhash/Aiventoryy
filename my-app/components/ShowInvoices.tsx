@@ -8,6 +8,7 @@ import html2canvas from 'html2canvas';
 import axios from "axios";
 import AddInvoice from '@/components/addInvoice';
 import Image from 'next/image';
+
 interface Product {
   name: string;
   category: string;
@@ -28,17 +29,27 @@ interface UserData {
   username: string;
   email: string;
 }
+interface EditingInvoice extends Invoice {
+  id: string;
+}
 
+interface ProductChange {
+  name: string;
+  category: string;
+  quantity: number;
+  price: number;
+}
 const ShowInvoices: React.FC = () => {
   const [editedProducts, setEditedProducts] = useState<Product[]>([]);
 
-  const [invoices, setInvoices] = useState<any[]>([]);
+const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<number | null>(null);
   const [selectedInvoices, setSelectedInvoices] = useState<number[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editingInvoice, setEditingInvoice] = useState<any>(null);
+  const [editingInvoice, setEditingInvoice] = useState<EditingInvoice | null>(null);
+
   // const [quantity, setQuantity] = useState<number>(0);
   // const [price, setPrice] = useState<number>(0);
   const pdfRef = useRef<HTMLDivElement>(null);
@@ -208,11 +219,11 @@ const fetchUserData = useCallback(async () => {
       setEditedProducts(editingInvoice.products);
     }
   }, [editingInvoice]);
-  const handleProductChange = (index: number, field: string, value: any) => {
-    const updatedProducts = [...editedProducts];
-    updatedProducts[index] = { ...updatedProducts[index], [field]: value };
-    setEditedProducts(updatedProducts);
-  };
+  const handleProductChange = (index: number, field: keyof ProductChange, value: number | string) => {
+  const updatedProducts = [...editedProducts];
+  updatedProducts[index] = { ...updatedProducts[index], [field]: value };
+  setEditedProducts(updatedProducts);
+};
 
   const openManualInvoice = () => {
     setIsAddingInvoice(true);
@@ -584,7 +595,7 @@ const fetchUserData = useCallback(async () => {
             const currentInvoice = invoices.find(inv => inv.id === pdfSelectedInvoice);
             if (!currentInvoice) return null;
 
-            const product = currentInvoice.products[0];
+            // const product = currentInvoice.products[0];
             const total = currentInvoice.products.reduce((sum, p) => sum + p.price * p.quantity, 0);
 
             return (

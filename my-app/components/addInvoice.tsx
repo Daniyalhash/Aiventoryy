@@ -149,21 +149,20 @@ const selectedProductCategory = formData.products[0]?.category;
       console.log("Starting vendor fetch for category:", formData.products[0]?.category);
       setLoadingVendors(true);
       try {
-        const data = await fetchVendorsByCategory(userId, formData.products[0]?.category);
+        const data = await fetchVendorsByCategory(userId, selectedProductCategory);
         console.log("Fetched vendors:", data.vendors);
 
         if (!data.vendors || !Array.isArray(data.vendors)) {
           console.warn("Unexpected vendors format:", data);
           setVendors([]);
         } else {
-          setVendors(data.vendors);
+          setVendors(data.vendors || []);
         }
       } catch (err) {
         console.error("Error in loadVendors:", err);
         setVendors([]);
       } finally {
         setLoadingVendors(false);
-        console.log("Vendor fetch completed");
       }
     };
 
