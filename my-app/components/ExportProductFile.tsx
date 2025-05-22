@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "@/styles/form.css";
+
+interface ExportResult {
+  filename: string;
+  success: boolean;
+  message: string;
+}
 const ExportProductFile = () => {
-  const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
-  const [results, setResults] = useState<any[]>([]);
 
  const handleExportVendors = async () => {
   const userId = localStorage.getItem('userId');
@@ -31,11 +35,13 @@ const ExportProductFile = () => {
     document.body.appendChild(link);
     link.click();
     link.remove();
+    setMessage("✅ Products exported successfully!");
+      setIsError(false);
+
 
   } catch (error) {
-    setMessage("🚨 Error exporting vendors: " + (error instanceof Error ? error.message : String(error)));
-    setIsError(true)
-    alert("❌ Failed to export products");
+     setMessage("🚨 Error exporting products: " + (error instanceof Error ? error.message : String(error)));
+      setIsError(true);
   }
 };
 

@@ -1,19 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import '../src/styles/dashboardCard9.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import VendorReliabilityTooltip from '@/components/VendorReliabilityTooltip'
+import '@/styles/dashboardCard9.css';
 
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-const DashboardCard9 = ({ title, link, subTitle }) => {
+
+// Define interfaces for type safety
+interface Product {
+  name: string;
+  quantity: number;
+  price: number;
+}
+
+interface Invoice {
+  _id: string;
+  id: string;
+  vendor: string;
+  vendor_id: string;
+  products: Product[];
+  formatted_date: string;
+}
+
+
+interface DashboardCard9Props {
+  title: string;
+  subTitle: string;
+}
+const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
   const [showPopup, setShowPopup] = useState(false);
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-  const [invoices, setInvoices] = useState<any[]>([]);
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [message, setMessage] = useState(""); // Can be error or success
   const [isError, setIsError] = useState(false); // To differentiate between error and success
-  const [openOrders, setOpenOrders] = useState<any[]>([]);
-  const [invoices2, setInvoices2] = useState([]);
+  const [openOrders, setOpenOrders] = useState<Invoice[]>([]);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [openActionRow, setOpenActionRow] = useState<string | null>(null);
 
   const fetchInvoices = async () => {
     try {
@@ -52,7 +74,6 @@ const DashboardCard9 = ({ title, link, subTitle }) => {
     }
   };
   console.log('Invoices:', invoices);
-  const [isUpdating, setIsUpdating] = useState(false);
 
 
   const handleDelete = async (invoiceId) => {
@@ -107,13 +128,7 @@ const DashboardCard9 = ({ title, link, subTitle }) => {
     }
   };
 
-  // const handleDeleteInvoice = (invoiceId) => {
-  //   // Filter out the invoice with the given ID
-  //   const updatedInvoices = invoices.filter(invoice => invoice.id !== invoiceId);
-
-  //   // Update the state with the new list of invoices
-  //   setInvoices(updatedInvoices);
-  // };
+ 
 
 
 
@@ -182,14 +197,18 @@ const DashboardCard9 = ({ title, link, subTitle }) => {
   useEffect(() => {
     fetchInvoices();
 
-  }, [userId]);  // Make sure userId is properly memoized or stable
-  const [openActionRow, setOpenActionRow] = useState(null);
+  }, [userId,fetchInvoices]);  // Make sure userId is properly memoized or stable
 
   const toggleActions = (id) => {
     setOpenActionRow(openActionRow === id ? null : id);
   };
   // Function to handle deleting an invoice
-
+  const memoizedFetchInvoices = React.useCallback(fetchInvoices, [userId]);
+  useEffect(() => {
+    if (userId) {
+      memoizedFetchInvoices();
+    }
+  }, [userId, memoizedFetchInvoices]);
 
   return (
     <div className="card9">
