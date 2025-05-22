@@ -358,26 +358,3 @@ async ([, userId, category]) => {
 };
 
 export default ButtonFrame3;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
