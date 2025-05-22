@@ -183,7 +183,7 @@ const UserCredentials = ({ onApproved }) => {
     <div className="userCredentials">
       <div className="SignText">
         <h1 className="welcometext">Create your account</h1>
-        <p className="subtext">Let's get started</p>
+        <p className="subtext">Lets get started</p>
       </div>
 
       {/* Message Container - Same as Login Page */}

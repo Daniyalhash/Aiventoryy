@@ -13,10 +13,11 @@ export const UserProvider = ({ children }) => {
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
-      } catch (_) {
-        console.error("Invalid user in localStorage");
+      } catch (err) {
+        console.error("Invalid user in localStorage", err);
         localStorage.removeItem("user");
       }
+
     }
   }, []);
   return (
