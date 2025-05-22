@@ -30,15 +30,15 @@ interface VisualData {
   top_delivery_vendors: VendorDelivery[];
 }
 
-interface ChartData {
-  vendor: string;
-  reliability?: number;
-  time?: number;
-}
+// interface ChartData {
+//   vendor: string;
+//   reliability?: number;
+//   time?: number;
+// }
 const VendorManagementAnalysis = () => {
-  const [visualData, setVisualData] = useState<any>(null);
-  const [reliabilityScores, setReliabilityScores] = useState<any[]>([]);
-  const [deliveryTime, setDeliveryTime] = useState<any[]>([]);
+const [visualData, setVisualData] = useState<VisualData | null>(null);
+const [reliabilityScores, setReliabilityScores] = useState<VendorReliability[]>([]);
+const [deliveryTime, setDeliveryTime] = useState<VendorDelivery[]>([]);
   const userId = localStorage.getItem("userId");
   const [error, setError] = useState<string | null>(null);
 

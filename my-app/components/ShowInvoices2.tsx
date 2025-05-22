@@ -33,7 +33,7 @@ export default function ShowInvoices() {
   
   
   
-  const [invoices, setInvoices] = useState<any[]>([]); // Use any[] for flexibility
+const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<number | null>(null);
   
@@ -126,7 +126,7 @@ export default function ShowInvoices() {
 
   };
 
-  const saveInvoice = async (invoiceData: any) => {
+const saveInvoice = async (invoiceData: Invoice) => {
   
 
   try {
