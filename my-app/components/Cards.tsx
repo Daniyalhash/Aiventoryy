@@ -104,7 +104,7 @@ console.log("daata for best product",bestData)
       <div className="cardSection">
         <div className="messageContainer error show">
           <div className="message-content">
-            We couldn't retrieve your data. Please try refreshing the page.
+            We couldnt retrieve your data. Please try refreshing the page.
             <button 
               className="retry-button" 
               onClick={() => window.location.reload()}

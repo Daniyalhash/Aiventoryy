@@ -7,21 +7,15 @@ import '../src/styles/dashboardCard6.css';
 
 const Cards4 = ({
   predictedValue,
-  isLoading,
-  predictionError,
-  selectedProduct,
-  selectedCategory,
   sellingPirce,
   last_month_sales,
   selectedMonth,
-  historicalData,
-
 }) => {
   // Retrieve userId from localStorage (only on client-side)
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
   const nextMonth = selectedMonth;
   // Use SWR for data fetching
-  const { data, error } = useSWR(
+  const { error } = useSWR(
     userId ? ['get-total-products', userId] : null,
     () => fetchTotalProducts(userId),
     {
@@ -137,17 +131,17 @@ const Cards4 = ({
 };
 
 // Helper function for severity icons
-const getSeverityIcon = (severity) => {
-  switch(severity) {
-    case 'high':
-      return '⚠️';
-    case 'medium':
-      return '🔍';
-    case 'low':
-      return '📉';
-    default:
-      return '✅';
-  }
-};
+// const getSeverityIcon = (severity) => {
+//   switch(severity) {
+//     case 'high':
+//       return '⚠️';
+//     case 'medium':
+//       return '🔍';
+//     case 'low':
+//       return '📉';
+//     default:
+//       return '✅';
+//   }
+// };
 
 export default Cards4;
