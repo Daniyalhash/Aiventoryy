@@ -8,8 +8,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Legend,
-  BarChart,
-  Bar,
+
   ReferenceLine
 } from "recharts";
 import { Skeleton } from '@mui/material';

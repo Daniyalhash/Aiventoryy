@@ -42,7 +42,7 @@ const UserProfileCard = ({ userId }) => {
     };
     
     if (userId) fetchUserData();
-  }, [userId]);
+  }, [userId, setContextUser]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

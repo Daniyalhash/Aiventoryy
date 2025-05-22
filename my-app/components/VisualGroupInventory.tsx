@@ -20,7 +20,6 @@ const [rangePriceComparison, setRangePriceComparison] = useState("1-5"); // Defa
 
   useEffect(() => {
     const controller = new AbortController();
-    const signal = controller.signal;
     // Fetching the visual data from the backend
     axios
       .get(`http://127.0.0.1:8000/aiventory/get-inventory-visuals/?user_id=${userId}`)

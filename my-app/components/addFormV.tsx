@@ -1,6 +1,6 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import useSWR from 'swr';
-import { fetchCategories, fetchProductsByCategory } from "@/utils/api";
+import { fetchCategories } from "@/utils/api";
 import "@/styles/form.css";
 
 const SimpleForm = () => {
@@ -11,7 +11,7 @@ const SimpleForm = () => {
   const [isError, setIsError] = useState(false);
   // fetching just categories using SWR
 
-  const { data: categoryData, error: swrError, isLoading } = useSWR(
+  const { data: categoryData } = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
     {
@@ -71,7 +71,6 @@ const SimpleForm = () => {
     last_updated: generateCurrentDateTime(),
   });
   const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState(null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormFields((prev) => ({
@@ -97,6 +96,7 @@ const SimpleForm = () => {
       if (response.ok) {
         console.log("Success:", result);
         setMessage("✅ Vendor added successfully!");
+        setIsError(false)
         // Reset form after successful submission
         setFormFields({
           vendor_id: generateSampleId(),
@@ -111,10 +111,13 @@ const SimpleForm = () => {
       } else {
         console.error("Error:", result);
         setMessage("❌ Failed to add vendor.");
+        setIsError(true)
+
       }
     } catch (error) {
       console.error("Fetch error:", error);
       setMessage("❌ Network error. Check backend connection.");
+      setIsError(true)
     }
   };
   return (
