@@ -5,6 +5,7 @@ import 'aos/dist/aos.css';
 import React from 'react';
 import Link from 'next/link';
 import "@/styles/LandingPage.css";
+import Image from 'next/image';
 
 const LandingPage = () => {
   useEffect(() => {
@@ -22,27 +23,92 @@ const LandingPage = () => {
 
       {/* Dashboard Image Section */}
       <div className="dashboardImage" data-aos="fade-up" data-aos-delay="400">
-        <img src="/images/dashboard-mockup.png" alt="Dashboard Preview" />
+        <Image 
+          src="/images/dashboard-mockup.png" 
+          alt="Dashboard Preview"
+          width={800}
+          height={600}
+          priority
+        />
       </div>
 
       <div className="dashboardImage2" data-aos="fade-right" data-aos-delay="600">
-        <img src="/images/arrow8.png" alt="Arrow" />
+       <Image 
+          src="/images/arrow8.png" 
+          alt="Arrow"
+          className="responsive-image"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          priority
+        />
       </div>
 
       <div className="dashboardImage3" data-aos="fade-left" data-aos-delay="800">
-        <img src="/images/arrow3.png" alt="Arrow" />
+        <Image 
+          src="/images/arrow3.png" 
+          className="responsive-image"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          priority 
+          />
       </div>
 
       <div className="dashboardImage4" data-aos="zoom-in" data-aos-delay="1000">
-        <img src="/images/cross1.png" alt="Icon" />
+        <Image 
+        src="/images/cross1.png" 
+        alt="Icon" 
+        className="responsive-image"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          priority 
+        />
       </div>
 
       <div className="dashboardImage5" data-aos="zoom-in" data-aos-delay="1100">
-        <img src="/images/cross1.png" alt="Icon" />
+        <Image 
+        src="/images/cross1.png"
+         alt="Icon"
+         className="responsive-image"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          priority 
+          />
       </div>
 
       <div className="dashboardImage6" data-aos="zoom-in" data-aos-delay="1200">
-        <img src="/images/cross1.png" alt="Icon" />
+        <Image
+         src="/images/cross1.png"
+          alt="Icon"
+          className="responsive-image"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          priority 
+           />
       </div>
     </div>
   );

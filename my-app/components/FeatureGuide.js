@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const FeatureGuide = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,13 +24,7 @@ const FeatureGuide = ({ onClose }) => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleClose]); // Now properly included in dependencies
-  // useEffect(() => {
-  //   // Trigger animation after component mounts
-  //   const timer = setTimeout(() => setIsVisible(true), 10);
-  //   return () => clearTimeout(timer);
-  // }, []);
 
-  // Handle click outside
   const handleClickOutside = useCallback((e) => {
     if (overlayRef.current && !overlayRef.current.contains(e.target)) {
       handleClose();
@@ -54,8 +49,14 @@ const FeatureGuide = ({ onClose }) => {
       ref={overlayRef}
     >      <div className="feature-guide-container">
         <div className="feature-guide-header">
-          <img src="/images/logoPro.png" alt="Aiventory Logo" className="feature-guide-logo" />
-          <button
+          <Image
+            src="/images/logoPro.png"
+            alt="Aiventory Logo"
+            className="feature-guide-logo"
+            width={100}
+            height={50}
+            priority
+          />          <button
             className="feature-guide-close"
             onClick={handleClose}
             aria-label="Close feature guide"
@@ -64,18 +65,14 @@ const FeatureGuide = ({ onClose }) => {
           </button>
         </div>
 
-        {/* <Link href="/dashboard/setting/notifications">
-            <div className="bellIcon">
-              <FontAwesomeIcon icon={faBell} className="Iconbell" />
-            </div>
-          </Link> */}
+
 
 
 
         <div className="feature-guide-content">
 
           <h2>Welcome to Aiventory!</h2>
-          <p>Here's what you can do with our inventory management system:</p>
+          <p>Here&apos;s what you can do with our inventory management system:</p>
 
           <div className="feature-section">
             <Link href="/dashboard">
@@ -103,10 +100,10 @@ const FeatureGuide = ({ onClose }) => {
           </div>
 
           <div className="feature-section">
-          <Link href="/dashboard/vendor">
+            <Link href="/dashboard/vendor">
 
-            <h3>🤝 <span className="highlight">Vendor Management</span></h3>
-</Link>
+              <h3>🤝 <span className="highlight">Vendor Management</span></h3>
+            </Link>
             <ul>
               <li>Manage all your vendors</li>
               <li>Vendor performance dashboard</li>
@@ -115,9 +112,9 @@ const FeatureGuide = ({ onClose }) => {
           </div>
 
           <div className="feature-section">
-          <Link href="/dashboard/insights">
+            <Link href="/dashboard/insights">
 
-            <h3>🔍 <span className="highlight">Insights & Analytics</span></h3>
+              <h3>🔍 <span className="highlight">Insights & Analytics</span></h3>
             </Link>
             <ul>
               <li>Product benchmarking by category</li>
@@ -129,9 +126,9 @@ const FeatureGuide = ({ onClose }) => {
           </div>
 
           <div className="feature-section">
-          <Link href="/dashboard/future">
+            <Link href="/dashboard/future">
 
-            <h3>📈 <span className="highlight">Forecasting</span></h3>
+              <h3>📈 <span className="highlight">Forecasting</span></h3>
             </Link>
             <ul>
               <li>Sales predictions for next month</li>
@@ -141,9 +138,9 @@ const FeatureGuide = ({ onClose }) => {
           </div>
 
           <div className="feature-section">
-          <Link href="/dashboard/setting">
+            <Link href="/dashboard/setting">
 
-            <h3>⚙️ <span className="highlight">Settings</span></h3>
+              <h3>⚙️ <span className="highlight">Settings</span></h3>
             </Link>
             <ul>
               <li>Edit your profile (name, email)</li>
@@ -152,9 +149,9 @@ const FeatureGuide = ({ onClose }) => {
           </div>
 
           <div className="feature-section">
-          <Link href="/dashboard/setting/notifications">
+            <Link href="/dashboard/setting/notifications">
 
-            <h3>🔔 <span className="highlight">Notifications</span></h3>
+              <h3>🔔 <span className="highlight">Notifications</span></h3>
             </Link>
             <ul>
               <li>Expiry alerts (30-day warning)</li>
@@ -164,10 +161,10 @@ const FeatureGuide = ({ onClose }) => {
           </div>
 
           <div className="feature-section">
-          <Link href="/dashboard/setting/invoice">
+            <Link href="/dashboard/setting/invoice">
 
-            <h3>🧾 <span className="highlight">Invoice Management</span></h3>
-            
+              <h3>🧾 <span className="highlight">Invoice Management</span></h3>
+
             </Link>
             <ul>
               <li>Create and send invoices to vendors</li>

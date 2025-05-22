@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import "@/styles/low.css";
 import axios from 'axios';
-import Link from 'next/link';
-import { useRouter } from "next/navigation";
 
 type LowStockProduct = {
   productname: string;
@@ -24,6 +22,13 @@ type VendorDetails = {
   vendorPhone: string;
 };
 
+interface Suggestion {
+  productId: string;
+  productName: string;
+  currentStock: number;
+  recommendedStock: number;
+  vendors: VendorDetails[];
+}
 const LowStockSuggestionSection: React.FC = () => {
   const [lowStockProducts, setLowStockProducts] = useState<LowStockProduct[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +40,6 @@ const LowStockSuggestionSection: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [vendorDetails, setVendorDetails] = useState<VendorDetails[] | null>(null);
   // const [orderStatus, setOrderStatus] = useState<{success: boolean, message: string} | null>(null);
-  const router = useRouter();
   const [automateMode, setAutomateMode] = useState(false); // NEW STATE
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [message, setMessage] = useState<string>("");
@@ -263,7 +267,7 @@ const LowStockSuggestionSection: React.FC = () => {
   };
 
   const getVendorTag = (deliveryTime, reliabilityScore, allVendors) => {
-    const maxReliability = Math.max(...allVendors.map(v => v.ReliabilityScore));
+    // const maxReliability = Math.max(...allVendors.map(v => v.ReliabilityScore));
     const maxDeliveryTime = Math.max(...allVendors.map(v => v.DeliveryTime)); // highest days = worst
 
     // Normalize scores
@@ -292,19 +296,19 @@ const LowStockSuggestionSection: React.FC = () => {
   //   // You can add more logic here later if needed
   // };
   const [isAllSelected, setIsAllSelected] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]); // Adjust type as needed
+  // const [selectedProducts, setSelectedProducts] = useState<string[]>([]); // Adjust type as needed
 
-  const handleSelectAll = (e) => {
-    const isChecked = e.target.checked;
-    setIsAllSelected(isChecked);
-    if (isChecked) {
-      console.log("wow")
+  // const handleSelectAll = (e) => {
+  //   const isChecked = e.target.checked;
+  //   setIsAllSelected(isChecked);
+  //   if (isChecked) {
+  //     console.log("wow")
 
-    } else {
-      // Clear selection
-      console.log("no")
-    }
-  };
+  //   } else {
+  //     // Clear selection
+  //     console.log("no")
+  //   }
+  // };
 
   const handleBestConfirmOrder = async (vendor: VendorDetails) => {
     console.log("✅ Best vendor confirm clicked", vendor);
