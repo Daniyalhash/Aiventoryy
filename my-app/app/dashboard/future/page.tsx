@@ -11,11 +11,11 @@ import "@/styles/futurePage.css";
 import ButtonFrame3 from '@/components/ButtonFrame3';
 import axios from 'axios';
 import { AxiosError } from 'axios';  // Add this import at the top
-interface Product {
-  id: string;
-  name: string;
-  // add other product properties as needed
-}
+// interface Product {
+//   id: string;
+//   name: string;
+//   // add other product properties as needed
+// }
 
 export default function Future() {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
