@@ -1,4 +1,14 @@
-const RecommendationEngine = ({ targetProduct, competitorProducts }) => {
+interface Product {
+  sellingprice: number;
+  ReliabilityScore: number;
+}
+
+interface RecommendationEngineProps {
+  targetProduct: Product;
+  competitorProducts: Product[];
+}
+
+const RecommendationEngine: React.FC<RecommendationEngineProps> = ({ targetProduct, competitorProducts }) => {
     const recommendations = [];
   
     // Suggest increasing selling price if competitors have higher prices
@@ -28,3 +38,4 @@ const RecommendationEngine = ({ targetProduct, competitorProducts }) => {
       </div>
     );
   };
+  export default RecommendationEngine; // Add export statement

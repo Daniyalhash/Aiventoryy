@@ -1,6 +1,6 @@
 import '@/styles/ShowInvoice.css';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash, faCheck, faTimes, faEdit, faDownload } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from 'jspdf';
@@ -17,15 +17,19 @@ interface Product {
 
 interface Invoice {
   _id: string;
-  id: string;
   vendor: string;
-  vendorPhone?: string;
-  date: string;
-  formatted_date: string;
   products: Product[];
+  total: number;
+  status: string;
+  created_at: string;
 }
-type EditingInvoice = Invoice | null;
-export default function ShowInvoices() {
+interface UserData {
+  id: string;
+  username: string;
+  email: string;
+}
+
+const ShowInvoices: React.FC = () => {
   const [editedProducts, setEditedProducts] = useState<Product[]>([]);
 
   const [invoices, setInvoices] = useState<any[]>([]);
@@ -43,8 +47,13 @@ export default function ShowInvoices() {
   const [message, setMessage] = useState(""); // Can be error or success
   const [isError, setIsError] = useState(false); // To differentiate between error and success
   const [isAddingInvoice, setIsAddingInvoice] = useState(false);
-
-  const fetchInvoices = async () => {
+  const [userData, setUserData] = useState<UserData | null>(null);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  const fetchInvoices = useCallback(async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
     try {
       const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
         params: { user_id: userId }
@@ -66,38 +75,33 @@ export default function ShowInvoices() {
       console.error("Error fetching invoices:", error);
       setInvoices([]);
     }
-  };
+ }, []);
   console.log("setting values:", invoices);
 
   // Fetch user data when the component mounts or when userId changes
-  const fetchUserData = async () => {
+const fetchUserData = useCallback(async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
     try {
-      if (userId) {
-        const response = await axios.get("http://127.0.0.1:8000/aiventory/get-user-details/", {
-          params: { user_id: userId },
-        });
-        if (response.data) {
-          localStorage.setItem('username', response.data.username || '');
-          localStorage.setItem('email', response.data.email || '');
-        }
-      }
+      const response = await axios.get('http://127.0.0.1:8000/aiventory/get-user-details/', {
+        params: { user_id: userId }
+      });
+      setUserData(response.data);
     } catch (error) {
-      console.error("Error fetching user details:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     }
-  };
+  }, []);
 
-  useEffect(() => {
-    const initializeData = async () => {
-      await Promise.all([
-        fetchUserData(),
-        fetchInvoices()
-      ]);
-    };
+ useEffect(() => {
+    fetchUserData();
+    fetchInvoices();
+  }, [fetchUserData, fetchInvoices]);
 
-    if (userId) {
-      initializeData();
-    }
-  }, [userId]);
+
+  
   const generatePDF = async (id: number) => {
 
     setPdfSelectedInvoice(id);
@@ -591,8 +595,8 @@ export default function ShowInvoices() {
                     <Image src="/images/logoPro.png"
                       alt="Logo"
                       width={100}
-                      height={50} 
-                      hidden/>
+                      height={50}
+                      hidden />
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <h2 style={{ color: '#17412d', marginBottom: '10px' }}>INVOICE</h2>
@@ -669,3 +673,4 @@ export default function ShowInvoices() {
     </section>
   );
 }
+export default ShowInvoices;
