@@ -22,8 +22,8 @@ const DashboardCard8: React.FC<DashboardCard8Props> = ({ title, link }) => {
   const [openOrders, setOpenOrders] = useState<Order[]>([]);
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-  const fetchInvoices = async () => {
-    try {
+const fetchInvoices = useCallback(async () => {
+      try {
       const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
         params: { user_id: userId }
       });
@@ -44,11 +44,11 @@ const DashboardCard8: React.FC<DashboardCard8Props> = ({ title, link }) => {
       console.error("Error fetching open orders:", error);
       setOpenOrders([]);
     }
-  };
-    useEffect(() => {
+   }, [userId]); // ✅ include userId as a dependency
 
-      fetchInvoices();
-    }, [userId]);
+     useEffect(() => {
+    fetchInvoices();
+  }, [fetchInvoices]); // ✅ now safe to include fetchInvoices
 
   
 
