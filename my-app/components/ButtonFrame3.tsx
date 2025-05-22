@@ -68,7 +68,7 @@ const ButtonFrame3 = ({
   data: productsData,
 } = useSWR(
   selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
-  async ([key, userId, category]) => {
+async ([, userId, category]) => {
     const response = await axios.get(
       'http://127.0.0.1:8000/aiventory/get-top-products-by-category/',
       { params: { user_id: userId, category } }

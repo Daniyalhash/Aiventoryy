@@ -2,15 +2,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faDatabase, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/navigation';
+import {  faDatabase } from '@fortawesome/free-solid-svg-icons';
 import '@/styles/UserProfileCard.css';
 
 
 const DataCard = ({ userId ,email}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
   //   const [tempUser, setTempUser] = useState({ ...user });
   const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState({ text: '', type: '' }); // Optional: use in UI
@@ -34,7 +32,7 @@ const DataCard = ({ userId ,email}) => {
     };
 
     if (userId) fetchUserData();
-  }, [userId]);
+  }, [userId,message]);
 
 
   const handleConfirmClick = () => {

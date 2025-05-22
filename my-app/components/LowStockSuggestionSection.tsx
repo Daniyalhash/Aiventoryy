@@ -22,13 +22,13 @@ type VendorDetails = {
   vendorPhone: string;
 };
 
-interface Suggestion {
-  productId: string;
-  productName: string;
-  currentStock: number;
-  recommendedStock: number;
-  vendors: VendorDetails[];
-}
+// interface Suggestion {
+//   productId: string;
+//   productName: string;
+//   currentStock: number;
+//   recommendedStock: number;
+//   vendors: VendorDetails[];
+// }
 const LowStockSuggestionSection: React.FC = () => {
   const [lowStockProducts, setLowStockProducts] = useState<LowStockProduct[]>([]);
   const [error, setError] = useState<string | null>(null);

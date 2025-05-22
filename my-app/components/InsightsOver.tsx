@@ -1,7 +1,7 @@
 import '@/styles/InsightsOver.css';
 
 
-export default function InsightsOver({ onRefresh }: { onRefresh: () => void }) {
+export default function InsightsOver() {
   return (
     <section className="InsightsOversection">
       <div className="InsightsOverText">

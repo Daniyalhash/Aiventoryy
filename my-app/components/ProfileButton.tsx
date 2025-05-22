@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback,useRef } from "react";
 import axios from "axios";
 import '@/styles/profileButton.css';
 import Link from 'next/link';
@@ -28,25 +28,25 @@ const ProfileButton = () => {
   // Get first letter of username
   const [showFeatureGuide, setShowFeatureGuide] = useState(false);
   // Get display username with fallbacks
-  const displayName = user?.username || "Anonymous";
+  // const displayName = user?.username || "Anonymous";
   const displayEmail = user?.email || "N/A";
   const displayShopName = user?.shopname || "N/A";
-  const getInitial = () => {
-    return userDetails.username ? userDetails.username.charAt(0).toUpperCase() : 'A';
-  };
+  
   // Generate a random color based on the initial
   const getAvatarColor = () => {
     const colors = [
       '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
       '#9966FF', '#FF9F40', '#8AC249', '#EA5F89'
     ];
-    const charCode = getInitial().charCodeAt(0);
+    const initial = displayShopName.charAt(0).toUpperCase();
+    const charCode = initial.charCodeAt(0);
     return colors[charCode % colors.length];
   };
 
 
+
   // Fetch user data when the component mounts or when userId changes
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
 
     try {
       if (userId) {
@@ -59,19 +59,19 @@ const ProfileButton = () => {
     } catch (error) {
       console.error("Error fetching user details:", error.response?.data?.error || error.message);
     }
-  };
+    }, [setUser]);
  // Expose refresh function
- useEffect(() => {
-  window.updateNavbarUser = fetchUserData;
-  return () => {
-    window.updateNavbarUser = null;
-  };
-}, []);
+useEffect(() => {
+    window.updateNavbarUser = fetchUserData;
+    return () => {
+      window.updateNavbarUser = null;
+    };
+  }, [fetchUserData]);
 
 // Initial data fetch
-useEffect(() => {
-  fetchUserData();
-}, [userId]);
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
 
   // Close dropdown when clicking outside
   useEffect(() => {

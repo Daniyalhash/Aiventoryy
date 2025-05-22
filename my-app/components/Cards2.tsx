@@ -49,10 +49,16 @@ const Cards2 = () => {
     lowStock: 25,
     healthyStock: 65,
   };
+interface BenchmarkItem {
+  category: string;
+  product: string;
+  yourPrice: number;
+  marketAverage: number;
+}
 
+type BenchmarkType = BenchmarkItem[];
   // Use SWR for fetching benchmark data
 // Define the correct type for benchmark data, or use 'any' as a fallback
-type BenchmarkType = any; // Replace 'any' with the actual type if known
 
 const { data: benchmarkData, error } = useSWR<BenchmarkType>(
     userId ? ['get-dashboard-visuals', userId] : null,

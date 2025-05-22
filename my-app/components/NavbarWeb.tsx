@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 
 import '@/styles/NavbarWeb.css';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import MainSiteProfileButton from './MainSiteProfileButton';
 // npm install next-auth
 import { useUser } from "@/components/UserContext"; // adjust the path as needed

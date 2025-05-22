@@ -4,7 +4,6 @@ import React from "react";
 
 import '@/styles/Help.css'; // Import the new CSS file
 
-import { usePathname } from 'next/navigation';
 
 const Help = () => {
 
