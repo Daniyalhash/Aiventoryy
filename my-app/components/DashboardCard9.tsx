@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
@@ -37,7 +37,7 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [openActionRow, setOpenActionRow] = useState<string | null>(null);
 
-const fetchInvoices = useCallback(async () => {
+  const fetchInvoices = useCallback(async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
         params: { user_id: userId }
@@ -47,7 +47,7 @@ const fetchInvoices = useCallback(async () => {
       });
       // Handle the open orders
       if (response.data && response.data.open_orders && Array.isArray(response.data.open_orders.data)) {
-        setOpenOrders(response.data.open_orders.data.map(order => ({
+        setOpenOrders(response.data.open_orders.data.map((order: any) => ({
           ...order,
           id: order._id
         })));
@@ -56,23 +56,23 @@ const fetchInvoices = useCallback(async () => {
       }
 
       if (Array.isArray(response2.data?.orders)) {
-      setInvoices(response2.data.orders.map(inv => ({
-        ...inv,
-        id: inv._id
-      })));
-    } else {
-      setInvoices([]);
-    }
+        setInvoices(response2.data.orders.map((inv: any) => ({
+          ...inv,
+          id: inv._id
+        })));
+      } else {
+        setInvoices([]);
+      }
     } catch (error) {
       setMessage("Failed to load open orders. Please try again.");
       setIsError(true);
       console.error("Error fetching open orders:", error);
       setOpenOrders([]);
     }
- }, [userId]);
+  }, [userId]);
 
 
-  const handleDelete = async (invoiceId) => {
+  const handleDelete = async (invoiceId: string) => {
     setIsUpdating(true);
     console.log('Starting handleDelete with:', { invoiceId, userId });
     setMessage("");
@@ -98,7 +98,7 @@ const fetchInvoices = useCallback(async () => {
     }
   };
 
-  const handleDeleteReceivedOrder = async (invoiceId) => {
+  const handleDeleteReceivedOrder = async (invoiceId: string) => {
     setIsUpdating(true);
     console.log('Starting handleDeleteReceivedOrder with:', { invoiceId, userId });
     setMessage("");
@@ -124,11 +124,11 @@ const fetchInvoices = useCallback(async () => {
     }
   };
 
- 
 
 
 
-  const handleReceived = async (invoiceId, vendor_id) => {
+
+  const handleReceived = async (invoiceId: string, vendor_id: string) => {
     setIsUpdating(true);
     console.log('Starting handleReceived with:', { invoiceId, vendor_id, userId });
     setMessage(""); // Reset message before processing
@@ -145,16 +145,16 @@ const fetchInvoices = useCallback(async () => {
       // Parse the formatted date (e.g., "09:37 (05/01/2025)")
       console.log('Raw formatted_date:', invoice.formatted_date);
 
-      const orderDate =  invoice.formatted_date;
-      
+      const orderDate = invoice.formatted_date;
+
 
       console.log("📦 order date  took:", orderDate, "days");
-    
+
       // Log before API call
       const payload = {
         userId: userId,
         vendor_id: vendor_id,
-        orderDate:orderDate,
+        orderDate: orderDate,
         invoice_data: invoice  // Add full invoice object
 
       };
@@ -182,7 +182,11 @@ const fetchInvoices = useCallback(async () => {
       setMessage("Failed to process receipt. Please try again.");
       setIsError(true);
       console.error("Error processing receipt:", error);
-      setMessage(error.response?.data?.error || "Failed to process receipt. Please try again.");
+      if (typeof error === "object" && error !== null && "response" in error && typeof (error as any).response === "object" && (error as any).response !== null && "data" in (error as any).response) {
+        setMessage((error as any).response.data?.error || "Failed to process receipt. Please try again.");
+      } else {
+        setMessage("Failed to process receipt. Please try again.");
+      }
       setIsError(true);
     } finally {
       setIsUpdating(false);
@@ -193,13 +197,13 @@ const fetchInvoices = useCallback(async () => {
   useEffect(() => {
     fetchInvoices();
 
-  }, [userId,fetchInvoices]);  // Make sure userId is properly memoized or stable
+  }, [userId, fetchInvoices]);  // Make sure userId is properly memoized or stable
 
-  const toggleActions = (id) => {
+  const toggleActions = (id: string | null) => {
     setOpenActionRow(openActionRow === id ? null : id);
   };
   // Function to handle deleting an invoice
- 
+
 
   return (
     <div className="card9">
@@ -246,7 +250,7 @@ const fetchInvoices = useCallback(async () => {
           <tbody>
             {openOrders.length === 0 ? (
               <tr>
-                <td colSpan="8" style={{ padding: "40px 0" }}>
+                <td  style={{ padding: "40px 0" }}>
                   <div className="emptyStateBox">
                     <p>🚫 No open orders placed yet</p>
                     <small>Add a new order to get started</small>

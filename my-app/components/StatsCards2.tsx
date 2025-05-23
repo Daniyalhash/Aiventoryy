@@ -2,11 +2,17 @@ import React from "react";
 import "@/styles/stats-cards.css";
 import { FaBoxes, FaBoxOpen, FaExclamationTriangle } from "react-icons/fa";
 
+type StatsCardsProps = {
+  totalVendorSize: number;
+  totalVendorLinks: number;
+  totalVendorNotLinks: number;
+};
+
 const StatsCards = ({ 
   totalVendorSize, 
   totalVendorLinks, 
   totalVendorNotLinks 
-}) => {
+}: StatsCardsProps) => {
   return (
     <div className="stats-grid">
       {/* Card 1: Total Dataset Size */}
