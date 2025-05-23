@@ -34,9 +34,14 @@ export default function Vendor() {
 const [vendors, setVendors] = useState<Vendor[]>([]);
 const [stats, setStats] = useState<VendorStats | null>(null);
 
+  const [userId, setUserId] = useState<string | null>(null);
 
 
-  const userId = localStorage.getItem("userId");
+useEffect(() => {
+    // Access localStorage only in the browser
+    const id = localStorage.getItem("userId");
+    setUserId(id);
+  }, []);
 
   useEffect(() => {
     const fetchDataset = async () => {

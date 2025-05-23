@@ -3,7 +3,7 @@
 
 
 "use client";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import FutureOver from '@/components/FutureOver';
 import Cards4 from '@/components/Cards4';
 import Cards3 from '@/components/Cards3';
@@ -18,7 +18,6 @@ import { AxiosError } from 'axios';  // Add this import at the top
 // }
 
 export default function Future() {
-  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [predictedValue, setPredictedValue] = useState(null);
@@ -33,7 +32,12 @@ export default function Future() {
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [hasPrediction, setHasPrediction] = useState(false); // Add this new state
-
+  const [userId, setUserId] = useState<string | null>(null);
+useEffect(() => {
+    // Access localStorage only in the browser
+    const id = localStorage.getItem("userId");
+    setUserId(id);
+  }, []);
 
 
 

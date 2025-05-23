@@ -40,8 +40,12 @@ function Inventory() {
   const [products, setProducts] = useState<InventoryData[]>([]);
   const [stats, setStats] = useState<InventoryStats | null>(null);
   const [error, setError] = useState<string | null>(null);
-const userId: string | null = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-
+  const [userId, setUserId] = useState<string | null>(null);
+useEffect(() => {
+    // Access localStorage only in the browser
+    const id = localStorage.getItem("userId");
+    setUserId(id);
+  }, []);
   useEffect(() => {
   const fetchDataset = async () => {
     setLoading(true);
