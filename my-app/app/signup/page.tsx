@@ -9,7 +9,7 @@ import { Suspense } from 'react'; // ✅ Import Suspense
 
 import Link from "next/link";
 import Image from 'next/image';
-import { useSearchParams, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 
