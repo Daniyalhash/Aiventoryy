@@ -7,10 +7,10 @@ const Contact = () => {
     <div className="contact-container">
       <div className="contact-left">
         <h4 className="contact-heading">Get in touch</h4>
-        <h2 className="contact-title">Let’s Chat, Reach Out to Us</h2>
+        <h2 className="contact-title">Lets Chat, Reach Out to Us</h2>
         <p className="contact-description">
-          Have question or feedback? We’re here to help. Send us a message and
-          we’ll respond within 24 hours.
+          Have question or feedback? Were here to help. Send us a message and
+          well respond within 24 hours.
         </p>
         <form className="contact-form">
           <input type="text" placeholder="Full Name" className="contact-input" />
@@ -23,7 +23,18 @@ const Contact = () => {
       <div className="contact-right">
         
   
-        <Image src="/images/telephone.png" alt="Contact" className="contact-image" />
+        <Image 
+        src="/images/telephone.png" 
+        alt="Contact" 
+        className="contact-image"
+        width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          priority />
         <div className="contact-info">
           <div className="info-box">
             <span className="info-icon">📧</span>
