@@ -71,7 +71,7 @@ const { data: benchmarkData, error } = useSWR<BenchmarkType>(
       }
     }
   );
-  const { data: salesData, SalesError } = useSWR(
+  const { data: salesData, error: salesError } = useSWR(
     userId ? ['get_monthly_sales', userId] : null,
     fetchSales, // don't wrap it
 
@@ -85,17 +85,17 @@ const { data: benchmarkData, error } = useSWR<BenchmarkType>(
   );
   console.log("past data", salesData)
   useEffect(() => {
-    if (SalesError) {
+    if (salesError) {
       setIsLoading(false);
       setIsError(true);
 
       let userFriendlyMessage = "We're having trouble loading your analytics data. ";
 
-      if (SalesError.message.includes("401")) {
+      if (salesError.message.includes("401")) {
         userFriendlyMessage += "Your session might have expired. Please refresh the page or log in again.";
-      } else if (SalesError.message.includes("404")) {
+      } else if (salesError.message.includes("404")) {
         userFriendlyMessage += "The analytics data couldn't be found. This might be temporary.";
-      } else if (SalesError.message.includes("network")) {
+      } else if (salesError.message.includes("network")) {
         userFriendlyMessage += "There's a network connection problem. Please check your internet.";
       } else {
         userFriendlyMessage += "Please try refreshing the page. Contact support if this continues.";
@@ -106,7 +106,7 @@ const { data: benchmarkData, error } = useSWR<BenchmarkType>(
       setIsLoading(false);
       setIsError(false);
     }
-  }, [salesData, SalesError]);
+  }, [salesData, salesError]);
 
 
   useEffect(() => {
@@ -170,12 +170,12 @@ const { data: benchmarkData, error } = useSWR<BenchmarkType>(
       {openOrders === 0 ? (
         <DashboardCard2
           title="Stock Analysis"
-          value={0}
+          description="heee"
           link="/dashboard/insights"
           bgColor="bg-custom-third"
           graphContent={
             <SimpleStockPieChart
-              data={defaultStockData}
+              // data={defaultStockData}
               isDefaultData={!!error}
             />
           }
@@ -190,7 +190,7 @@ const { data: benchmarkData, error } = useSWR<BenchmarkType>(
 
       <DashboardCard2
         title="Product Benchmarking"
-        value={0}
+        description="woow"
         link="/dashboard/insights"
         bgColor="bg-custom-one"
         graphContent={
