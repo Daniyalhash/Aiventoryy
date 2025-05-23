@@ -3,6 +3,7 @@ import UserCredentials from '@/components/UserCredentials';
 import DatasetUpload from '@/components/DatasetUpload';
 import DashboardButton from '@/components/DashboardButton';
 import '@/styles/SignupPage.css';
+import { Suspense } from 'react'; // ✅ Import Suspense
 
 import Link from "next/link";
 import Image from 'next/image';
@@ -64,6 +65,7 @@ const SignupPage = () => {
   console.log("Current Step:", step);
   console.log("Form Data:", formData);
   return (
+     <Suspense fallback={<div>Loading signup page...</div>}>
     <div className="SignInContainer">
       {/* Right Section */}
 
@@ -90,6 +92,7 @@ const SignupPage = () => {
         {/* Login Form */}
 
         {/* Step 1: User Credentials */}
+        
         {step === 1 && <UserCredentials onApproved={handleCredentialsApproved} />}
 
         {formData.user_id && formData.email && step === 2 && (
@@ -130,6 +133,7 @@ const SignupPage = () => {
         </video>
       </div>
     </div>
+    </Suspense>
   );
 };
 
