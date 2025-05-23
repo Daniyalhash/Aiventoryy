@@ -1,18 +1,36 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "@/styles/form.css";
-
+type Product = {
+  productname_id: string;
+  productname: string;
+  category: string;
+  subcategory: string;
+  stockquantity: number;
+  reorderthreshold: number;
+  costprice: number;
+  sellingprice: number;
+  timespan: string;
+  expirydate: string;
+  monthly_sales: number;
+  Barcode: string;
+  vendor_id: string;
+  productSize: string;
+  sale_date: string;
+  season: string;
+  last_updated: string;
+};
 // import "@/styles/SearchForm.css"; // Optional styling
 const SearchFormP = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [productName, setProductName] = useState("");
   const [productId, setProductId] = useState("");
   const [category, setCategory] = useState("");
-  const [results, setResults] = useState([]);
+const [results, setResults] = useState<Product[]>([]);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!userId) {
@@ -42,10 +60,14 @@ const SearchFormP = () => {
         setIsError(true);
       }
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.error ||
-        error.message ||
-        "Failed to search Product";
+      let errorMsg = "Failed to search Product";
+
+  if (axios.isAxiosError(error)) {
+    errorMsg = error.response?.data?.error || error.message;
+  } else if (error instanceof Error) {
+    errorMsg = error.message;
+  }
+
 
       setMessage(errorMsg);
       setIsError(true);
