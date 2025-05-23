@@ -38,25 +38,28 @@ interface InventoryStats {
 function Inventory() {
   const [loading, setLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<InventoryData[]>([]);
-const [stats, setStats] = useState<InventoryStats | null>(null);
+  const [stats, setStats] = useState<InventoryStats | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+const userId: string | null = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
   useEffect(() => {
-    const fetchDataset = async () => {
-      setLoading(true); // Set loading to true before fetching
-      try {
-        const [productsResponse, statsResponse] = await Promise.all([
-          axios.get("http://127.0.0.1:8000/aiventory/get-current-dataset/", {
-            params: { user_id: userId },
-          }),
-          axios.get("http://127.0.0.1:8000/aiventory/get-inventory-summary/", {
-            params: { user_id: userId },
-          })
-        ]);
+  const fetchDataset = async () => {
+    setLoading(true);
+    try {
+      const [productsResponse, statsResponse] = await Promise.all([
+        axios.get("http://127.0.0.1:8000/aiventory/get-current-dataset/", {
+          params: { user_id: userId },
+        }),
+        axios.get("http://127.0.0.1:8000/aiventory/get-inventory-summary/", {
+          params: { user_id: userId },
+        }),
+      ]);
 
-       if (productsResponse.data?.products) {
-         const transformedProducts = productsResponse.data.products.flat().map((p: any) => ({
+      if (productsResponse.data?.products) {
+        const productsRaw = productsResponse.data.products;
+        if (Array.isArray(productsRaw)) {
+          const flattened = productsRaw.flat ? productsRaw.flat() : productsRaw;
+          const transformedProducts = flattened.map((p: any) => ({
             product_id: p.product_id || '',
             productname: p.productname || '',
             category: p.category || '',
@@ -78,24 +81,29 @@ const [stats, setStats] = useState<InventoryStats | null>(null);
         } else {
           setError("No products found.");
         }
-
-        if (statsResponse.data?.data) {
-          setStats(statsResponse.data.data);
-        } else {
-          setError("No stats found.");
-        }
-        setError(null);
-      } catch (err: unknown) {
-        const error = err as Error;
-        console.error("Error fetching dataset:", error);
-        setError(error.message || "Failed to fetch dataset.");
-      } finally {
-        setLoading(false);
+      } else {
+        setError("No products found.");
       }
-    };
 
-    if (userId) fetchDataset();
-  }, [userId]);
+      if (statsResponse.data?.data) {
+        setStats(statsResponse.data.data);
+      } else {
+        setError("No stats found.");
+      }
+
+      setError(null); // reset error if everything went fine
+
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error("Error fetching dataset:", error);
+      setError(error.message || "Failed to fetch dataset.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (userId) fetchDataset();
+}, [userId]);
 
   return (
     <div className="InventoryPage">
@@ -115,27 +123,27 @@ const [stats, setStats] = useState<InventoryStats | null>(null);
         ) : error ? (
           <div className="error-container">
             <p className="error-text">{error}</p>
-            
+
           </div>
         ) : (
           <>
-              <div className="dataset-feature">
-            {stats && (
-              <StatsCards
-                totalDatasetSize={stats?.total_products || 0}
-                totalUniqueProducts={stats?.total_unique_products || 0}
-                totalExpiredProducts={stats?.total_expired || 0}
-              />
-            )}
-            <ShowCSVData dataset={products} />
+            <div className="dataset-feature">
+              {stats && (
+                <StatsCards
+                  totalDatasetSize={stats?.total_products || 0}
+                  totalUniqueProducts={stats?.total_unique_products || 0}
+                  totalExpiredProducts={stats?.total_expired || 0}
+                />
+              )}
+              <ShowCSVData dataset={products} />
 
-          </div>
-             <DashboardCard10
+            </div>
+            <DashboardCard10
               title="AI Waste Reducer"
-             
+
             />
           </>
-      
+
         )}
       </div>
 

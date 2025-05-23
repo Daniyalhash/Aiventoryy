@@ -115,7 +115,7 @@ const ShowCSVData: React.FC<ShowCSVDataProps> = ({ dataset }) => {
             </tr>
           </thead>
           <tbody>
-            {dataset.map((row, idx) => ( // Limit to 100 rows for performance
+            {dataset.slice(0, 100).map((row, idx) => ( // Limit to 100 rows for performance
               <tr key={`row-${idx}`}>
                 {Object.values(row).map((value, idy) => (
                   <td key={`cell-${idx}-${idy}`}>
@@ -126,11 +126,12 @@ const ShowCSVData: React.FC<ShowCSVDataProps> = ({ dataset }) => {
             ))}
           </tbody>
         </table>
-        {/* {dataset.length > 100 && (
+        {dataset.length > 100 && (
           <div className="table-footer">
             Showing first 100 rows of {dataset.length} total rows
           </div>
-        )} */}
+        )}
+        
       </div>
     </div>
   );
