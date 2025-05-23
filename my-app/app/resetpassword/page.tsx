@@ -17,7 +17,7 @@ const ResetPasswordPage = () => {
   const [isError, setIsError] = useState(false);
   const router = useRouter();
 
-  const handleResetPassword = async (e) => {
+  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -126,9 +126,10 @@ const ResetPasswordPage = () => {
           loop
           muted
           playsInline
-          src="/video/vid2.mp4"
-          type="video/mp4"
-        ></video>
+        >
+          <source src="/video/vid2.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   );
