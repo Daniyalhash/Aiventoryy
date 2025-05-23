@@ -9,8 +9,22 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+  // Custom tooltip
+  import { TooltipProps } from 'recharts';
+type HistoricalDataItem = {
+  date: string;
+  sales: number;
+  [key: string]: any;
+};
 
-const HistoricalSalesChart = ({ historicalData, predictedValue, selectedRange, selectedMonth }) => {
+interface HistoricalSalesChartProps {
+  historicalData: HistoricalDataItem[];
+  predictedValue: number;
+  selectedRange?: string;
+  selectedMonth?: string;
+}
+
+const HistoricalSalesChart: React.FC<HistoricalSalesChartProps> = ({ historicalData, predictedValue, selectedRange, selectedMonth }) => {
   // Validate historical data
   if (!Array.isArray(historicalData) || historicalData.length === 0) {
     return (
@@ -50,18 +64,19 @@ const HistoricalSalesChart = ({ historicalData, predictedValue, selectedRange, s
   // Combine data - prediction always comes last
   const chartData = [...processedHistorical, predictionPoint];
 
-  // Custom tooltip
-  const CustomTooltip = ({ active, payload, label }) => {
+
+
+  const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload, label }) => {
     if (!active || !payload || !payload.length) return null;
 
-    const dataPoint = payload[0].payload;
+    const dataPoint = payload[0].payload as any;
     const isPrediction = dataPoint.dataType === 'prediction';
 
     return (
       <div className="custom-tooltip">
         <p className="tooltip-date">{label}</p>
         <p className={`tooltip-value ${isPrediction ? 'prediction' : 'historical'}`}>
-          Sales: <strong>{payload[0].value.toLocaleString()}</strong>
+          Sales: <strong>{payload[0].value?.toLocaleString()}</strong>
         </p>
         {isPrediction && <p className="tooltip-note">(Projected Value)</p>}
       </div>

@@ -32,7 +32,7 @@ const fetchInvoices = useCallback(async () => {
         response.data.open_orders &&
         Array.isArray(response.data.open_orders.data)
       ) {
-        setOpenOrders(response.data.open_orders.data.map(order => ({
+        setOpenOrders(response.data.open_orders.data.map((order: any) => ({
           ...order,
           id: order._id
         })));

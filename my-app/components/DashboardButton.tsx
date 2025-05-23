@@ -2,7 +2,11 @@
 import { useEffect, useState } from 'react';
 import '@/styles/SignupPage.css';
 
-const DashboardButton = ({ userId }) => {
+interface DashboardButtonProps {
+    userId: string;
+}
+
+const DashboardButton = ({ userId }: DashboardButtonProps) => {
     const [loadingText, setLoadingText] = useState("Analyzing your data...");
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);

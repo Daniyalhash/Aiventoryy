@@ -4,8 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const DatasetUpload = ({ userId, emailId, onUploadComplete }) => {
-  const [file, setFile] = useState(null);
+interface DatasetUploadProps {
+  userId: string;
+  emailId: string;
+  onUploadComplete: (data: { user_id: string }) => void;
+}
+
+const DatasetUpload = ({ userId, emailId, onUploadComplete }: DatasetUploadProps) => {
+  const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [message, setMessage] = useState("");
@@ -21,8 +27,10 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }) => {
     console.log("User ID in DatasetUpload:", userId);
   }, [userId]);
 
-  const handleFileUpload = (e) => {
-    const selectedFile = e.target.files[0];
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    const selectedFile = files[0];
     if (!selectedFile) return;
     // Reset previous messages
     setMessage("");
@@ -162,7 +170,7 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }) => {
     }
   };
 useEffect(() => {
-  const handleBeforeUnload = (e) => {
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
     e.preventDefault();
     e.returnValue = ''; // This shows the native browser confirmation
   };

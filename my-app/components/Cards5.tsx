@@ -4,7 +4,12 @@ import '../src/styles/dashboardCard6.css';
 
 
 
-const Cards5 = ({ predictedValue, last_month_sales }) => {
+interface Cards5Props {
+  predictedValue: number | null;
+  last_month_sales: number | null;
+}
+
+const Cards5: React.FC<Cards5Props> = ({ predictedValue, last_month_sales }) => {
 
   const getRestockingAdvice = () => {
     if (predictedValue === null || last_month_sales === null) {

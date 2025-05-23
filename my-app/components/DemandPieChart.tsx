@@ -10,7 +10,13 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const PredictedDemandChart = ({ selectedRange, predictedValue}) => {
+interface PredictedDemandChartProps {
+  selectedRange: string;
+  predictedValue: number;
+}
+  // Custom tooltip
+  import { TooltipProps } from 'recharts';
+const PredictedDemandChart: React.FC<PredictedDemandChartProps> = ({ selectedRange, predictedValue }) => {
   // Example historical data (you can replace this with actual API data)
   const historicalData = [
     { date: '2023-04-01', sales: 50 },
@@ -42,18 +48,19 @@ const PredictedDemandChart = ({ selectedRange, predictedValue}) => {
   // Combine historical data with prediction point
   const chartData = [...filteredData, predictionPoint];
 
-  // Custom tooltip
-  const CustomTooltip = ({ active, payload, label }) => {
+
+
+  const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload, label }) => {
     if (!active || !payload || !payload.length) return null;
 
-    const dataPoint = payload[0].payload;
+    const dataPoint = payload[0].payload as { date: string; sales: number };
     const isPrediction = dataPoint.date.includes('Predicted');
 
     return (
       <div className="custom-tooltip">
         <p className="tooltip-date">{label}</p>
         <p className={`tooltip-value ${isPrediction ? 'prediction' : 'historical'}`}>
-          Sales: <strong>{payload[0].value.toLocaleString()}</strong>
+          Sales: <strong>{payload[0].value?.toLocaleString()}</strong>
         </p>
         {isPrediction && <p className="tooltip-note">(Projected Value)</p>}
       </div>

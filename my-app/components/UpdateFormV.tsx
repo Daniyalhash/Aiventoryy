@@ -55,7 +55,7 @@ const UpdateForm = () => {
 
 
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!userId || !vendorId) {
@@ -64,7 +64,7 @@ const UpdateForm = () => {
       return;
     }
 
-    const updateFields = {};
+    const updateFields: { [key: string]: any } = {};
     if (vendorName) updateFields.vendor = vendorName;
     if (category) updateFields.category = category;
     if (phone) updateFields.vendorPhone = phone;
@@ -86,10 +86,15 @@ const UpdateForm = () => {
       setIsError(false);
       console.log("Server Response:", response.data);
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.error ||
-        error.message ||
-        "Failed to update vendor";
+      let errorMsg = "Failed to update vendor";
+      if (axios.isAxiosError(error)) {
+        errorMsg =
+          error.response?.data?.error ||
+          error.message ||
+          "Failed to update vendor";
+      } else if (error instanceof Error) {
+        errorMsg = error.message;
+      }
 
       setMessage(errorMsg);
       setIsError(true);

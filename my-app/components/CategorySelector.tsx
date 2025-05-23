@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const CategorySelector = () => {
   const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const CategorySelector = () => {
   }, []);
 
   // Handle category change
-  const handleCategoryChange = (event) => {
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
   };
 
