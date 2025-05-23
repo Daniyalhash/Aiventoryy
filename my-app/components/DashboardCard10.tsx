@@ -62,7 +62,7 @@ const DashboardCard10 = ({ title }: { title: string }) => {
       const data = response.data;
       const predictionList = data.predictions || [];
 
-      console.log("Fetched  values:", predictionList.length);
+      // console.log("Fetched  values:", predictionList.length);
 
       if (data.status === 'success' && Array.isArray(predictionList)) {
         setPredictions(predictionList); // ✅ Show first 50 only
@@ -88,7 +88,7 @@ const DashboardCard10 = ({ title }: { title: string }) => {
   useEffect(() => {
     fetchPredictions();
   }, []);
-  console.log("found these val", predictions, length)
+  // console.log("found these val", predictions, length)
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ const DashboardCard10 = ({ title }: { title: string }) => {
     setVisibleCount(10);
   }, [selectedCategory, debouncedSearchTerm, predictions]);
 
-  console.log(`Filtered count for "${selectedCategory}":`, filteredPredictions.length);
+  // console.log(`Filtered count for "${selectedCategory}":`, filteredPredictions.length);
 
   // Function to handle deleting an invoice
   useEffect(() => {
