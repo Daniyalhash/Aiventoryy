@@ -35,7 +35,7 @@ const LoginPage = () => {
     }
   }, []);
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     setMessage("");
@@ -192,15 +192,16 @@ const LoginPage = () => {
           </Link>
         </div>
 
-        <video
+           <video
           className="animatedVideo"
           autoPlay
           loop
           muted
           playsInline
-          src="/video/vid2.mp4"
-          type="video/mp4"
-        ></video>
+        >
+          <source src="/video/vid2.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   );
