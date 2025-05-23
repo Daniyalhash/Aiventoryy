@@ -9,10 +9,7 @@ export default function Insights() {
   const [activeTab, setActiveTab] = useState<'benchmark' | 'lowstock'>('benchmark');
   const [transition, setTransition] = useState<'left' | 'right' | null>(null);
 
-  const handleReload = () => {
-    window.location.reload();
-  };
-
+ 
   const switchTab = (tab: 'benchmark' | 'lowstock') => {
     if (tab === activeTab) return;
     
@@ -25,7 +22,7 @@ export default function Insights() {
 
   return (
     <div className="InsightPage">
-      <InsightsOver onRefresh={handleReload} />
+      <InsightsOver />
       
       <div className="feature-selector">
         <button 
