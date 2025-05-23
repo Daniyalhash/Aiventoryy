@@ -13,7 +13,7 @@ const ForgotPage = () => {
     const router = useRouter();
     console.log("ForgotPage component loaded");
 
-    const handleResetRequest = async (e) => {
+    const handleResetRequest = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage('');
         setIsError(false);
@@ -50,7 +50,7 @@ const ForgotPage = () => {
                 <div className="loginText">
                     <h1 className="welcometext">Forgot Password?</h1>
                     <p className="subtext">
-                        Enter your email address and we’ll send you instructions to reset your password.
+                        Enter your email address and well send you instructions to reset your password.
                     </p>
                 </div>
 
@@ -90,14 +90,15 @@ const ForgotPage = () => {
                     </Link>
                 </div>
                 <video
-                    className="animatedVideo"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    src="/video/vid2.mp4"
-                    type="video/mp4"
-                ></video>
+          className="animatedVideo"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="/video/vid2.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
             </div>
         </div>
     );
