@@ -15,9 +15,9 @@ const SignupPage = () => {
   const router = useRouter();
   const userIdFromUrl = searchParams.get("userId");
   const emailFromUrl = searchParams.get("email");
-  const initialStep = searchParams.get("step") ? parseInt(searchParams.get("step"), 10) : 1;
+  const initialStep = parseInt(searchParams.get("step") ?? "1", 10);
   const [step, setStep] = useState(initialStep);
-  const [formData, setFormData] = useState({ email: "" });
+  const [formData, setFormData] = useState<{ user_id?: string; email: string }>({ email: "" });
 
   useEffect(() => {
     console.log("Received userId:", userIdFromUrl);
@@ -28,8 +28,22 @@ const SignupPage = () => {
     }
   }, [userIdFromUrl, emailFromUrl]);
 
+  // useEffect(() => {
+  //   router.replace(`/signup?step=${step}&userId=${formData.user_id}&email=${encodeURIComponent(formData.email)}`, { scroll: false });
+  // }, [step, formData, router]);
+
+
   useEffect(() => {
-    router.replace(`/signup?step=${step}&userId=${formData.user_id}&email=${encodeURIComponent(formData.email)}`, { scroll: false });
+    // Only update URL if we have actual values
+    if (step && formData.user_id) {
+      router.replace(
+        `/signup?step=${step}${formData.user_id ? `&userId=${formData.user_id}` : ''}${formData.email ? `&email=${encodeURIComponent(formData.email)}` : ''}`,
+        { scroll: false }
+      );
+    } else {
+      // If we don't have a user_id, just show the step
+      router.replace(`/signup?step=${step}`, { scroll: false });
+    }
   }, [step, formData, router]);
 
 
@@ -39,10 +53,7 @@ const SignupPage = () => {
 
 
 
-
-
-
-  const handleCredentialsApproved = (data) => {
+  const handleCredentialsApproved = (data: { user_id: string; email: string }) => {
     console.log("Credentials Approved:", data);
     setFormData({ ...formData, user_id: data.user_id, email: data.email });
     setStep(2); // Move to Dataset Upload step
@@ -107,15 +118,16 @@ const SignupPage = () => {
           </Link>
         </div>
         {/* 3D Look Animated Video */}
-        <video
+      <video
           className="animatedVideo"
           autoPlay
           loop
           muted
           playsInline
-          src="/video/vid3.mp4"
-          type="video/mp4"
-        ></video>
+        >
+          <source src="/video/vid2.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   );

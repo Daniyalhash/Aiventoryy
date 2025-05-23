@@ -38,7 +38,7 @@ const UserCredentials = ({ onApproved }) => {
     setShowPassword((prevState) => !prevState);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
@@ -94,7 +94,7 @@ const UserCredentials = ({ onApproved }) => {
 
   };
   console.log(formData)
-  const clearError = (field) => {
+  const clearError = (field: string) => {
     setTimeout(() => {
       setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
     }, 3000);
@@ -125,7 +125,7 @@ const UserCredentials = ({ onApproved }) => {
     return Object.values(newErrors).every((val) => val === "");
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) return;
 

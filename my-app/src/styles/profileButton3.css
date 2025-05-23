@@ -13,9 +13,13 @@
   justify-content: space-between;
   align-items: center;
   height: 60px;
+  text-decoration: none;
   gap: 20px;
 }
-
+.profileContainer{
+  display: flex;
+  gap: 10px;
+}
 /* Bell Section */
 .bellSectionWeb {
   display: flex;
@@ -104,7 +108,10 @@
 .profileInfoWeb {
   min-width: 0; /* Allows text truncation */
 }
-
+.authButtons {
+  display: flex;
+  gap: 10px;
+}
 .usernameWeb {
   font-weight: 500;
   color: #17412D;
@@ -341,7 +348,32 @@
   margin-bottom: 2rem;
   color: #555;
 }
+.signUp {
+  padding: 8px 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  text-decoration: none;
+color: black;
+  background: transparent;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+  backdrop-filter: blur(30px); /* Adjust the blur amount as needed */
+  border-radius: 50px;
+}
 
+.logIn {
+  background: black;
+  padding: 8px 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 1.2rem;
+    text-decoration: none;
+
+  color: azure;
+  cursor: pointer;
+  border-radius: 50px;
+}
 .feature-section {
   margin-bottom: 1.5rem;
   border-left: 3px solid #17412D;
