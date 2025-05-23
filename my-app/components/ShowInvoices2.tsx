@@ -9,18 +9,25 @@ import {
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 interface Product {
-  name: string;
   category: string;
-  quantity: number;
+  name: string;
   price: number;
+  quantity: number;
 }
 
 interface Invoice {
-  _id: string;
-  id: number;
+  _id: string;            // MongoDB ObjectId is a string, not number
   vendor: string;
-  date: string;
   products: Product[];
+  total_amount: number;   // matches your data key for total amount
+  status: string;
+  formatted_date: string;
+  created_at: string;     // ISO string datetime
+  date: string;           // added because you have it in your data
+  timezone: string;       // added because you have it
+  user_id: string;        // added because you have it
+  vendorPhone?: string;   // optional if you want it
+  vendor_id?: string;     // optional
 }
 export default function ShowInvoices() {
   const searchParams = useSearchParams();
@@ -35,7 +42,7 @@ export default function ShowInvoices() {
   
 const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedInvoiceId, setSelectedInvoiceId] = useState<number | null>(null);
+const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
   
   const pdfRef = useRef<HTMLDivElement>(null);
   const savedInvoices = useRef(new Set());
@@ -68,20 +75,26 @@ const [invoices, setInvoices] = useState<Invoice[]>([]);
         return;
       }
   
-      const newInvoice: Invoice = {
-        _id: `${vendor.trim()}-${productname.trim()}-${category.trim()}-${Date.now()}`, // Generate a unique _id
-        id: invoices.length + 1,
-        vendor: vendor.trim(),
-        date: new Date().toISOString().split("T")[0], // Format date as YYYY-MM-DD
-        products: [
-          {
-            name: productname.trim(),
-            category: category.trim(),
-            quantity: parseInt(stockquantity as string, 10) || 1,
-            price: 3.79,
-          },
-        ],
-      };
+  const newInvoice: Invoice = {
+  _id: `${vendor.trim()}-${productname.trim()}-${category.trim()}-${Date.now()}`,
+  vendor: vendor.trim(),
+  products: [
+    {
+      name: productname.trim(),
+      category: category.trim(),
+      quantity: parseInt(stockquantity as string, 10) || 1,
+      price: 3.79,
+    }
+  ],
+  total_amount: 3.79 * (parseInt(stockquantity as string, 10) || 1),
+  status: "pending",
+  formatted_date: new Date().toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }) + ` (${new Date().toLocaleDateString("en-GB")})`,
+  created_at: new Date().toISOString(),
+  date: new Date().toISOString().split("T")[0],
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  user_id: "some-user-id",
+};
+
   
       setInvoices((prevInvoices) => [...prevInvoices, newInvoice]);
   
@@ -95,7 +108,7 @@ const [invoices, setInvoices] = useState<Invoice[]>([]);
 
   }, [vendor, productname, category, stockquantity, invoices.length]);
   // Function to generate PDF
-  const generatePDF = async (id: number) => {
+  const generatePDF = async (id: string) => {
     setSelectedInvoiceId(id);
     await new Promise((resolve) => setTimeout(resolve, 1000));
   
@@ -149,7 +162,7 @@ const saveInvoice = async (invoiceData: Invoice) => {
 
   console.log("pdfRef:", pdfRef.current);
   // Handle Confirm Button Click
-  const handleConfirmClick = (id: number) => {
+  const handleConfirmClick = (id: string) => {
     console.log("Selected Invoice ID:", id); // Debugging
     setSelectedInvoiceId(id);
     setIsPopupOpen(true);
@@ -190,7 +203,7 @@ const saveInvoice = async (invoiceData: Invoice) => {
   const handleConfirmOrder = () => {
     if (!selectedInvoiceId) return;
   
-    const invoice = invoices.find(inv => inv.id === selectedInvoiceId);
+    const invoice = invoices.find(inv => inv._id === selectedInvoiceId);
     if (!invoice) return;
   
     // Format invoice details as a message
@@ -235,10 +248,10 @@ const saveInvoice = async (invoiceData: Invoice) => {
           </thead>
           <tbody>
             {invoices.map((invoice) => (
-              <React.Fragment key={invoice.id}>
+              <React.Fragment key={invoice._id}>
                 {invoice.products.map((product, index) => (
-                  <tr key={`${invoice.id}-${product.name}`}>
-                    {index === 0 && <td rowSpan={invoice.products.length}>{invoice.id}</td>}
+                  <tr key={`${invoice._id}-${product.name}`}>
+                    {index === 0 && <td rowSpan={invoice.products.length}>{invoice._id}</td>}
                     {index === 0 && <td rowSpan={invoice.products.length}>{invoice.vendor}</td>}
                     <td>{product.name}</td>
                     <td>{product.category}</td>
@@ -251,7 +264,7 @@ const saveInvoice = async (invoiceData: Invoice) => {
                     )}
                     {index === 0 && (
                       <td rowSpan={invoice.products.length}>
-                        <button className="view-action" onClick={() => generatePDF(invoice.id)}>View PDF</button>
+                        <button className="view-action" onClick={() => generatePDF(invoice._id)}>View PDF</button>
                       </td>
                     )}
                     <td>
@@ -281,8 +294,8 @@ const saveInvoice = async (invoiceData: Invoice) => {
           <div ref={pdfRef} style={{ position: 'absolute', left: '-9999px', visibility: 'hidden' }}>
             <div className="invoice-pdf">
               <h2>Aiventory Invoice</h2>
-              <p><strong>Vendor:</strong> {invoices.find(inv => inv.id === selectedInvoiceId)?.vendor}</p>
-              <p><strong>Date:</strong> {invoices.find(inv => inv.id === selectedInvoiceId)?.date}</p>
+              <p><strong>Vendor:</strong> {invoices.find(inv => inv._id === selectedInvoiceId)?.vendor}</p>
+              <p><strong>Date:</strong> {invoices.find(inv => inv._id === selectedInvoiceId)?.date}</p>
               <table>
                 <thead>
                   <tr>
@@ -293,7 +306,7 @@ const saveInvoice = async (invoiceData: Invoice) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {invoices.find(inv => inv.id === selectedInvoiceId)?.products.map((product, index) => (
+                  {invoices.find(inv => inv._id === selectedInvoiceId)?.products.map((product, index) => (
                     <tr key={index}>
                       <td>{productname}</td>
                       <td>{category}</td>

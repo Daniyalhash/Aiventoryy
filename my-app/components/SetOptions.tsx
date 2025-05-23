@@ -12,6 +12,22 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import "@/styles/settingsPage.css";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+
+type LinkOption = {
+  name: string;
+  path: string;
+  icon: IconDefinition;
+  className?: string;
+};
+
+type ActionOption = {
+  name: string;
+  action: () => void;
+  icon: IconDefinition;
+  className?: string;
+};
+type Option = LinkOption | ActionOption;
 
 const defaultSettingsOptions = [
   { name: "Edit Profile", path: "/dashboard/setting/editProfile", icon: faUser },
@@ -22,18 +38,22 @@ const defaultSettingsOptions = [
 
 ];
 
-const SetOptions = ({ additionalOptions = [] }) => {
+const SetOptions: React.FC<{ additionalOptions?: Option[] }> = ({ additionalOptions = [] }) => {
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     console.log("User logged out");
     window.location.href = "/";
   };
 
-  const allOptions = [
+  const allOptions: Option[] = [
     ...defaultSettingsOptions,
     ...additionalOptions,
-    { name: "Logout", action: handleLogout, icon: faSignOutAlt, className: "logout-button" }, // Add className for Logout
+    { name: "Logout", action: handleLogout, icon: faSignOutAlt, className: "logout-button" },
   ];
+function isActionOption(option: Option): option is ActionOption {
+  return (option as ActionOption).action !== undefined;
+}
+
 
   return (
     <div className="settings-page">
@@ -43,22 +63,22 @@ const SetOptions = ({ additionalOptions = [] }) => {
             key={index}
             className={`settingsitem ${option.className || ""}`} // Add conditional className
           >
-            {option.action ? (
-              <button onClick={option.action} className="settingslink2">
-                <div className="settinglinkSub">
-                  <FontAwesomeIcon icon={option.icon} className="settingsicon" />
-                  <span>{option.name}</span>
-                </div>
-              </button>
-            ) : (
-              <Link href={option.path} className="settingslink">
-                <div className="settinglinkSub">
-                  <FontAwesomeIcon icon={option.icon} className="settingsicon" />
-                  <span>{option.name}</span>
-                </div>
-                <FontAwesomeIcon icon={faChevronRight} className="arrow-icon" />
-              </Link>
-            )}
+           {isActionOption(option) ? (
+  <button onClick={option.action} className="settingslink2">
+    <div className="settinglinkSub">
+      <FontAwesomeIcon icon={option.icon} className="settingsicon" />
+      <span>{option.name}</span>
+    </div>
+  </button>
+) : (
+  <Link href={option.path} className="settingslink">
+    <div className="settinglinkSub">
+      <FontAwesomeIcon icon={option.icon} className="settingsicon" />
+      <span>{option.name}</span>
+    </div>
+    <FontAwesomeIcon icon={faChevronRight} className="arrow-icon" />
+  </Link>
+)}
           </li>
         ))}
       </ul>
