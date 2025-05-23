@@ -17,9 +17,13 @@ const AboutWeb = () => {
         <Image
           src="/images/arrow3.png"
           alt="Star"
-          width={50}
-          height={50}
-          className="starsmall"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: 'auto',
+            height: 'auto',
+          }}
           priority
         />
       </div>
