@@ -13,7 +13,7 @@ import { faChevronDown, faPlus, faBoxOpen, faFilter, faCalendarAlt, faArrowAltCi
 type ButtonFrame3Props = {
   onProductSelect: (productName: string) => void;
   onCategorySelect: (category: string) => void;
-  onPredict: (productName: string, category: string, month: string, granularity: string) => Promise<any>;
+  onPredict: (productName: string, category: string, month: string, granularity: string) => Promise<unknown>;
   selectedCategory: string | null;
   onMonthSelect: (month: string) => void;
   onGranularitySelect: (granularity: string) => void;
