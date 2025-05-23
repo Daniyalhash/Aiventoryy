@@ -6,6 +6,13 @@ import "@/styles/Features.css"; // Import your CSS styles
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+type GraphStyle = {
+  dataKey: string;
+  stroke: string;
+  name: string;
+  strokeDasharray?: string;
+};
+
 const features = [
     {
         title: "Demand Forecasting hidden",
@@ -32,7 +39,7 @@ const features = [
         graphStyle: [
           { dataKey: "sales", stroke: "#8884d8", name: "Actual Sales" },
           { dataKey: "forecast", stroke: "#82ca9d", strokeDasharray: "5 5", name: "AI Forecast" }
-        ]
+        ] as GraphStyle[]
       },
       {
         title: "Auto Replenishment",
@@ -49,7 +56,7 @@ const features = [
           { dataKey: "stock", stroke: "#ff7300", name: "Current Stock" },
           { dataKey: "threshold", stroke: "#ff0000", name: "Reorder Threshold" },
           { dataKey: "order", stroke: "#0088FE", name: "Auto Order" }
-        ]
+        ] as GraphStyle[]
       },
       {
         title: "Stock Optimization",
@@ -64,7 +71,7 @@ const features = [
           { dataKey: "current", stroke: "#8884d8", name: "Current Stock" },
           { dataKey: "optimal", stroke: "#82ca9d", name: "Optimal Level" },
           { dataKey: "waste", stroke: "#ff0000", name: "Excess/Waste" }
-        ]
+        ] as GraphStyle[]
       },{
         title: "Seasonal Trends",
         description: "Identify and adapt to seasonal demand fluctuations",
@@ -84,7 +91,7 @@ const features = [
         ],
         graphStyle: [
           { dataKey: "value", stroke: "#0088FE", name: "Seasonal Demand" }
-        ]
+        ] as GraphStyle[]
       }, {
     title: "Demand Forecasting hidden",
     description: "Predict future sales trends using AI to ensure optimal stock levels",
@@ -100,11 +107,11 @@ const features = [
 
 export default function Features() {
     const [selectedFeature, setSelectedFeature] = useState(1);
-    const featureListRef = useRef(null);
+    const featureListRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       if (featureListRef.current) {
-        const selectedItem = featureListRef.current.children[selectedFeature];
+        const selectedItem = featureListRef.current.children[selectedFeature] as HTMLElement;
         if (selectedItem) {
           featureListRef.current.scrollTo({
             top: selectedItem.offsetTop - featureListRef.current.offsetHeight / 2 + selectedItem.offsetHeight / 2,
@@ -151,7 +158,7 @@ export default function Features() {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              {features[selectedFeature].graphStyle.map((style, index) => (
+              {features[selectedFeature].graphStyle?.map((style, index) => (
                 <Line
                   key={index}
                   type="monotone"

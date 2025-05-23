@@ -1,7 +1,6 @@
 import React from 'react';
 import DashboardCard5 from './DashboardCard5';
 import useSWR from 'swr';
-import Link from 'next/link';
 import { fetchTotalProducts } from '@/utils/api'; // Import API function
 import '../src/styles/dashboardCard6.css';
 
