@@ -14,22 +14,22 @@ import { useState, useEffect } from "react";
 
 
 const SignupPage = () => {
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const router = useRouter();
-  const userIdFromUrl = searchParams.get("userId");
-  const emailFromUrl = searchParams.get("email");
-  const initialStep = parseInt(searchParams.get("step") ?? "1", 10);
-  const [step, setStep] = useState(initialStep);
+  // const userIdFromUrl = searchParams.get("userId");
+  // const emailFromUrl = searchParams.get("email");
+  // const initialStep = parseInt(searchParams.get("step") ?? "1", 10);
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<{ user_id?: string; email: string }>({ email: "" });
 
-  useEffect(() => {
-    console.log("Received userId:", userIdFromUrl);
-    console.log("Received email:", emailFromUrl);
+  // useEffect(() => {
+  //   console.log("Received userId:", userIdFromUrl);
+  //   console.log("Received email:", emailFromUrl);
 
-    if (userIdFromUrl && emailFromUrl) {
-      setFormData({ user_id: userIdFromUrl, email: emailFromUrl });
-    }
-  }, [userIdFromUrl, emailFromUrl]);
+  //   if (userIdFromUrl && emailFromUrl) {
+  //     setFormData({ user_id: userIdFromUrl, email: emailFromUrl });
+  //   }
+  // }, [userIdFromUrl, emailFromUrl]);
 
   // useEffect(() => {
   //   router.replace(`/signup?step=${step}&userId=${formData.user_id}&email=${encodeURIComponent(formData.email)}`, { scroll: false });
