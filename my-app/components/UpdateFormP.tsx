@@ -80,7 +80,7 @@ const UpdateFormP = () => {
 
 
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!userId || !productId) {
@@ -114,11 +114,16 @@ const UpdateFormP = () => {
       setIsError(false);
       console.log("Server Response:", response.data);
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.error ||
-        error.message ||
-        "Failed to update product";
-
+      
+let errorMsg = "Failed to update product";
+      if (axios.isAxiosError(error)) {
+        errorMsg =
+          error.response?.data?.error ||
+          error.message ||
+          "Failed to update product";
+      } else if (error instanceof Error) {
+        errorMsg = error.message;
+      }
       setMessage(errorMsg);
       setIsError(true);
       console.error("Update Product Error:", errorMsg);

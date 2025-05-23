@@ -8,21 +8,26 @@ import html2canvas from 'html2canvas';
 import axios from "axios";
 import AddInvoice from '@/components/addInvoice';
 import Image from 'next/image';
-
 interface Product {
-  name: string;
   category: string;
-  quantity: number;
+  name: string;
   price: number;
+  quantity: number;
 }
 
 interface Invoice {
-  _id: string;
+  _id: number;            // MongoDB ObjectId is a string, not number
   vendor: string;
   products: Product[];
-  total: number;
+  total_amount: number;   // matches your data key for total amount
   status: string;
-  created_at: string;
+  formatted_date: string;
+  created_at: string;     // ISO string datetime
+  date: string;           // added because you have it in your data
+  timezone: string;       // added because you have it
+  user_id: string;        // added because you have it
+  vendorPhone?: string;   // optional if you want it
+  vendor_id?: string;     // optional
 }
 // interface UserData {
 //   id: string;
@@ -30,7 +35,7 @@ interface Invoice {
 //   email: string;
 // }
 interface EditingInvoice extends Invoice {
-  id: string;
+  _id: number;
 }
 
 interface ProductChange {
@@ -118,7 +123,7 @@ const fetchUserData = useCallback(async () => {
     setPdfSelectedInvoice(id);
     await new Promise((resolve) => setTimeout(resolve, 500));
     console.log(id)
-    const invoice = invoices.find(inv => inv.id === id);
+    const invoice = invoices.find(inv => inv._id === id);
     if (!invoice || !pdfRef.current) return
 
     // Temporarily show pdfRef
@@ -280,7 +285,7 @@ const fetchUserData = useCallback(async () => {
       setIsError(true);
       return;
     }
-    const selectedInvoice = invoices.find(invoice => invoice.id === selectedInvoiceId);
+    const selectedInvoice = invoices.find(invoice => invoice._id === selectedInvoiceId);
 
     if (!selectedInvoice) {
       setMessage("Selected invoice data not found");
@@ -311,9 +316,16 @@ const fetchUserData = useCallback(async () => {
         // setTimeout(() => setConfirmationMessage(""), 3000);
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.error ||
-        "Failed to confirm invoice";
-      setMessage(errorMessage);
+
+
+        let errorMsg = "Failed to confirm invoice";
+
+    if (axios.isAxiosError(error)) {
+      errorMsg = error.response?.data?.error || error.message;
+    } else if (error instanceof Error) {
+      errorMsg = error.message;
+    }
+      setMessage(errorMsg);
       setIsError(true);
       console.error("Confirmation error:", error);
     }
@@ -447,7 +459,7 @@ const fetchUserData = useCallback(async () => {
                             <FontAwesomeIcon icon={faEdit} />
                           </button>
                           <button
-                            onClick={() => handleConfirmClick(invoice.id)}
+                            onClick={() => handleConfirmClick(invoice._id)}
                             className="confirm-button"
                             title="Confirm Order"
                           >
@@ -592,7 +604,7 @@ const fetchUserData = useCallback(async () => {
           }}
         >
           {pdfSelectedInvoice !== null && (() => {
-            const currentInvoice = invoices.find(inv => inv.id === pdfSelectedInvoice);
+            const currentInvoice = invoices.find(inv => inv._id === pdfSelectedInvoice);
             if (!currentInvoice) return null;
 
             // const product = currentInvoice.products[0];
@@ -611,7 +623,7 @@ const fetchUserData = useCallback(async () => {
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <h2 style={{ color: '#17412d', marginBottom: '10px' }}>INVOICE</h2>
-                    <p><strong>Invoice #:</strong> {currentInvoice.id}</p>
+                    <p><strong>Invoice #:</strong> {currentInvoice._id}</p>
                     <p><strong>Date:</strong> {new Date(currentInvoice.date).toLocaleDateString()}</p>
                   </div>
                 </div>
