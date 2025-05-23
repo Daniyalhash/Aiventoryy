@@ -17,8 +17,9 @@ export interface Vendor {
   delivery_time: number;
   category: string;
   vendor_id: string;
-  last_updated: string | null;
-  [key: string]: string | number | null | undefined;
+
+  last_updated: string | undefined;
+  [key: string]: string | number | undefined;
 }
 
 export interface VendorStats {
@@ -57,7 +58,7 @@ const [stats, setStats] = useState<VendorStats | null>(null);
           delivery_time: v.DeliveryTime || 0,
           category: v.category || '',
           vendor_id: v.vendor_id || '',
-          last_updated: v.last_updated,
+last_updated: v.last_updated || undefined
         }));
         setVendors(transformedVendors);
         } else {

@@ -2,8 +2,13 @@ import React, { useState, useEffect } from "react";
 import "@/styles/showCSVData.css";
 
 // Define interface for dataset items
+interface DatasetItem {
+  [key: string]: string | number | undefined;
+}
 
-interface Vendor {
+// Vendor specific interface
+interface Vendor extends DatasetItem {
+
   vendor_name: string;
   vendor_phone: string;
   reliability_score: number;
@@ -12,10 +17,29 @@ interface Vendor {
   linked_products?: number;
   [key: string]: string | number | undefined;
 }
-interface ShowDataset2Props {
-  dataset: Vendor[];
+interface InventoryData extends DatasetItem {
+  product_id: string;
+  productname: string;
+  category: string;
+  subcategory: string;
+  stockquantity: number;
+  costprice: number;
+  sellingprice: number;
+  barcode: string;
+  product_size: string;
+  expirydate: string;
+  monthly_sales: number;
+  reorderthreshold: number;
+  sale_date: string;
+  season: string;
+  timespan: string;
+  vendor_id: string;
 }
-const ShowCSVData: React.FC<ShowDataset2Props> = ({ dataset }) => {
+
+interface ShowCSVDataProps {
+  dataset: Vendor[] | InventoryData[];
+}
+const ShowCSVData: React.FC<ShowCSVDataProps> = ({ dataset }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);

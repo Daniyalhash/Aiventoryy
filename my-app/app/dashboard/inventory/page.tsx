@@ -8,23 +8,27 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import StatsCards from "@/components/StatsCards";
 import DashboardCard10 from "@/components/DashboardCard10";
-
 interface InventoryData {
-  id: string;
-  productName: string;
+  product_id: string;
+  productname: string;
   category: string;
-  quantity: number;
-  price: number;
-  vendor: string;
-  lastUpdated: string;
-  [key: string]: string | number; // Add index signature for compatibility
+  subcategory: string;
+  stockquantity: number;
+  costprice: number;
+  sellingprice: number;
+  barcode: string;
+  product_size: string;
+  expirydate: string;
+  monthly_sales: number;
+  reorderthreshold: number;
+  sale_date: string;
+  season: string;
+  timespan: string;
+  vendor_id: string;
+  [key: string]: string | number; // Keep index signature for compatibility
 }
 
-// interface ApiResponse {
-//   success: boolean;
-//   data: InventoryData[];
-//   error?: string;
-// }
+
 interface InventoryStats {
   total_products: number;
   total_unique_products: number;
@@ -52,7 +56,25 @@ const [stats, setStats] = useState<InventoryStats | null>(null);
         ]);
 
        if (productsResponse.data?.products) {
-          setProducts(productsResponse.data.products.flat());
+         const transformedProducts = productsResponse.data.products.flat().map((p: any) => ({
+            product_id: p.product_id || '',
+            productname: p.productname || '',
+            category: p.category || '',
+            subcategory: p.subcategory || '',
+            stockquantity: p.stockquantity || 0,
+            costprice: p.costprice || 0,
+            sellingprice: p.sellingprice || 0,
+            barcode: p.barcode?.toString() || '',
+            product_size: p.product_size || '',
+            expirydate: p.expirydate || '',
+            monthly_sales: p.monthly_sales || 0,
+            reorderthreshold: p.reorderthreshold || 0,
+            sale_date: p.sale_date || '',
+            season: p.season || '',
+            timespan: p.timespan || '',
+            vendor_id: p.vendor_id || ''
+          }));
+          setProducts(transformedProducts);
         } else {
           setError("No products found.");
         }
