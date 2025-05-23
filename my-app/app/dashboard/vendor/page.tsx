@@ -11,15 +11,14 @@ import ButtonFrame from "@/components/ButtonFrame";
 import StatsCards2 from "@/components/StatsCards2";
 import DashboardCard11 from "@/components/DashboardCard11";
 export interface Vendor {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  status: string;
-  created_at: string;
-  [key: string]: unknown;
-
+  vendor_name: string;
+  vendor_phone: string;
+  reliability_score: number;
+  delivery_time: number;
+  category: string;
+  vendor_id: string;
+  last_updated: string | null;
+  [key: string]: string | number | null | undefined;
 }
 
 export interface VendorStats {
@@ -51,7 +50,16 @@ const [stats, setStats] = useState<VendorStats | null>(null);
           })
         ]);
         if (vendorResponse.data?.vendors) {
-          setVendors(vendorResponse.data.vendors.flat());
+           const transformedVendors = vendorResponse.data.vendors.flat().map((v: any) => ({
+          vendor_name: v.vendor || '',
+          vendor_phone: v.vendorPhone?.toString() || '',
+          reliability_score: v.ReliabilityScore || 0,
+          delivery_time: v.DeliveryTime || 0,
+          category: v.category || '',
+          vendor_id: v.vendor_id || '',
+          last_updated: v.last_updated,
+        }));
+        setVendors(transformedVendors);
         } else {
           setError("No vendor found.");
         }
@@ -109,7 +117,7 @@ const [stats, setStats] = useState<VendorStats | null>(null);
             <div className="dashboard-cards-container">
               <DashboardCard9
                 title="Vendor Orders"
-                link="/dashboard/vendor"
+                // link="/dashboard/vendor"
                 subTitle="View all previous vendor orders in one place"
               />
           
@@ -118,8 +126,7 @@ const [stats, setStats] = useState<VendorStats | null>(null);
           
                 <DashboardCard11
                 title="Vendor Performance"
-                link="/dashboard/vendor"
-                subTitle="View all vendor Performance in one place"
+                
               />
           
             </div>
