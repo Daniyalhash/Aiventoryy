@@ -253,7 +253,7 @@ async ([, userId, category]) => {
     // Clear search text when a category is selected
     setUseCategory(category)
     if (category) {
-      fetchProductsByCategory(category, userId);
+      fetchProductsByCategory(userId,category);
     } else {
       setProducts([]); // Clear products if no category is selected
     }
