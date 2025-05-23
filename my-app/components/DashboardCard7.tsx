@@ -1,16 +1,24 @@
 import '../src/styles/dashboardCard4.css';
 import React, { useState } from 'react';
 
+type DashboardCard7Props = {
+  title: string;
+  description: string;
+  
+  onRangeChange?: (range: string) => void;
+  bgColor?: string;
+  graphContent?: React.ReactNode;
+  granularity?: 'day' | 'month';
+};
+
 const DashboardCard7 = ({ 
   title, 
-  
   description,
   onRangeChange, 
-  
   bgColor, 
   graphContent,
-  granularity = 'day' // Default to 'day', but can pass 'month'
-}) => {
+  granularity = 'day'
+}: DashboardCard7Props) => {
   // State for selected range
   const [selectedRange, setSelectedRange] = useState(
     granularity === 'month' ? 'Month 3' : 'Day 5'
@@ -25,7 +33,7 @@ const DashboardCard7 = ({
     }
   };
 
-  const handleRangeChange = (event) => {
+  const handleRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newRange = event.target.value;
     setSelectedRange(newRange);
     if (onRangeChange) onRangeChange(newRange);

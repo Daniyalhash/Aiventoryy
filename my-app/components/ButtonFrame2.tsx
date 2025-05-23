@@ -9,17 +9,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons"; import '@/styles/buttonFrame.css';
 import Popup from '@/components/Popup'; // Import the Popup component
 import axios from "axios";
+// import { Barcode } from 'lucide-react';
 
 const ButtonFrame2 = () => {
    // Create refs for each input field
-   const formRef = useRef({
-    vendor_name: React.createRef(),
-    reliability_score: React.createRef(),
-    delivery_time: React.createRef(),
-    vendor_phone: React.createRef(),
-    category: React.createRef(),
-    product_barcode: React.createRef()
-  });
+ const formRef = useRef({
+  vendor_name: React.createRef<HTMLInputElement>(),
+  reliability_score: React.createRef<HTMLInputElement>(),
+  delivery_time: React.createRef<HTMLInputElement>(),
+  vendor_phone: React.createRef<HTMLInputElement>(),
+  category: React.createRef<HTMLInputElement>(),
+  product_barcode: React.createRef<HTMLInputElement>()
+});
+const vendorNameRef = useRef<HTMLInputElement>(null);
+const reliabilityScoreRef = useRef<HTMLInputElement>(null);
+const deliveryTimeRef = useRef<HTMLInputElement>(null);
+const vendorPhoneRef = useRef<HTMLInputElement>(null);
+const categoryRef = useRef<HTMLInputElement>(null);
+const productBarcodeRef = useRef<HTMLInputElement>(null);
+
   // Debugging: See updates in real-time
 
   const [popupConfig, setPopupConfig] = useState<{
@@ -59,14 +67,15 @@ const ButtonFrame2 = () => {
     e.preventDefault(); // Prevent default form submission
 
    // Get all form values from refs
-   const formData = {
-    vendor_name: formRef.current.vendor_name.current.value,
-    reliability_score: formRef.current.reliability_score.current.value,
-    delivery_time: formRef.current.delivery_time.current.value,
-    vendor_phone: formRef.current.vendor_phone.current.value,
-    category: formRef.current.category.current.value,
-    product_barcode: formRef.current.product_barcode.current.value
-  };
+const formData = {
+  vendor_name: vendorNameRef.current?.value || '',
+  reliability_score: reliabilityScoreRef.current?.value || '',
+  delivery_time: deliveryTimeRef.current?.value || '',
+  vendor_phone: vendorPhoneRef.current?.value || '',
+  category: categoryRef.current?.value || '',
+  product_barcode: productBarcodeRef.current?.value || '',
+};
+
 
   console.log("Submitting:", formData);
 
@@ -77,13 +86,21 @@ const ButtonFrame2 = () => {
   }
 
   try {
-    const response = await axios.post("http://127.0.0.1:8000/aiventory/add-vendor/", formData);
+    // const response = await axios.post("http://127.0.0.1:8000/aiventory/add-vendor/", formData);
+
+    const response = await axios.post("http://127.0.0.1:8000/aiventory/-vendor/", formData);
     console.log("Response:", response.data);
     alert(`Vendor ${formData.vendor_name} added successfully!`);
     
     // Clear all form fields
     Object.values(formRef.current).forEach(ref => {
-      ref.current.value = '';
+      vendorNameRef.current!.value = '';
+reliabilityScoreRef.current!.value = '';
+deliveryTimeRef.current!.value = '';
+vendorPhoneRef.current!.value = '';
+categoryRef.current!.value = '';
+productBarcodeRef.current!.value = '';
+
     });
     
     closePopup();
@@ -103,7 +120,7 @@ const ButtonFrame2 = () => {
           <input 
             type="text" 
             name="vendor_name" 
-            ref={formRef.current.vendor_name} 
+            ref={vendorNameRef} 
             defaultValue="" 
           />
         </div>
@@ -112,7 +129,7 @@ const ButtonFrame2 = () => {
           <input 
             type="number"
             name="reliability_score"
-            ref={formRef.current.reliability_score}
+            ref={reliabilityScoreRef}
             defaultValue=""
           />
         </div>
@@ -121,7 +138,7 @@ const ButtonFrame2 = () => {
           <input 
             type="text"
             name="delivery_time"
-            ref={formRef.current.delivery_time}
+            ref={deliveryTimeRef}
             defaultValue=""
           />
         </div>
@@ -130,7 +147,7 @@ const ButtonFrame2 = () => {
           <input 
             type="text"
             name="vendor_phone"
-            ref={formRef.current.vendor_phone}
+            ref={vendorPhoneRef}
             defaultValue=""
           />
         </div>
@@ -139,7 +156,7 @@ const ButtonFrame2 = () => {
           <input 
             type="text"
             name="category"
-            ref={formRef.current.category}
+            ref={categoryRef}
             defaultValue=""
           />
         </div>
@@ -148,7 +165,7 @@ const ButtonFrame2 = () => {
           <input 
             type="text"
             name="product_barcode"
-            ref={formRef.current.product_barcode}
+            ref={productBarcodeRef}
             defaultValue=""
           />
         </div>

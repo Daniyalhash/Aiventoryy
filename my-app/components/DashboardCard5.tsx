@@ -1,6 +1,31 @@
 import '../src/styles/customCard2.css';
 
-export default function DashboardCard5({main, subTitle,value,value2,guidance, description,description2,percentage, bgColor }) {
+type DashboardCard5Props = {
+  main: string;
+  subTitle?: string;
+  value?: string | number;
+  value2?: string | number;
+  guidance?: string;
+  description?: string;
+  description2?: string;
+  percentage?: string | number;
+  bgColor?: string;
+  children?: React.ReactNode; // ✅ Add this line
+};
+export default function DashboardCard5({
+  main,
+  subTitle,
+  value,
+  value2,
+  guidance,
+  description,
+  description2,
+  percentage,
+  bgColor,
+}: DashboardCard5Props) {
+  console.log(description)
+  console.log(description2)
+  console.log(value2)
   return (
     <div className={`cardC5 compare2 ${bgColor}`}>
       {/* Background Overlay */}
@@ -14,7 +39,7 @@ export default function DashboardCard5({main, subTitle,value,value2,guidance, de
         
         <h2 className="subTitle2">{main}</h2>
         <h2 className="subTitle">{subTitle}</h2>
-        <p className="cardValue3">{value2}</p>
+        <p className="cardValue3">{guidance}</p>
 
         <div className="cardMain">
         <div className="value-container">
@@ -32,6 +57,7 @@ export default function DashboardCard5({main, subTitle,value,value2,guidance, de
         
         {/* Promotion Button */}
       </div>
+      
     </div>
   );
 }

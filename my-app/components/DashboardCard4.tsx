@@ -2,7 +2,17 @@ import '../src/styles/dashboardCard4.css';
 import React, { useState } from 'react';
 
 
-const DashboardCard4 = ({ title, description,onRangeChange, bgColor, graphContent }) => {
+interface DashboardCard4Props {
+  title: string;
+  description: string;
+  onRangeChange: (range: string) => void;
+  bgColor: string;
+  graphContent: React.ReactNode;
+}
+
+const DashboardCard4: React.FC<DashboardCard4Props> = ({ 
+  title, description, onRangeChange, bgColor, graphContent 
+}) => {
   const [selectedRange, setSelectedRange] = useState('Day 5'); // Default range
     const generateRangeOptions = () => {
       return ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5','Day 6', 'Day 7', 'Day 8', 'Day 9', 'Day 10',
@@ -10,7 +20,7 @@ const DashboardCard4 = ({ title, description,onRangeChange, bgColor, graphConten
      'Day 21', 'Day 22', 'Day 23', 'Day 24', 'Day 25','Day 26', 'Day 27', 'Day 28', 'Day 29', 'Day 30',
       ];
     };
-    const handleRangeChange = (event) => {
+    const handleRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       const newRange = event.target.value;
       setSelectedRange(newRange);
       onRangeChange(newRange); // Send the selected range to parent

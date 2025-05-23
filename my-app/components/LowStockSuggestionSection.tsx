@@ -12,6 +12,7 @@ type LowStockProduct = {
   productname_id: string;
   vendors: VendorDetails[];
   vendor_id?: string;
+  costprice?: number;
 };
 
 type VendorDetails = {
@@ -55,7 +56,7 @@ const LowStockSuggestionSection: React.FC = () => {
         });
 
         if (response.status === 200 && Array.isArray(response.data.low_stock_products)) {
-          const sanitizedData = response.data.low_stock_products.map(product => ({
+          const sanitizedData = response.data.low_stock_products.map((product: any) => ({
             ...product,
             vendors: Array.isArray(product.vendors) ? product.vendors : [],
           }));
@@ -88,7 +89,7 @@ const LowStockSuggestionSection: React.FC = () => {
       });
       console.log("Vendor details response:", response.data); // Debugging line
       if (response.status === 200 && response.data.vendors && Array.isArray(response.data.vendors)) {
-        const sortedVendors = response.data.vendors.sort((a, b) => {
+        const sortedVendors = response.data.vendors.sort((a: VendorDetails, b: VendorDetails) => {
           if (a.DeliveryTime !== b.DeliveryTime) {
             return a.DeliveryTime - b.DeliveryTime;
           }
@@ -222,27 +223,41 @@ const LowStockSuggestionSection: React.FC = () => {
       }
     } catch (error) {
       // Enhanced error diagnostics
-      console.error("Order placement error:", {
-        error,
-        response: error.response?.data
-      });
+      if (typeof error === "object" && error !== null && "response" in error) {
+        // @ts-ignore
+        console.error("Order placement error:", {
+          error,
+          // @ts-ignore
+          response: error.response?.data
+        });
+      } else {
+        console.error("Order placement error:", { error });
+      }
 
       let errorMsg = "Order may have been placed - please verify";
 
-      if (error.response) {
+      if (typeof error === "object" && error !== null && "response" in error) {
+        const err = error as { response?: any; request?: any };
         // Handle cases where backend succeeds but returns non-200
-        if (error.response.status >= 200 && error.response.status < 300) {
+        if (err.response && err.response.status >= 200 && err.response.status < 300) {
           errorMsg = "Order processed successfully!";
           setIsError(false);
-        } else {
-          errorMsg = error.response.data?.message || `Server responded with ${error.response.status}`;
+        } else if (err.response) {
+          errorMsg = err.response.data?.message || `Server responded with ${err.response.status}`;
         }
-      } else if (error.request) {
+      } else if (typeof error === "object" && error !== null && "request" in error) {
         errorMsg = "Network error - order may have been placed";
       }
 
       setMessage(errorMsg);
-      setIsError(error.response?.status >= 400);
+      setIsError(
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as any).response?.status === "number"
+          ? (error as any).response.status >= 400
+          : true
+      );
     }
   };
 
@@ -266,7 +281,7 @@ const LowStockSuggestionSection: React.FC = () => {
     return 'low';
   };
 
-  const getVendorTag = (deliveryTime, reliabilityScore, allVendors) => {
+  const getVendorTag = (deliveryTime: number, reliabilityScore: number, allVendors: VendorDetails[]) => {
     // const maxReliability = Math.max(...allVendors.map(v => v.ReliabilityScore));
     const maxDeliveryTime = Math.max(...allVendors.map(v => v.DeliveryTime)); // highest days = worst
 
@@ -400,7 +415,12 @@ const LowStockSuggestionSection: React.FC = () => {
     }
   }
   } catch (error) {
-    console.error("🚨 Error in automated order flow:", error.message, error.response?.data);
+    if (error && typeof error === "object" && "message" in error) {
+      // @ts-ignore
+      console.error("🚨 Error in automated order flow:", error.message, (error as any).response?.data);
+    } else {
+      console.error("🚨 Error in automated order flow:", error);
+    }
     setMessage("⚠️ Failed to complete automated order. Please check logs or retry.");
     setIsError(true);
   }

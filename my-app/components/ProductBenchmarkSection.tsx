@@ -10,19 +10,25 @@ import { faPlus, faTimes, faSearch, faChartLine, faBoxOpen, faTruck, faFilter, f
 
 
 export default function ProductBenchmarkSection() {
-  const [categories, setCategories] = useState([]);
+  type Product = {
+    id: string;
+    productname: string;
+    [key: string]: any; // Add other properties as needed
+  };
+
+  const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
-  // const [product, setProduct] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  // const [product, setProduct] = useState<Product[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<{ id: string; productname: string } | null>(null);
   const [UseCategory, setUseCategory] = useState("");
   const [chartData2, setChartData2] = useState<Array<{ name: string; value: number }>>([]);
   const [chartData, setChartData] = useState<Array<{ name: string; value: number }>>([]);
-  const [targetProductDetails, setTargetProductDetails] = useState(null);
+  const [targetProductDetails, setTargetProductDetails] = useState<Product | null>(null);
   const [applyClicked, setApplyClicked] = useState(false);
   const [isProductSelected, setIsProductSelected] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const [range, setRange] = useState('1-5'); // Default range
   const [range2, setRange2] = useState('1-5'); // Default range
@@ -133,10 +139,18 @@ async ([, userId, category]) => {
     }
 
     // Fetch comparison data using the selected or manually entered category
-    fetchComparisonData(selectedProduct, category);
+    if (selectedProduct) {
+      fetchComparisonData(
+        { vendor_id: (selectedProduct as any).vendor_id || (selectedProduct as any).id, productname: selectedProduct.productname },
+        category
+      );
+    }
   };
   // Fetch products for comparison
-  const fetchComparisonData = async (product, category) => {
+  const fetchComparisonData = async (
+    product: { vendor_id: string; productname: string },
+    category: string
+  ) => {
     setLoading(true);
 
     const userId = localStorage.getItem('userId');
@@ -160,17 +174,17 @@ async ([, userId, category]) => {
       if (response.status === 200 && response.data.products) {
 
         const products = response.data.products;
-        const targetProduct = products.find((p) => p.productname === product.productname);
+        const targetProduct = products.find((p: any) => p.productname === product.productname);
 
         if (targetProduct) {
           // Ensure the target product is always included and appears first
           setTargetProductDetails(targetProduct); // Save target product details
-          const comparisonData = [targetProduct, ...products.filter((prod) => prod.productname !== product.productname)].map((prod) => ({
+          const comparisonData = [targetProduct, ...products.filter((prod: any) => prod.productname !== product.productname)].map((prod: any) => ({
             name: prod.productname,
             value: prod.sellingprice,
           }));
           // Ensure the target product is always included and appears first
-          const comparisonData2 = [targetProduct, ...products.filter((prod) => prod.productname !== product.productname)].map((prod) => ({
+          const comparisonData2 = [targetProduct, ...products.filter((prod: any) => prod.productname !== product.productname)].map((prod: any) => ({
             name: prod.productname,
             value: prod.profitmargin,
           }));
@@ -184,14 +198,14 @@ async ([, userId, category]) => {
       }
     } catch (error) {
       console.error("API call failed:", error);
-      setError('Error fetching comparison data. Please try again.');
+      setError('Error  comparison data. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   // Set range based on the number of products
-  const getRangeBasedOnSize = (numProducts) => {
+  const getRangeBasedOnSize = (numProducts: number) => {
     if (numProducts > 50) {
       return '1-60';
     } else if (numProducts > 20) {
@@ -201,15 +215,15 @@ async ([, userId, category]) => {
     }
   };
   // use for changing range
-  const handleRangeChange = (event) => {
+  const handleRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setRange(event.target.value);
   };
-  const handleRangeChange2 = (event) => {
+  const handleRangeChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setRange2(event.target.value);
   };
 
-  const generateRangeOptions = (dataLength) => {
-    const options = [];
+  const generateRangeOptions = (dataLength: number) => {
+    const options: string[] = [];
     if (dataLength === 0) return options; // Handle empty data case
 
     for (let i = 5; i <= dataLength; i += 5) {
@@ -221,7 +235,7 @@ async ([, userId, category]) => {
     return options;
   };
   // Filter chart data based on selected range (Common function)
-  const filterChartData = (data, selectedRange) => {
+  const filterChartData = (data: Array<{ name: string; value: number }>, selectedRange: string) => {
     if (!data || data.length === 0) return []; // Handle null or empty data
     if (!selectedRange) return data
     const [min, max] = selectedRange.split('-').map(Number);
@@ -231,7 +245,7 @@ async ([, userId, category]) => {
   const filteredChartData2 = filterChartData(chartData2, range2);
 
   // Handle category change
-  const handleCategoryChange = (event) => {
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const category = event.target.value;
     setSelectedCategory(category);
     setUseCategory("");
@@ -239,24 +253,20 @@ async ([, userId, category]) => {
     // Clear search text when a category is selected
     setUseCategory(category)
     if (category) {
-      fetchProductsByCategory(category);
+      fetchProductsByCategory(category, userId);
     } else {
       setProducts([]); // Clear products if no category is selected
     }
   };
   // Handle product selection
-  const handleProductSelect = (product) => {
+  const handleProductSelect = (product: { id: string; productname: string }) => {
     setSearchText(product.productname); // Update search text
     setSelectedProduct(product);
     setIsProductSelected(true);
     // Store the selected product
   };
 
-  // const updateRangeData = (range, data, setFilteredData) => {
-  //   const [min, max] = range.split('-').map(Number);
-  //   const filtered = data.filter((_, index) => index >= min - 1 && index <= max - 1);
-  //   setFilteredData(filtered);
-  // };
+
   const filteredSuggestions = products.filter(product =>
     product.productname.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -264,11 +274,11 @@ async ([, userId, category]) => {
   // Limit to first 5
   const limitedSuggestions = filteredSuggestions.slice(0, 5);
   // Handle change in the search input field
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearchText(searchValue);
     // Filter the products based on search text
-    const filteredProducts = allProducts.filter(product =>
+    const filteredProducts = (allProducts as Product[]).filter((product: Product) =>
       product.productname.toLowerCase().includes(searchValue.toLowerCase())
     );
 
@@ -278,7 +288,12 @@ async ([, userId, category]) => {
   // edir
 
   useEffect(() => {
-    setChartData(products); // Show all products initially
+    setChartData(
+      products.map((prod) => ({
+        name: prod.productname,
+        value: prod.sellingprice ?? 0, // Use 0 or another default if sellingprice is missing
+      }))
+    ); // Show all products initially
   }, [products]);
 
   const rangeOptions = generateRangeOptions(chartData.length);
@@ -326,7 +341,7 @@ async ([, userId, category]) => {
                 onChange={(e) => {
                   setUseCategory(e.target.value);
 
-                  handleCategoryInputChange(e.target.value); // Handle manual category input
+                  // handleCategoryChange(e); // Optionally call handleCategoryChange if needed
                 }}
                 className="product-clear-field"
                 disabled={!!selectedCategory}
@@ -505,7 +520,10 @@ async ([, userId, category]) => {
               </div>
               <div className="chart-content">
                 {filteredChartData2.length > 0 ? (
-                  <ProfitMarginChart data={filteredChartData2} />
+                  <ProfitMarginChart
+                    data={filteredChartData2}
+                    targetProduct={targetProductDetails?.productname || selectedProduct?.productname || ""}
+                  />
                 ) : (
                   <p className="no-data">No margin data available</p>
                 )}

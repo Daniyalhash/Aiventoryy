@@ -10,9 +10,18 @@ interface AxiosError {
   message?: string;
 }
 
+interface Log {
+  _id: string;
+  timestamp: string;
+  entity_type: string;
+  action: string;
+  entity_id?: string;
+  metadata?: Record<string, any>;
+}
+
 const ActivityProduct = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState<Log[]>([]);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 useEffect(() => {

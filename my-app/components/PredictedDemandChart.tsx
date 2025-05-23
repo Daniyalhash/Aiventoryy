@@ -11,9 +11,14 @@ import {
   Area
 } from 'recharts';
 
-const PredictedDemandChart = ({ selectedRange, predictedValue}) => {
+interface PredictedDemandChartProps {
+  selectedRange?: string;
+  predictedValue: number | null;  // Update to match Cards3Props type
+}
+
+const PredictedDemandChart: React.FC<PredictedDemandChartProps> = ({ selectedRange, predictedValue }) => {
   // Function to generate random daily demand data based on predicted value
-  const generateMonthlyData = (totalDemand) => {
+  const generateMonthlyData = (totalDemand: number) => {
     if (!totalDemand) return [];
     
     const daysInMonth = 30; // or you could get actual days in current month
@@ -55,7 +60,7 @@ const PredictedDemandChart = ({ selectedRange, predictedValue}) => {
     return dailyData;
   };
 
-  const chartData = generateMonthlyData(predictedValue);
+  const chartData = predictedValue != null ? generateMonthlyData(predictedValue) : [];
   const filteredData = selectedRange 
     ? chartData.slice(0, parseInt(selectedRange.replace("Day ", "")))
     : chartData;
@@ -117,7 +122,7 @@ const PredictedDemandChart = ({ selectedRange, predictedValue}) => {
                   type="monotone" 
                   dataKey="upperBound" 
                   fill="#9FE870" 
-                  stroke={false} 
+                  stroke="none" 
                   fillOpacity={0.3} 
                   name="Expected Range"
                 />
@@ -125,7 +130,7 @@ const PredictedDemandChart = ({ selectedRange, predictedValue}) => {
                   type="monotone" 
                   dataKey="lowerBound" 
                   fill="#9FE870" 
-                  stroke={false} 
+                  stroke="none" 
                   fillOpacity={0.3} 
                 />
               </LineChart>
