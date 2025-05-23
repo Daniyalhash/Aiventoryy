@@ -29,15 +29,35 @@ Chart.register(
   CategoryScale
 );
 
-const DashboardCard11 = ({ title}) => {
+interface DashboardCard11Props {
+  title: string;
+}
+
+const DashboardCard11 = ({ title }: DashboardCard11Props) => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [message, setMessage] = useState(""); // Success/error message
   const [isError, setIsError] = useState(false);
-  const [vendorStats, setVendorStats] = useState(null); // Store vendor stats here
+  interface ReliabilityScoreHistoryItem {
+    date: string;
+    score: number;
+  }
+  
+  interface VendorStats {
+    vendor_id: string;
+    total_orders: number;
+    avg_delivery_days: number;
+    on_time_percentage: number;
+    last_5_scores: number[];
+    last_delivery_status: string;
+    last_updated: string;
+    reliability_score_history: ReliabilityScoreHistoryItem[];
+  }
+  
+  const [vendorStats, setVendorStats] = useState<VendorStats | null>(null); // Store vendor stats here
   const [isLoading, setIsLoading] = useState(false);
   const [vendorId, setVendorId] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (vendorId.trim()) {
       handlePerformance(userId, vendorId.trim());
@@ -47,7 +67,7 @@ const DashboardCard11 = ({ title}) => {
     }
   }
   // 🔍 Fetch vendor performance on click
-  const handlePerformance = async (user_id, vendor_id) => {
+  const handlePerformance = async (user_id: string | null, vendor_id: string) => {
     console.log('Starting performance with:', { user_id, vendor_id });
     setIsLoading(true);
     setMessage("");
@@ -116,7 +136,7 @@ const DashboardCard11 = ({ title}) => {
         padding: 12,
         usePointStyle: true,
         callbacks: {
-          label: (context) => {
+          label: (context: import('chart.js').TooltipItem<'line'>) => {
             return `Score: ${context.parsed.y}`;
           }
         }
@@ -255,7 +275,7 @@ const DashboardCard11 = ({ title}) => {
               <div className="chart-container">
                 <div className="chart-wrapper">
                   <Line
-                    data={prepareChartData()}
+                    data={prepareChartData() || { labels: [], datasets: [] }}
                     options={chartOptions}
                     height={300}
                   />
