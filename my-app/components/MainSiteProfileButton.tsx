@@ -114,7 +114,7 @@ localStorage.clear();
   return (
     <div className="profileContainerWeb">
          <div className="profileWeb" ref={profileButtonRef} onClick={toggleDropdown}>
-      <UserAvatar name={displayShopName} size="small" />
+      <UserAvatar name={displayShopName} size="small" className="" style={{}} />
      
            <div className="profileInfoWeb">
           <p className="usernameWeb">{displayShopName || "Anonymous"}</p>
@@ -133,9 +133,8 @@ localStorage.clear();
           <UserAvatar 
               name={displayShopName} 
               size="large" 
-          // className="dropdownAvatarWeb"
-          // style={{ backgroundColor: getAvatarColor() }}
-
+              className="dropdownAvatarWeb"
+              style={{ backgroundColor: getAvatarColor() }}
           />
            
            <p className="dropdownNameWeb">{displayShopName}</p>

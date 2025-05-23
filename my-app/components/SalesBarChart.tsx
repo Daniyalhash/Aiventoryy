@@ -11,7 +11,16 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-const SalesBarChart = ({ 
+type SalesBarChartProps = {
+  selectedRange: string;
+  predictedValue: number | null;
+  last_month_sales: number | null;
+  sellingPirce: number | null;
+  productName: string | null;
+  category: string | null;
+};
+
+const SalesBarChart: React.FC<SalesBarChartProps> = ({ 
   selectedRange, 
   predictedValue, 
   last_month_sales, // Add this prop for last month's total sales
@@ -20,8 +29,8 @@ const SalesBarChart = ({
   category 
 }) => {
   // Function to generate daily sales data
-  const generateSalesData = (totalSales) => {
-    if (!totalSales) return Array(30).fill(0);
+const generateSalesData = (totalSales:  number | null) => {
+    if (!totalSales || sellingPirce === null) return Array(30).fill(0);
     console.log("sellingPirce",sellingPirce)
     console.log("last_month_sales",last_month_sales)
 

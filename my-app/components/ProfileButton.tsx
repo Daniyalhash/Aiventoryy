@@ -61,7 +61,11 @@ const ProfileButton = () => {
         setUser(response.data); // Update state with user details
       }
     } catch (error) {
-      console.error("Error fetching user details:", error.response?.data?.error || error.message);
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user details:", error.response?.data?.error || error.message);
+      } else {
+        console.error("Error fetching user details:", (error as Error).message || error);
+      }
     }
   }, [setUser, userId]);
  // Expose refresh function
@@ -201,7 +205,7 @@ const ProfileButton = () => {
       </div>
 
       <div className="profile" ref={profileButtonRef} onClick={toggleDropdown}>
-      <UserAvatar name={displayShopName} size="small" />
+      <UserAvatar name={displayShopName} size="small" className="" style={{}} />
      
            <div className="profileInfo">
           <p className="username">{displayShopName || "Anonymous"}</p>

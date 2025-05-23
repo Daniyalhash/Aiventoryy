@@ -1,16 +1,33 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "@/styles/form.css";
+
+type Vendor = {
+ vendor_id: string;
+  vendor: string;
+  category: string;
+  vendorPhone: number;
+  DeliveryTime: number;
+  ReliabilityScore: number;
+  last_updated: string;
+ 
+
+
+}
+
+
+
+
 const SearchForm = () => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [vendorName, setVendorName] = useState("");
   const [vendorId, setVendorId] = useState("");
   const [category, setCategory] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Vendor[]>([]);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!userId) {
@@ -39,10 +56,15 @@ const SearchForm = () => {
         setIsError(true);
       }
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.error ||
-        error.message ||
-        "Failed to search vendors";
+      
+       let errorMsg = "Failed to search Vendor";
+
+  if (axios.isAxiosError(error)) {
+    errorMsg = error.response?.data?.error || error.message;
+  } else if (error instanceof Error) {
+    errorMsg = error.message;
+  }
+
 
       setMessage(errorMsg);
       setIsError(true);

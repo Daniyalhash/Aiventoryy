@@ -11,8 +11,8 @@ import { useUser } from "./UserContext";
 const ProfileButton2 = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isArrowUp, setIsArrowUp] = useState(false);
-  const dropdownRef = useRef(null);
-  const profileButtonRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const profileButtonRef = useRef<HTMLDivElement>(null);
   const { user, setUser } = useUser();
   // const userId = localStorage.getItem("userId"); // Get userId from localStorage
   // Get first letter of username
@@ -47,16 +47,20 @@ const ProfileButton2 = () => {
         setUser(response.data); // Update state with user details
       }
     } catch (error) {
-      console.error("Error fetching user details:", error.response?.data?.error || error.message);
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user details:", error.response?.data?.error || error.message);
+      } else {
+        console.error("Error fetching user details:", error);
+      }
     }
   }, [setUser]);
  // Expose refresh function
-useEffect(() => {
-    window.updateNavbarUser = fetchUserData;
-    return () => {
-      window.updateNavbarUser = null;
-    };
-  }, [fetchUserData]);
+// useEffect(() => {
+//     window.updateNavbarUser = fetchUserData;
+//     return () => {
+//       window.updateNavbarUser = null;
+//     };
+//   }, [fetchUserData]);
 // Initial data fetch
 useEffect(() => {
     fetchUserData();
@@ -64,12 +68,12 @@ useEffect(() => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
+        !dropdownRef.current.contains(event.target as Node) &&
         profileButtonRef.current &&
-        !profileButtonRef.current.contains(event.target)
+        !profileButtonRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
         setIsArrowUp(false);
@@ -132,7 +136,7 @@ useEffect(() => {
       </div> */}
 
       <div className="profile" ref={profileButtonRef} onClick={toggleDropdown}>
-      <UserAvatar name={displayName} size="small" />
+      <UserAvatar name={displayName} size="small" className="" style={{}} />
      
            <div className="profileInfo">
           <p className="username">{displayName || "Anonymous"}</p>
