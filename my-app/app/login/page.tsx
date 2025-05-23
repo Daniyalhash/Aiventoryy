@@ -29,9 +29,9 @@ const LoginPage = () => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
-      if (token && userId) {
-        window.location.href = "/dashboard";
-      }
+      // if (token && userId) {
+      //   window.location.href = "/dashboard";
+      // }
     }
   }, []);
 

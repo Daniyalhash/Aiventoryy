@@ -12,24 +12,24 @@ import axios from "axios";
 const MainSiteProfileButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isArrowUp, setIsArrowUp] = useState(false);
-  const dropdownRef = useRef(null);
-    const [userId, setUserId] = useState(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+    const [userId, setUserId] = useState<string | null>(null);
 
-  const profileButtonRef = useRef(null);
+  const profileButtonRef = useRef<HTMLDivElement>(null);
   const { user, setUser } = useUser();
 // const displayName = user?.username || "Anonymous";
   const displayEmail = user?.email || "N/A";
   const displayShopName = user?.shopname || "N/A";
   // Generate a random color based on the initial
-  const getInitial = () => {
-    return userDetails.username ? userDetails.username.charAt(0).toUpperCase() : 'A';
-  };
+
+  // Generate a random color based on the initial
   const getAvatarColor = () => {
     const colors = [
       '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
       '#9966FF', '#FF9F40', '#8AC249', '#EA5F89'
     ];
-    const charCode = getInitial().charCodeAt(0);
+    const initial = displayShopName.charAt(0).toUpperCase();
+    const charCode = initial.charCodeAt(0);
     return colors[charCode % colors.length];
   };
 
@@ -45,17 +45,22 @@ const MainSiteProfileButton = () => {
         setUser(response.data); // Update state with user details
       }
     } catch (error) {
-      console.error("Error fetching user details:", error.response?.data?.error || error.message);
+      if (typeof error === "object" && error !== null && "response" in error) {
+        // @ts-ignore
+        console.error("Error fetching user details:", error.response?.data?.error || error.message);
+      } else {
+        console.error("Error fetching user details:", (error as Error).message || error);
+      }
     }
  }, [userId, setUser]);
 
-  // Update useEffect dependencies
-  useEffect(() => {
-    window.updateNavbarUser = fetchUserData;
-    return () => {
-      window.updateNavbarUser = null;
-    };
-  }, [fetchUserData]);
+  // // Update useEffect dependencies
+  // useEffect(() => {
+  //   window.updateNavbarUser = fetchUserData;
+  //   return () => {
+  //     window.updateNavbarUser = null;
+  //   };
+  // }, [fetchUserData]);
 
 // Initial data fetch
 useEffect(() => {
@@ -65,12 +70,12 @@ useEffect(() => {
   useEffect(() => {
     const id = localStorage.getItem("userId");
     if (id) setUserId(id);
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
+        !dropdownRef.current.contains(event.target as Node) &&
         profileButtonRef.current &&
-        !profileButtonRef.current.contains(event.target)
+        !profileButtonRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
         setIsArrowUp(false);
@@ -80,7 +85,7 @@ useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const isLoggedIn = userId && user;
+const isLoggedIn = !!userId && !!user?.email;
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -99,8 +104,9 @@ localStorage.clear();
   if (!isLoggedIn) {
     return (
       <div className="profileContainer">
-        <Link href="/login" className="authLink">Login</Link>
-        <Link href="/signup" className="authLink">Signup</Link>
+        <Link href="/signup" className="signUp">Signup</Link>
+                <Link href="/login" className="logIn">Login</Link>
+
       </div>
     );
   }
@@ -127,8 +133,8 @@ localStorage.clear();
           <UserAvatar 
               name={displayShopName} 
               size="large" 
-          className="dropdownAvatarWeb"
-          style={{ backgroundColor: getAvatarColor() }}
+          // className="dropdownAvatarWeb"
+          // style={{ backgroundColor: getAvatarColor() }}
 
           />
            
