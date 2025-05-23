@@ -58,7 +58,7 @@ const Cards3 = ({
               ) : (
                 <HistoricalSalesChart
                   historicalData={historicalData}
-                  predictedValue={predictedValue}
+                  predictedValue={predictedValue ?? 0}
                   selectedRange={monthRange}
                   selectedMonth = {selectedMonth} // Pass the selected range
                 />
