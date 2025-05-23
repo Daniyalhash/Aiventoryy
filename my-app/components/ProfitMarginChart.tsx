@@ -11,7 +11,16 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function ProfitMarginChart({ data, targetProduct }) {
+type ProfitMarginChartProps = {
+  data: Array<{
+    name: string;
+    value: number;
+    [key: string]: any;
+  }>;
+  targetProduct: string;
+};
+
+export default function ProfitMarginChart({ data, targetProduct }: ProfitMarginChartProps) {
   // Process the data to assign colors based on whether it's the target product
   const processedData = data.map((item) => ({
     ...item,
@@ -20,8 +29,19 @@ export default function ProfitMarginChart({ data, targetProduct }) {
   }));
 
   // Custom shape for the scatter points
-  const CustomScatterPoint = (props) => {
-  const { cx, cy, payload } = props;
+  type CustomScatterPointProps = {
+    cx?: number;
+    cy?: number;
+    payload: {
+      name: string;
+      color: string;
+      size: number;
+      [key: string]: any;
+    };
+  };
+
+  const CustomScatterPoint = (props: any) => {
+    const { cx, cy, payload } = props;
     
     return (
       <g>
@@ -51,7 +71,7 @@ export default function ProfitMarginChart({ data, targetProduct }) {
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip 
           formatter={(value, name, props) => [
-            `${value.toFixed(2)}%`, 
+            typeof value === "number" ? `${value.toFixed(2)}%` : `${value}%`, 
             props.payload.name === targetProduct ? "Target Product" : "Comparison Product"
           ]}
           labelFormatter={(label) => `Product: ${label}`}
@@ -78,7 +98,7 @@ export default function ProfitMarginChart({ data, targetProduct }) {
         <Scatter
           name="Profit Margin"
           dataKey="value"
-          shape={<CustomScatterPoint />}
+          shape={CustomScatterPoint}
           data={processedData}
         />
         <Line

@@ -30,14 +30,14 @@ const Cards4: React.FC<Cards4Props> = ({
       shouldRetryOnError: false,
     }
   );
-    // Calculate sales values
-    const predictedSales = Math.round((predictedValue || 0) * (sellingPirce || 0));
-    const lastMonthSales = Math.round((last_month_sales || 0) * (sellingPirce || 0));
-    
+  // Calculate sales values
+  const predictedSales = Math.round((predictedValue || 0) * (sellingPirce || 0));
+  const lastMonthSales = Math.round((last_month_sales || 0) * (sellingPirce || 0));
+
   // Calculate percentage increase
   const calculatePercentageIncrease = () => {
     if (!lastMonthSales || lastMonthSales === 0) return 'N/A'; // Handle division by zero
-    
+
     const increase = ((predictedSales - lastMonthSales) / lastMonthSales) * 100;
     return `${increase >= 0 ? '+' : ''}${Math.round(increase)}%`;
   };
@@ -100,12 +100,13 @@ const Cards4: React.FC<Cards4Props> = ({
         main="Forecast of sales"
         subTitle={`${nextMonth} Month Sales`}
         value={Math.round((predictedValue || 0) * (sellingPirce || 0)).toLocaleString()}
-        description={`Total Sales`}
-        link="/dashboard/vendor"
+        value2={`${predictedValue || 0} units`}
+        // guidance="Based on current trends"
+        description="Total Sales"
+        // description2="Forecast powered by AI"
         bgColor="#9FE870"
-        as={Link}
         percentage={`${percentageIncrease}`}
-   
+
       >
         <span className="arrow right" />
       </DashboardCard5>
@@ -113,11 +114,12 @@ const Cards4: React.FC<Cards4Props> = ({
         main="Predicted Demand"
         subTitle={`${nextMonth} Month Demand`}
         value={`${predictedValue ? predictedValue.toFixed(2) : 0}`}
+        
         description={`Unit Demand`}
-        link="/dashboard/vendor"
+        // link="/dashboard/vendor"
         bgColor="#9FE870"
-        as={Link}
-   
+        // as={Link}
+
       >
         <span className="arrow right" />
       </DashboardCard5>
@@ -125,11 +127,11 @@ const Cards4: React.FC<Cards4Props> = ({
         main="Inventory Recommendation"
         value2={restockingData.action}
         description2={restockingData.text}
-        link="/dashboard/vendor"
+        // link="/dashboard/vendor"
         bgColor="#9FE870"
-        as={Link}
+        // as={Link}
         guidance={restockingData.severity}
-        // customIcon={getSeverityIcon(restockingData.severity)}
+      // customIcon={getSeverityIcon(restockingData.severity)}
       >
         <span className="arrow right" />
       </DashboardCard5>

@@ -55,7 +55,7 @@ const ActivityVendor: React.FC = () => {
 
       {logs.map((log) => (
         <div
-          key={log._id}
+          key={log.id}
           style={{
             borderLeft: "3px solid #4caf50",
             paddingLeft: 15,

@@ -7,6 +7,19 @@ import SalesBarChart from './SalesBarChart';
 import HistoricalSalesChart from './HistoricalSalesChart';
 import DashboardCard7 from '@/components/DashboardCard7';
 
+type Cards3Props = {
+  predictedValue: number | null;
+  isLoading: boolean;
+  predictionError: string | null;
+  selectedProduct: string  | null;
+  selectedCategory: string  | null;
+  sellingPirce: number  | null;
+  last_month_sales: number  | null;
+  historicalData: any; // Replace 'any' with a more specific type if available
+  selectedMonth: string;
+  selectedGranularity: string  | null;
+};
+
 const Cards3 = ({
   predictedValue,
   isLoading,
@@ -18,7 +31,7 @@ const Cards3 = ({
   historicalData,
   selectedMonth,
   selectedGranularity
-}) => {
+}: Cards3Props) => {
   const [demandRange, setDemandRange] = useState('Day 15');
   const [salesRange, setSalesRange] = useState('Day 15');
   const [monthRange, setMonthRange] = useState('Month 3');
@@ -32,7 +45,7 @@ const Cards3 = ({
 
         <DashboardCard7
           title="Historical Sales Analysis"
-          value={predictedValue || 0}
+          description="Past Sales X Predicted"
           bgColor="bg-custom-second"
           granularity="month" // This tells DashboardCard4 to show month ranges
           onRangeChange={setMonthRange} // Your existing handler
@@ -58,7 +71,7 @@ const Cards3 = ({
         <>
           <DashboardCard4
             title="Product Prediction"
-            value={predictedValue || 0}
+            description="Daily Demand prediction for a month"
             bgColor="bg-custom-one"
             graphContent={
               <>
@@ -70,8 +83,7 @@ const Cards3 = ({
                   <PredictedDemandChart
                     selectedRange={demandRange}
                     predictedValue={predictedValue}
-                    productName={selectedProduct}
-                    category={selectedCategory}
+                    
                   />
                 )}
               </>
@@ -81,7 +93,7 @@ const Cards3 = ({
 
           <DashboardCard4
             title="Monthly Sales Analysis"
-            value={predictedValue || 0}
+            description="Daily Sales prediction for a month"
             bgColor="bg-custom-third"
             graphContent={
               <>

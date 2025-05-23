@@ -30,13 +30,19 @@ const ButtonFrame3: React.FC<ButtonFrame3Props> = ({
   const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [isMonthDropdownOpen, setMonthDropdownOpen] = useState(false);
   const [selectedGranularity, setSelectedGranularity] = useState("month");
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [productInput, setProductInput] = useState("");
   const [categories, setCategories] = useState([]);
   const [availableMonths, setAvailableMonths] = useState([]);
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-  const [suggestedProducts, setSuggestedProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null); // Added this line
+  type Product = {
+    id: number;
+    productname: string;
+    // Add other fields if needed
+  };
+  
+  const [suggestedProducts, setSuggestedProducts] = useState<Product[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Added this line
 
 
   const [isPredicting, setIsPredicting] = useState(false); // Track prediction status
@@ -104,11 +110,11 @@ async ([, userId, category]) => {
   // Limit to first 5
   const limitedSuggestions = filteredSuggestions.slice(0, 5);
 
-  const handleGranularityChange = (granularity) => {
+  const handleGranularityChange = (granularity: string) => {
     setSelectedGranularity(granularity);
     onGranularitySelect(granularity); // Call the prop to update parent
   };
-  const handleMonthSelect = (month) => {
+  const handleMonthSelect = (month: string) => {
     setSelectedMonth(month);
     onMonthSelect(month); // Call the prop to update parent
     setMonthDropdownOpen(false);
@@ -142,7 +148,7 @@ async ([, userId, category]) => {
   //   setCategoryDropdownOpen(false);
   // };
   // Handle product selection
-  const handleProductSelect = (product) => {
+  const handleProductSelect = (product: Product) => {
     setProductInput(product.productname); // Show name in input
     onProductSelect(product.productname); // Inform parent
     setSelectedProduct(product);
@@ -199,14 +205,14 @@ async ([, userId, category]) => {
             onChange={(e) => {
               const value = e.target.value;
               setProductInput(value);
-              setIsProductSelected(false); // Reset
+              // Reset selected product state if needed
               onProductSelect(value);
 
 
 
               if (productsData) {
                 const filtered = productsData
-                  .filter(product =>
+                  .filter((product: Product) =>
                     product.productname.toLowerCase().includes(value.toLowerCase())
                   )
                   .slice(0, 5); // Limit to 5 suggestions
@@ -262,7 +268,6 @@ async ([, userId, category]) => {
             }
             icon={faCalendarAlt}
             onClick={() => setMonthDropdownOpen(!isMonthDropdownOpen)}
-            isDropdown={true}
           />
           {isMonthDropdownOpen && (
             <div className="dropdown-menu month-dropdown">
@@ -290,7 +295,7 @@ async ([, userId, category]) => {
           icon={faArrowAltCircleRight}
           onClick={handlePredict}
           disabled={!productInput || !selectedCategory || !selectedMonth || isPredicting}
-          isPrimary={true}
+          // isPrimary={true}
         />
       </div>
       <div className="buttonDowner">
