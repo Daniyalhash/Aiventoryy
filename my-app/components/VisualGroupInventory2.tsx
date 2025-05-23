@@ -3,8 +3,33 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "rec
 import axios from "axios";
 import "@/styles/visualGroupInventory2.css"; // Import CSS styles
 
+type LowStockProduct = {
+  productname: string;
+  category: string;
+  vendor: string;
+  stockquantity: number;
+};
+
+type BenchmarkingData = {
+  productname: string;
+  sellingprice: number;
+  profit_margin: number;
+};
+
+type VendorSuggestion = {
+  vendor: string;
+  avg_reliability: number;
+  avg_delivery_time: number;
+};
+
+type VisualData = {
+  low_stock_data: LowStockProduct[];
+  benchmarking_data: BenchmarkingData[];
+  vendor_suggestions: VendorSuggestion[];
+};
+
 const VisualGroupInventory2 = () => {
-  const [visualData, setVisualData] = useState(null);
+  const [visualData, setVisualData] = useState<VisualData | null>(null);
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {

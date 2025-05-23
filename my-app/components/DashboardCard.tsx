@@ -1,7 +1,16 @@
 import Link from 'next/link';
 import '../src/styles/dashboardCard.css';
 
-export default function DashboardCard({ title, value, description, link, bgColor, promotion }) {
+type DashboardCardProps = {
+  title: string;
+  value: string | number;
+  description: string;
+  link: string;
+  bgColor: string;
+  promotion: string;
+};
+
+export default function DashboardCard({ title, value, description, link, bgColor, promotion }: DashboardCardProps) {
   return (
     <div className={`card compare ${bgColor}`}> 
       {/* Using 'compare' class from CSS */}

@@ -8,7 +8,7 @@ const DelForm = () => {
   const [isError, setIsError] = useState(false);
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!userId || !vendorId) {
@@ -30,11 +30,15 @@ const DelForm = () => {
       setIsError(false);
       console.log("Server Response:", response.data);
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.error ||
-        error.message ||
-        "Failed to delete vendor";
-
+      let errorMsg = "Failed to delete vendor";
+      if (axios.isAxiosError(error)) {
+        errorMsg =
+          error.response?.data?.error ||
+          error.message ||
+          "Failed to delete vendor";
+      } else if (error instanceof Error) {
+        errorMsg = error.message;
+      }
       setMessage(errorMsg);
       setIsError(true);
       console.error("Delete Vendor Error:", errorMsg);

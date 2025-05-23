@@ -8,7 +8,7 @@ const DelFormP = () => {
   const [isError, setIsError] = useState(false);
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!userId || !productId) {
@@ -30,10 +30,15 @@ const DelFormP = () => {
       setIsError(false);
       console.log("Server Response:", response.data);
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.error ||
-        error.message ||
-        "Failed to delete product";
+      let errorMsg = "Failed to delete product";
+      if (axios.isAxiosError(error)) {
+        errorMsg =
+          error.response?.data?.error ||
+          error.message ||
+          "Failed to delete product";
+      } else if (error instanceof Error) {
+        errorMsg = error.message;
+      }
 
       setMessage(errorMsg);
       setIsError(true);

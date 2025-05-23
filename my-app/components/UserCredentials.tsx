@@ -3,7 +3,11 @@ import { useState } from "react";
 import { Eye, EyeOff } from 'lucide-react';
 const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
-const UserCredentials = ({ onApproved }) => {
+interface UserCredentialsProps {
+  onApproved: (data: { user_id: string; email: string }) => void;
+}
+
+const UserCredentials = ({ onApproved }: UserCredentialsProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);

@@ -7,8 +7,14 @@ import { BarChart, Bar } from 'recharts';
 import axios from "axios";
 import "@/styles/visualGroupInventory.css"; // Import CSS styles
 
+type VisualData = {
+  category_profit_margin: Array<{ category: string; avg_profit_margin: number }>;
+  category_cost: Array<{ category: string; total_cost: number }>;
+  product_price_comparison: Array<{ productname: string; sellingprice: number; costprice: number }>;
+};
+
 const VisualGroupInventory = () => {
-  const [visualData, setVisualData] = useState(null);
+  const [visualData, setVisualData] = useState<VisualData | null>(null);
   const userId = localStorage.getItem("userId");
   const [error, setError] = useState<string | null>(null);
 // Separate range states for each chart
@@ -41,8 +47,8 @@ const [rangePriceComparison, setRangePriceComparison] = useState("1-5"); // Defa
 
 
   // Function to generate range options based on data length
-  const generateRangeOptions = (dataLength) => {
-    const options = [];
+  const generateRangeOptions = (dataLength: number) => {
+    const options: string[] = [];
     if (dataLength === 0) return options;
     for (let i = 5; i <= dataLength; i += 5) {
       options.push(`1-${Math.min(i, dataLength)}`);
@@ -54,7 +60,7 @@ const [rangePriceComparison, setRangePriceComparison] = useState("1-5"); // Defa
   };
 
   // Function to filter the data based on selected range
-  const filterDataByRange = (data, selectedRange) => {
+  const filterDataByRange = (data: any[], selectedRange: string) => {
     const [min, max] = selectedRange.split('-').map(Number);
     return data.slice(min - 1, max);
   };
@@ -178,7 +184,6 @@ const [rangePriceComparison, setRangePriceComparison] = useState("1-5"); // Defa
       angle={-30}  // Adjusted angle for better readability
       textAnchor="end"
       tick={{ fontSize: 12 }}  // Adjust tick font size
-      margin={{ bottom: 50 }}  // Increased margin for the bottom to prevent clipping of labels
       tickFormatter={(value) => value.length > 15 ? value.substring(0, 15) + "..." : value}  // Optional: Truncate long names
     />     
               <YAxis />

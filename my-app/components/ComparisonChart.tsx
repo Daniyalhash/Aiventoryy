@@ -1,8 +1,18 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+  import type { BarProps } from "recharts";
 
 
-const ComparisonChart = ({ data }) => {
+interface ComparisonChartData {
+  name: string;
+  value: number;
+}
+
+interface ComparisonChartProps {
+  data: ComparisonChartData[];
+}
+
+const ComparisonChart: React.FC<ComparisonChartProps> = ({ data }) => {
   if (!data || data.length === 0) {
     return (
       <div className="chart-container">
@@ -13,9 +23,11 @@ const ComparisonChart = ({ data }) => {
   // const truncateName = (name, length = 10) =>
   //   name.length > length ? `${name.substring(0, length)}...` : name;
   // Custom shape for the bars to highlight the first (target) product
-  const CustomBar = (props) => {
+
+  const CustomBar = (props: BarProps & { name?: string | number }) => {
     const { fill, x, y, width, height, name } = props;
-    const isTarget = data[0].name === name;
+    const nameStr = name !== undefined ? String(name) : "";
+    const isTarget = data[0].name === nameStr;
     return (
       <g>
         <rect
@@ -103,8 +115,7 @@ const ComparisonChart = ({ data }) => {
 
           <Bar
             dataKey="value"
-            shape={<CustomBar />}
-            nameKey="name"  // Make sure to pass the nameKey so CustomBar can access it
+            shape={(barProps: BarProps) => <CustomBar {...barProps} />}
             fill="black"
           />              </BarChart>
       </ResponsiveContainer>
