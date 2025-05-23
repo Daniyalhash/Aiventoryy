@@ -1,7 +1,35 @@
 import Link from 'next/link';
 import '../src/styles/customCard.css';
 
-export default function DashboardCard3({ title, value, description, link, bgColor, promotion }) {
+type DashboardCard3Props = {
+  title: string;
+  value: string | number;
+  description: string;
+  link: string;
+  bgColor?: string;
+  promotion?: string;
+  as?: any;
+  href?: string;
+  arrow?: 'right' | 'left';
+  children?: React.ReactNode;
+};
+
+export default function DashboardCard3({ 
+  title, 
+  value, 
+  description, 
+  link, 
+  bgColor, 
+  promotion,
+  as: Component = 'div',
+  href,
+  arrow,
+  children 
+}: DashboardCard3Props) {
+  console.log(href)
+  console.log(arrow)
+    console.log(children)
+
   return (
     <div className={`cardC compare ${bgColor}`}>
       {/* Background Overlay */}

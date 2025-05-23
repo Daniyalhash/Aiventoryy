@@ -9,7 +9,17 @@ import useSWR from 'swr';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFilter, faCalendarAlt, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
 
-const ButtonFrame3 = ({
+type ButtonFrame4Props = {
+  onProductSelect: (product: string) => void;
+  onCategorySelect: (category: string) => void;
+  onPredict: (product: string, category: string, month: string | null, granularity: string) => void;
+  selectedProduct: string;
+  selectedCategory: string;
+  onMonthSelect: (month: string) => void;
+  onGranularitySelect: (granularity: string) => void;
+};
+
+const ButtonFrame4 = ({
   onProductSelect,
   onCategorySelect,
   onPredict,
@@ -17,11 +27,11 @@ const ButtonFrame3 = ({
   selectedCategory,
   onMonthSelect,
   onGranularitySelect, // Add this prop
-}) => {
+}: ButtonFrame4Props) => {
   const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [isMonthDropdownOpen, setMonthDropdownOpen] = useState(false);
   const [selectedGranularity, setSelectedGranularity] = useState("month");
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [productInput, setProductInput] = useState(selectedProduct || "");
   const [categories, setCategories] = useState([]);
   const [availableMonths, setAvailableMonths] = useState([]);
@@ -58,11 +68,11 @@ const ButtonFrame3 = ({
     }
   }, [categoryData, lastSalesData]);
 
-  const handleGranularityChange = (granularity) => {
+  const handleGranularityChange = (granularity: string) => {
     setSelectedGranularity(granularity);
     onGranularitySelect(granularity); // Call the prop to update parent
   };
-  const handleMonthSelect = (month) => {
+  const handleMonthSelect = (month: string) => {
     setSelectedMonth(month);
     onMonthSelect(month); // Call the prop to update parent
     setMonthDropdownOpen(false);
@@ -85,7 +95,6 @@ const ButtonFrame3 = ({
           }
           icon={faFilter}
           onClick={() => setCategoryDropdownOpen(!isCategoryDropdownOpen)}
-          isDropdown={true}
         />
         {isCategoryDropdownOpen && (
           <div className="dropdown-menu category-dropdown">
@@ -164,7 +173,6 @@ const ButtonFrame3 = ({
           }
           icon={faCalendarAlt}
           onClick={() => setMonthDropdownOpen(!isMonthDropdownOpen)}
-          isDropdown={true}
         />
         {isMonthDropdownOpen && (
           <div className="dropdown-menu month-dropdown">
@@ -191,10 +199,9 @@ const ButtonFrame3 = ({
         icon={faArrowAltCircleRight}
         onClick={() => onPredict(productInput, selectedCategory, selectedMonth, selectedGranularity)}
         disabled={!productInput || !selectedCategory || !selectedMonth}
-        isPrimary={true}
       />
     </div>
   );
 };
 
-export default ButtonFrame3;
+export default ButtonFrame4;

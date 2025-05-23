@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import '../src/styles/dashboardCard6.css';
 
-const DashboardCard6 = ({ title, bgColor, graphContent, onRangeChange }) => {
+interface DashboardCard6Props {
+  title: string;
+  bgColor: string;
+  graphContent: React.ReactNode;
+  onRangeChange: (range: string) => void;
+}
+
+const DashboardCard6: React.FC<DashboardCard6Props> = ({ title, bgColor, graphContent, onRangeChange }) => {
   const [selectedRange, setSelectedRange] = useState('Fall'); // Default range
 
   // Available options based on data length
@@ -9,7 +16,7 @@ const DashboardCard6 = ({ title, bgColor, graphContent, onRangeChange }) => {
     return ['Fall', 'Winter', 'Spring', 'Summer'];
   };
 
-  const handleRangeChange = (event) => {
+  const handleRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newRange = event.target.value;
     setSelectedRange(newRange);
     onRangeChange(newRange); // Send the selected range to parent
