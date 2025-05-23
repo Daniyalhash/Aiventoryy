@@ -13,6 +13,9 @@ interface ActivityLog {
   id: string;
   action: string;
   timestamp: string;
+  entity_type: string;
+  entity_id?: string;
+  metadata?: Record<string, any>;
   details: {
     vendorName?: string;
     productName?: string;
