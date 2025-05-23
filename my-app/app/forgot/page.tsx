@@ -89,7 +89,14 @@ const ForgotPage = () => {
                         />
                     </Link>
                 </div>
-                <video
+          
+            </div>
+        </div>
+    );
+};
+
+export default ForgotPage;
+      <video
           className="animatedVideo"
           autoPlay
           loop
@@ -99,9 +106,3 @@ const ForgotPage = () => {
           <source src="/video/vid2.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-            </div>
-        </div>
-    );
-};
-
-export default ForgotPage;
