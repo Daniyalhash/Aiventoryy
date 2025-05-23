@@ -58,7 +58,9 @@ const LoginPage = () => {
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify({ email, password }),
       // });
-const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/aiventory/login/`, {
+
+      // fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/login/ ", { ... })
+const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/login/ ", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ email, password }),
