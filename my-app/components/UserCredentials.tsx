@@ -1,3 +1,5 @@
+'use client';
+
 import '@/styles/SignupPage.css';
 import { useState } from "react";
 import { Eye, EyeOff } from 'lucide-react';
