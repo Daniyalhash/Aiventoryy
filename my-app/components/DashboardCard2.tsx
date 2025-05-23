@@ -3,7 +3,16 @@ import '../src/styles/dashboardCard2.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-const DashboardCard2 = ({ title, description, link, bgColor, graphContent }) => {
+type DashboardCard2Props = {
+  title: string;
+  description: string;
+  link: string;
+  bgColor: string;
+  graphContent: React.ReactNode;
+};
+
+const DashboardCard2 = ({ title, description, link, bgColor, graphContent }: DashboardCard2Props) => {
+  console.log(description)
   return (
     <div className={`card2 ${bgColor}`}>
       <div className="cardContent2">
@@ -14,7 +23,7 @@ const DashboardCard2 = ({ title, description, link, bgColor, graphContent }) => 
         </Link>
       </div>
       <div className="graphSection2">
-        <p>{description}</p>
+        {/* <p>{description}</p> */}
         <div className="graphShow">
         {graphContent} {/* Render the chart here */}
 

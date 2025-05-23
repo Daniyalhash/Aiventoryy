@@ -15,7 +15,7 @@ import {
   faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import useSWR, { mutate } from "swr";
-import { fetchStockNoti, fetchNotifications, deleteNotifications } from "@/utils/api";
+import { fetchStockNoti, fetchNotifications, deleteNotifications, markNotificationAsRead } from "@/utils/api";
 import "@/styles/NotificationsContent.css";
 
 interface Notification {
