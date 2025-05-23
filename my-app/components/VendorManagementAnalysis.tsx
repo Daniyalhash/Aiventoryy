@@ -48,24 +48,28 @@ const [deliveryTime, setDeliveryTime] = useState<VendorDelivery[]>([]);
 
     const fetchData = async () => {
       try {
-        const response = await axios.get<{ data: VisualData }>(
+   const response = await axios.get<{ data: VisualData }>(
           `http://127.0.0.1:8000/aiventory/get-vendor-visuals/?user_id=${userId}`,
           { signal }
         );
 
-        setVisualData(response.data);
+setVisualData(response.data.data);
 
-        const reliability = (response.data.top_reliability_vendors || []).map((vendor) => ({
-          vendor: vendor.vendor,
-          reliability: vendor.reliability_score,
-        }));
-        setReliabilityScores(reliability);
+const reliability = (response.data.data.top_reliability_vendors || []).map(
+  (vendor: VendorReliability) => ({
+    vendor: vendor.vendor,
+    reliability: vendor.reliability_score,
+  })
+);
 
-        const delivery = (response.data.top_delivery_vendors || []).map((vendor) => ({
+setReliabilityScores(response.data.data.top_reliability_vendors || []);
+
+        const delivery = (response.data.data.top_delivery_vendors || []).map(
+          (vendor: VendorDelivery) => ({
           vendor: vendor.vendor,
           time: vendor.delivery_time,
         }));
-        setDeliveryTime(delivery);
+setDeliveryTime(response.data.data.top_delivery_vendors || []);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setError(error.response?.data?.message || "Failed to fetch data");
