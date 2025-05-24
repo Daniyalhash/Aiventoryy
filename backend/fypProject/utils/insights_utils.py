@@ -3,8 +3,6 @@ from bson import ObjectId
 from pymongo import MongoClient
 import json
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
-from utils.demand_predictor import DemandPredictor
-from datetime import datetime
 
 # Initialize DB Connection
 client = MongoClient("mongodb+srv://syeddaniyalhashmi123:test123@cluster0.dutvq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -74,78 +72,7 @@ class InsightsUtils:
         result = list(db["products"].aggregate(pipeline))
         return InsightsUtils.convert_objectid(result)
 
-    # @staticmethod
-    # def fetch_smart_reorder_products(user_id, category=None, limit=100):
-    #     try:
-    #         predictor = DemandPredictor(user_id)
-
-    #         # Determine the target month
-    #         now = datetime.now()
-    #         if now.day < 28:
-    #             use_month = now.strftime("%B")
-    #         else:
-    #             next_month = now.month % 12 + 1
-    #             next_year = now.year + 1 if next_month == 1 else now.year
-    #             use_month = datetime(next_year, next_month, 1).strftime("%B")
-
-    #         # Fetch user's products
-    #         pipeline = [
-    #             {"$match": {"user_id": ObjectId(user_id)}},
-    #             {"$unwind": "$products"},
-    #             {"$addFields": {"products.user_product_id": "$_id"}},
-    #             {"$replaceRoot": {"newRoot": "$products"}}
-    #         ]
-
-    #         if category:
-    #             pipeline.append({
-    #                 "$match": {
-    #                     "category": {"$regex": f"^{category}$", "$options": "i"}
-    #                 }
-    #             })
-
-    #         pipeline.extend([
-    #             {
-    #                 "$project": {
-    #                     "_id": 1,
-    #                     "productname": 1,
-    #                     "category": 1,
-    #                     "monthly_sales": 1,
-    #                     "stockquantity": 1
-    #                 }
-    #             },
-    #             {"$sort": {"monthly_sales": -1}},
-    #             {"$limit": limit}
-    #         ])
-
-    #         products = list(db["products"].aggregate(pipeline))
-
-    #         final_data = []
-    #         for product in products:
-    #             product_id = str(product.get("_id"))
-    #             if product_id == "None":
-    #                 continue
-
-    #             # 🔥 Live prediction
-    #             predicted_demand = predictor.predict(product_id, use_month)
-
-    #             final_product = {
-    #                 "_id": product_id,
-    #                 "productname": product.get("productname"),
-    #                 "category": product.get("category"),
-    #                 "stockquantity": product.get("stockquantity", 0),
-    #                 "monthly_sales": product.get("monthly_sales", 0),
-    #                 "demand": predicted_demand,
-    #                 "month": use_month,
-    #                 "needs_reorder": product.get("stockquantity", 0) < predicted_demand
-    #             }
-
-    #             final_data.append(final_product)
-
-    #         return {"status": "success", "data": final_data}, HTTP_200_OK
-
-    #     except Exception as e:
-    #         print(f"Error fetching reorder products: {e}")
-    #         return {"status": "error", "message": str(e)}, HTTP_400_BAD_REQUEST
+    
 
     @staticmethod
     def fetch_smart_reorder_products(user_id, category=None, limit=100):

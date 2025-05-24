@@ -11,7 +11,7 @@ type Prediction = {
   stockquantity: number;
   monthly_sales: number;
 
-  needs_reorder: string;
+  needs_reorder: boolean;
 };
 
 
@@ -34,142 +34,83 @@ const DashboardCard10 = ({ title }: { title: string }) => {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [filteredPredictions, setFilteredPredictions] = useState<Prediction[]>([]);
 
- const { data: categoryData } = useSWR(
-  userId ? ["get-categories", userId] : null,
-  () => fetchCategories(userId),
-  {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-    dedupingInterval: 30000,
-  }
-);
+  const { data: categoryData } = useSWR(
+    userId ? ["get-categories", userId] : null,
+    () => fetchCategories(userId),
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      dedupingInterval: 30000,
+    }
+  );
 
-useEffect(() => {
-  if (categoryData) {
-    const formatted = categoryData.categories.map((cat: string, index: number) => ({
-      _id: `cat-${index}`, // fallback ID
-      name: cat
-    }));
-    setCategories(formatted); // ✅ Now dropdown will show options
-  }
-}, [categoryData]);
+  useEffect(() => {
+    if (categoryData) {
+      const formatted = categoryData.categories.map((cat: string, index: number) => ({
+        _id: `cat-${index}`, // fallback ID
+        name: cat
+      }));
+      setCategories(formatted); // ✅ Now dropdown will show options
+    }
+  }, [categoryData]);
 
-  console.log("available categories", categories)
   const fetchPredictions = async () => {
-  setLoading(true);
-  try {
-    const userId = localStorage.getItem("userId");
-    if (!userId) throw new Error("User ID not found");
+    setLoading(true);
+    try {
+      const userId = localStorage.getItem("userId");
+      if (!userId) throw new Error("User ID not found");
 
-    const response = await axios.get(
-      "https://seal-app-8m3g5.ondigitalocean.app/aiventory/fetch_smart_reorder_products/",
-      {
-        params: {
-          user_id: userId,
-          category: selectedCategory !== "all" ? selectedCategory : undefined
+      const response = await axios.get(
+        "https://seal-app-8m3g5.ondigitalocean.app/aiventory/fetch_smart_reorder_products/",
+        {
+          params: {
+            user_id: userId,
+            category: selectedCategory !== "all" ? selectedCategory : undefined
+          }
         }
-      }
-    );
+      );
 
-    const data = response.data;
-    console.log("product u want to reorder", data);
-    // Map backend response to Prediction type
-    const predictionList = Array.isArray(data.data)
-      ? data.data.map((item: any) => ({
+      const data = response.data;
+      // Map backend response to Prediction type
+      const predictionList = Array.isArray(data.data)
+        ? data.data.map((item: any) => ({
           productname: item.productname || "Unknown",
           category: item.category || "Uncategorized",
           stockquantity: item.stockquantity || 0,
           monthly_sales: item.monthly_sales || new Date().toISOString(),
-         
-          needs_reorder: item.needs_reorder ? "High" : "Low",
-         
+
+          needs_reorder: item.needs_reorder === true ||item.needs_reorder === "true" 
+
         }))
-      : [];
+        : [];
 
-    console.log("Fetched reorder products:", predictionList.length);
+      console.log("Fetched reorder products:", predictionList.length);
 
-    if (data.status === 'success' && predictionList.length > 0) {
-      setPredictions(predictionList);
-      setError(null);
-      setIsError(false);
-    } else {
-      setError("No products found.");
+      if (data.status === 'success' && predictionList.length > 0) {
+        setPredictions(predictionList);
+        setError(null);
+        setIsError(false);
+      } else {
+        setError("No products found.");
+        setPredictions([]);
+      }
+
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      console.error("Error fetching reorder products:", err);
+      setError(error?.response?.data?.message || "Failed to fetch reorder products.");
       setPredictions([]);
+      setIsError(true);
+    } finally {
+      setLoading(false);
     }
-
-  } catch (err: unknown) {
-    const error = err as { response?: { data?: { message?: string } } };
-    console.error("Error fetching reorder products:", err);
-    setError(error?.response?.data?.message || "Failed to fetch reorder products.");
-    setPredictions([]);
-    setIsError(true);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     fetchPredictions();
-  }, []);
-  // console.log("found these val", predictions, length)
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-  useEffect(() => {
-      let results = [...predictions];
-
-    if (selectedCategory === "all") {
-      setFilteredPredictions(predictions);
-    } else {
-      setFilteredPredictions(
-    results = results.filter(
-          (p) =>
-            p.category &&
-            p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
-        )
-      );
-
-    }
-    if (debouncedSearchTerm) {
-      const lowercasedTerm = debouncedSearchTerm.toLowerCase();
-      results = results.filter((p) =>
-        p.productname?.toLowerCase().includes(lowercasedTerm)
-      );
-    }
-
-    setFilteredPredictions(results);
-    setVisibleCount(10);
-  }, [selectedCategory, debouncedSearchTerm, predictions]);
-
-  // console.log(`Filtered count for "${selectedCategory}":`, filteredPredictions.length);
-
-  // Function to handle deleting an invoice
-  useEffect(() => {
-    setVisibleCount(10); // Reset count when selectedCategory changes
   }, [selectedCategory]);
-  useEffect(() => {
-    let results = [...predictions];
-
-    // Filter by category
-    if (selectedCategory !== "all") {
-      results = results.filter(
-        (p) =>
-          p.category &&
-          p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
-      );
-    }
-
-    // Filter by product name
-    if (searchTerm) {
-      const lowercasedTerm = searchTerm.toLowerCase();
-      results = results.filter((p) =>
-        p.productname?.toLowerCase().includes(lowercasedTerm)
-      );
-    }
-
-    setFilteredPredictions(results);
-    setVisibleCount(10); // Reset visible count when filters change
-  }, [selectedCategory, searchTerm, predictions]);
-  function useDebounce(value: string, delay: number) {
+  
+function useDebounce(value: string, delay: number) {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
     useEffect(() => {
@@ -181,9 +122,34 @@ useEffect(() => {
     }, [value, delay]);
 
     return debouncedValue;
-  }
+} const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // Use inside component:
+  // Filter results based on category & search term
+  useEffect(() => {
+    let results = [...predictions];
+
+    if (selectedCategory !== "all") {
+      results = results.filter(p =>
+        p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
+      );
+    }
+
+    if (debouncedSearchTerm) {
+      const lowercasedTerm = debouncedSearchTerm.toLowerCase();
+      results = results.filter(p =>
+        p.productname.toLowerCase().includes(lowercasedTerm)
+      );
+    }
+
+    setFilteredPredictions(results);
+    setVisibleCount(10);
+  }, [selectedCategory, debouncedSearchTerm, predictions]);
+
+  // Reset visible count when category changes
+  useEffect(() => {
+    setVisibleCount(10);
+  }, [selectedCategory]);
+
   return (
     <div className="card9">
       {message && (
@@ -204,19 +170,9 @@ useEffect(() => {
       )}
       <div className="cardHeader9">
         <h3 className="cardTitle9">{title}</h3>
-        {/* <h3 className='cardTitle19'>
-          {subTitle}
-        </h3> */}
+
         <div className="cardSide">
-          {/* <div className="form-group2">
-            <input
-              type="text"
-              name="productName"
-              placeholder="Search by Product Name..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div> */}
+
           <div className="form-group2">
             <select
               name="category"
@@ -254,7 +210,7 @@ useEffect(() => {
                 <th>Category</th>
                 <th>Stock</th>
                 <th>Monthly Sales</th>
-                
+
 
                 <th>Action</th>
               </tr>
@@ -264,7 +220,7 @@ useEffect(() => {
                 <>
                   {/* Render only visible predictions */}
                   {filteredPredictions.slice(0, visibleCount).map((item, index) => {
-                   
+
 
                     return (
                       <tr key={index}>
@@ -272,8 +228,14 @@ useEffect(() => {
                         <td>{item.category}</td>
                         <td>{item.stockquantity}</td>
                         <td>{item.monthly_sales}</td>
-                  
-                        <td>{item.needs_reorder || "–"}</td>
+
+                        <td>
+                          {item.needs_reorder ? (
+                            <span className="receivedBtn19">⚠️ Reorder</span>
+                          ) : (
+                            <span className="deleteBtn19">–</span>
+                          )}
+                        </td>
                         {/* <td>
                           {item.risk_level && !item.risk_level.toLowerCase().includes("low") ? (
                             <button className="receivedBtn19">Discount Now</button>
