@@ -3,6 +3,8 @@ from bson import ObjectId
 from pymongo import MongoClient
 import json
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from utils.demand_predictor import DemandPredictor
+from datetime import datetime
 
 # Initialize DB Connection
 client = MongoClient("mongodb+srv://syeddaniyalhashmi123:test123@cluster0.dutvq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -72,50 +74,130 @@ class InsightsUtils:
         result = list(db["products"].aggregate(pipeline))
         return InsightsUtils.convert_objectid(result)
 
-    
-
     @staticmethod
     def fetch_smart_reorder_products(user_id, category=None, limit=100):
         try:
+            predictor = DemandPredictor(user_id)
+            forecast_doc = predictor.forecasting_collection.find_one({'user_id': ObjectId(user_id)})
+
+            if not forecast_doc or 'forecasting' not in forecast_doc:
+                forecast_data = []
+            else:
+                forecast_data = forecast_doc['forecasting']
+
+            # Determine which month to consider
+            now = datetime.now()
+            if now.day < 28:
+                use_month = now.strftime("%B")
+            else:
+                next_month = now.month % 12 + 1
+                next_year = now.year + 1 if next_month == 1 else now.year
+                use_month = datetime(next_year, next_month, 1).strftime("%B")
+
             pipeline = [
                 {"$match": {"user_id": ObjectId(user_id)}},
                 {"$unwind": "$products"},
+                {"$addFields": {"products.user_product_id": "$_id"}},  # preserve original _id if needed
                 {"$replaceRoot": {"newRoot": "$products"}},
             ]
 
             if category:
-                pipeline.append({"$match": {"category": category}})
+                pipeline.append({
+                    "$match": {
+                        "category": {"$regex": f"^{category}$", "$options": "i"}
+                    }
+                })
 
             pipeline.extend([
                 {
-                    "$addFields": {
-                        "needs_reorder": {"$lt": ["$stockquantity", "$monthly_sales"]}
-                    }
-                },
-                {
                     "$project": {
-                        "_id": 0,
+                        "_id": 1,
                         "productname": 1,
                         "category": 1,
                         "monthly_sales": 1,
-                        "stockquantity": 1,
-                        "needs_reorder": 1
+                        "stockquantity": 1
                     }
                 },
                 {"$sort": {"monthly_sales": -1}},
                 {"$limit": limit}
             ])
 
-            result = list(db["products"].aggregate(pipeline))
-            print(result)
-            if not result:
-                return {"status": "success", "data": []}, HTTP_200_OK
+            products = list(db["products"].aggregate(pipeline))
 
-            return {"status": "success", "data": result}, HTTP_200_OK
+            # Merge prediction with product data
+            final_data = []
+            for product in products:
+                product_id = str(product.get("_id"))
+                if product_id == "None":
+                    continue  # skip products without _id
 
+                matching_forecast = next(
+                    (f for f in forecast_data 
+                    if str(f.get("productname_id")) == product_id and f.get("month") == use_month),
+                    None)
+
+                predicted_demand = matching_forecast.get("predicted_units", 0) if matching_forecast else 0
+
+                final_product = {
+                    "_id": product_id,
+                    "productname": product.get("productname"),
+                    "category": product.get("category"),
+                    "stockquantity": product.get("stockquantity", 0),
+                    "monthly_sales": product.get("monthly_sales", 0),
+                    "demand": predicted_demand,
+                    "month": use_month,
+                    "needs_reorder": product.get("stockquantity", 0) < predicted_demand
+                }
+                
+                final_data.append(final_product)
+
+            return {"status": "success", "data": final_data}, HTTP_200_OK
         except Exception as e:
             print(f"Error fetching reorder products: {e}")
             return {"status": "error", "message": str(e)}, HTTP_400_BAD_REQUEST
+
+    # @staticmethod
+    # def fetch_smart_reorder_products(user_id, category=None, limit=100):
+    #     try:
+    #         pipeline = [
+    #             {"$match": {"user_id": ObjectId(user_id)}},
+    #             {"$unwind": "$products"},
+    #             {"$replaceRoot": {"newRoot": "$products"}},
+    #         ]
+
+    #         if category:
+    #             pipeline.append({"$match": {"category": category}})
+
+    #         pipeline.extend([
+    #             {
+    #                 "$addFields": {
+    #                     "needs_reorder": {"$lt": ["$stockquantity", "$monthly_sales"]}
+    #                 }
+    #             },
+    #             {
+    #                 "$project": {
+    #                     "_id": 0,
+    #                     "productname": 1,
+    #                     "category": 1,
+    #                     "monthly_sales": 1,
+    #                     "stockquantity": 1,
+    #                     "needs_reorder": 1
+    #                 }
+    #             },
+    #             {"$sort": {"monthly_sales": -1}},
+    #             {"$limit": limit}
+    #         ])
+
+    #         result = list(db["products"].aggregate(pipeline))
+    #         print(result)
+    #         if not result:
+    #             return {"status": "success", "data": []}, HTTP_200_OK
+
+    #         return {"status": "success", "data": result}, HTTP_200_OK
+
+    #     except Exception as e:
+    #         print(f"Error fetching reorder products: {e}")
+    #         return {"status": "error", "message": str(e)}, HTTP_400_BAD_REQUEST
 
 
 
