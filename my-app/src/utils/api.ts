@@ -1,5 +1,5 @@
 import axios from 'axios';
-`${process.env.NEXT_PUBLIC_API_URL}/aiventory/login/`
+// `${process.env.NEXT_PUBLIC_API_URL}/aiventory/login/`
 // Base API instance
 const api = axios.create({
   baseURL: 'https://seal-app-8m3g5.ondigitalocean.app/aiventory/',
