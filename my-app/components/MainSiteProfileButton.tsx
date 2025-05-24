@@ -105,7 +105,7 @@ localStorage.clear();
     return (
       <div className="profileContainer">
         <Link href="/signup" className="signUp">Signup</Link>
-                <Link href="/login" className="logIn">Login</Link>
+                <Link href="/login" className="logIn">Log In</Link>
 
       </div>
     );
