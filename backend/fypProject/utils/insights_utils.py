@@ -1,130 +1,8 @@
-# from bson import ObjectId
-# from pymongo import MongoClient
 
-# # Initialize DB Connection
-# client = MongoClient("mongodb+srv://syeddaniyalhashmi123:test123@cluster0.dutvq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-# db = client["FYP"]
-
-# class InsightsUtils:
-
-#     @staticmethod
-#     def convert_objectid(data):
-#         """ Convert ObjectId to string recursively in a dictionary or list """
-#         if isinstance(data, dict):
-#             return {key: InsightsUtils.convert_objectid(value) for key, value in data.items()}
-#         elif isinstance(data, list):
-#             return [InsightsUtils.convert_objectid(item) for item in data]
-#         elif isinstance(data, ObjectId):
-#             return str(data)
-#         return data
-
-#     @staticmethod
-#     def fetch_categories(user_id):
-#         """ Fetch unique product categories for a user """
-#         product_documents = db["products"].find({"user_id": ObjectId(user_id)})
-#         unique_categories = set()
-
-#         for product_doc in product_documents:
-#             for product in product_doc.get("products", []):
-#                 category = product.get("category")
-#                 if category:
-#                     unique_categories.add(category)
-
-#         return list(unique_categories)
-
-   
-#     @staticmethod
-#     def fetch_top_products(user_id, category):
-#         """ Fetch unique top products by category """
-#         product_documents = db["products"].find({"user_id": ObjectId(user_id)})
-#         products_in_category = []
-#         seen_barcodes = set()  # To track unique products by barcode
-
-#         for product_doc in product_documents:
-#             for product in product_doc.get("products", []):
-#                 if product.get("category") == category:
-#                     barcode = product.get("Barcode")
-#                     if barcode and barcode not in seen_barcodes:
-#                         seen_barcodes.add(barcode)
-#                         products_in_category.append({
-#                             "productname": product.get("productname"),
-#                             "category": product.get("category"),
-#                             "stockquantity": product.get("stockquantity"),
-#                             "sellingprice": product.get("sellingprice"),
-#                             "Barcode": product.get("Barcode"),
-#                             "expirydate": product.get("expirydate"),
-#                             "reorderthreshold": product.get("reorderthreshold"),
-#                             "costprice": product.get("costprice"),
-#                             "monthly_sales":product.get("monthly_sales"),
-#                             "timespan":product.get("timespan"),
-#                             "sale_date":product.get("sale_date"),
-#                             "productSize":product.get("productSize"),
-
-#                             "id": str(product.get("_id", "")),
-#                             "vendor_id": product.get("vendor_id")
-#                         })
-
-#         return InsightsUtils.convert_objectid(products_in_category)
-
-
-#     @staticmethod
-#     def calculate_profit_margin(selling_price, cost_price):
-#         """ Calculate profit margin percentage """
-#         return ((selling_price - cost_price) / selling_price) * 100 if selling_price else 0
-
-   
-#     @staticmethod
-#     def fetch_products_by_name(user_id, category, vendor_id):
-#         """ Fetch unique products by category and vendor """
-#         product_documents = list(db["products"].find({"user_id": ObjectId(user_id)}))
-#         vendors = list(db["vendors"].find({"user_id": ObjectId(user_id)}))
-
-#         vendor_info = next(
-#             (vendor for vendor_doc in vendors for vendor in vendor_doc.get("vendors", []) if str(vendor.get("_id")) == vendor_id), 
-#             None
-#         )
-        
-#         if not vendor_info:
-#             return {"error": "Vendor not found!"}
-
-#         vendor_name = vendor_info.get("vendor", "Unknown Vendor")
-#         delivery_time = vendor_info.get("DeliveryTime", "Unknown")
-#         reliability_score = vendor_info.get("ReliabilityScore", "Unknown")
-
-#         seen_barcodes = set()
-#         products_in_category = []
-
-#         for product_doc in product_documents:
-#             for product in product_doc.get("products", []):
-#                 if product.get("category") == category:
-#                     barcode = product.get("Barcode")
-#                     if barcode and barcode not in seen_barcodes:
-#                         seen_barcodes.add(barcode)
-#                         products_in_category.append({
-#                             "productname": product.get("productname"),
-#                             "category": product.get("category"),
-#                             "stockquantity": product.get("stockquantity"),
-#                             "sellingprice": product.get("sellingprice"),
-#                             "Barcode": product.get("Barcode"),
-#                             "expirydate": product.get("expirydate"),
-#                             "reorderthreshold": product.get("reorderthreshold"),
-#                             "costprice": product.get("costprice"),
-#                              "monthly_sales":product.get("monthly_sales"),
-#                             "timespan":product.get("timespan"),
-#                             "sale_date":product.get("sale_date"),
-#                             "productSize":product.get("productSize"),
-
-#                             "profitmargin": InsightsUtils.calculate_profit_margin(product.get("sellingprice", 0), product.get("costprice", 0)),
-#                             "id": str(product.get("_id", "")),
-#                             "vendor": vendor_name,
-#                             "DeliveryTime": delivery_time,
-#                             "ReliabilityScore": reliability_score
-#                         })
-
-#         return InsightsUtils.convert_objectid(products_in_category)
 from bson import ObjectId
 from pymongo import MongoClient
 import json
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
 # Initialize DB Connection
 client = MongoClient("mongodb+srv://syeddaniyalhashmi123:test123@cluster0.dutvq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -193,6 +71,54 @@ class InsightsUtils:
 
         result = list(db["products"].aggregate(pipeline))
         return InsightsUtils.convert_objectid(result)
+
+    
+
+    @staticmethod
+    def fetch_smart_reorder_products(user_id, category=None, limit=100):
+        try:
+            pipeline = [
+                {"$match": {"user_id": ObjectId(user_id)}},
+                {"$unwind": "$products"},
+                {"$replaceRoot": {"newRoot": "$products"}},
+            ]
+
+            if category:
+                pipeline.append({"$match": {"category": category}})
+
+            pipeline.extend([
+                {
+                    "$addFields": {
+                        "needs_reorder": {"$lt": ["$stockquantity", "$monthly_sales"]}
+                    }
+                },
+                {
+                    "$project": {
+                        "_id": 0,
+                        "productname": 1,
+                        "category": 1,
+                        "monthly_sales": 1,
+                        "stockquantity": 1,
+                        "needs_reorder": 1
+                    }
+                },
+                {"$sort": {"monthly_sales": -1}},
+                {"$limit": limit}
+            ])
+
+            result = list(db["products"].aggregate(pipeline))
+            print(result)
+            if not result:
+                return {"status": "success", "data": []}, HTTP_200_OK
+
+            return {"status": "success", "data": result}, HTTP_200_OK
+
+        except Exception as e:
+            print(f"Error fetching reorder products: {e}")
+            return {"status": "error", "message": str(e)}, HTTP_400_BAD_REQUEST
+
+
+
 
 
     @staticmethod

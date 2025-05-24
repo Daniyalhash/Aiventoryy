@@ -8,6 +8,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import StatsCards from "@/components/StatsCards";
 import DashboardCard10 from "@/components/DashboardCard10";
+import DashboardCard12 from "@/components/DashboardCard12";
+import DashboardCard13 from "@/components/DashboardCard13";
 interface InventoryData {
   product_id: string;
   productname: string;
@@ -41,73 +43,73 @@ function Inventory() {
   const [stats, setStats] = useState<InventoryStats | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
-useEffect(() => {
+  useEffect(() => {
     // Access localStorage only in the browser
     const id = localStorage.getItem("userId");
     setUserId(id);
   }, []);
   useEffect(() => {
-  const fetchDataset = async () => {
-    setLoading(true);
-    try {
-      const [productsResponse, statsResponse] = await Promise.all([
-        axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-current-dataset/", {
-          params: { user_id: userId },
-        }),
-        axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-inventory-summary/", {
-          params: { user_id: userId },
-        }),
-      ]);
+    const fetchDataset = async () => {
+      setLoading(true);
+      try {
+        const [productsResponse, statsResponse] = await Promise.all([
+          axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-current-dataset/", {
+            params: { user_id: userId },
+          }),
+          axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-inventory-summary/", {
+            params: { user_id: userId },
+          }),
+        ]);
 
-      if (productsResponse.data?.products) {
-        const productsRaw = productsResponse.data.products;
-        if (Array.isArray(productsRaw)) {
-          const flattened = productsRaw.flat ? productsRaw.flat() : productsRaw;
-          const transformedProducts = flattened.map((p: any) => ({
-            product_id: p.product_id || '',
-            productname: p.productname || '',
-            category: p.category || '',
-            subcategory: p.subcategory || '',
-            stockquantity: p.stockquantity || 0,
-            costprice: p.costprice || 0,
-            sellingprice: p.sellingprice || 0,
-            barcode: p.barcode?.toString() || '',
-            product_size: p.product_size || '',
-            expirydate: p.expirydate || '',
-            monthly_sales: p.monthly_sales || 0,
-            reorderthreshold: p.reorderthreshold || 0,
-            sale_date: p.sale_date || '',
-            season: p.season || '',
-            timespan: p.timespan || '',
-            vendor_id: p.vendor_id || ''
-          }));
-          setProducts(transformedProducts);
+        if (productsResponse.data?.products) {
+          const productsRaw = productsResponse.data.products;
+          if (Array.isArray(productsRaw)) {
+            const flattened = productsRaw.flat ? productsRaw.flat() : productsRaw;
+            const transformedProducts = flattened.map((p: any) => ({
+              product_id: p.product_id || '',
+              productname: p.productname || '',
+              category: p.category || '',
+              subcategory: p.subcategory || '',
+              stockquantity: p.stockquantity || 0,
+              costprice: p.costprice || 0,
+              sellingprice: p.sellingprice || 0,
+              barcode: p.barcode?.toString() || '',
+              product_size: p.product_size || '',
+              expirydate: p.expirydate || '',
+              monthly_sales: p.monthly_sales || 0,
+              reorderthreshold: p.reorderthreshold || 0,
+              sale_date: p.sale_date || '',
+              season: p.season || '',
+              timespan: p.timespan || '',
+              vendor_id: p.vendor_id || ''
+            }));
+            setProducts(transformedProducts);
+          } else {
+            setError("No products found.");
+          }
         } else {
           setError("No products found.");
         }
-      } else {
-        setError("No products found.");
+
+        if (statsResponse.data?.data) {
+          setStats(statsResponse.data.data);
+        } else {
+          setError("No stats found.");
+        }
+
+        setError(null); // reset error if everything went fine
+
+      } catch (err: unknown) {
+        const error = err as Error;
+        console.error("Error fetching dataset:", error);
+        setError(error.message || "Failed to fetch dataset.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      if (statsResponse.data?.data) {
-        setStats(statsResponse.data.data);
-      } else {
-        setError("No stats found.");
-      }
-
-      setError(null); // reset error if everything went fine
-
-    } catch (err: unknown) {
-      const error = err as Error;
-      console.error("Error fetching dataset:", error);
-      setError(error.message || "Failed to fetch dataset.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (userId) fetchDataset();
-}, [userId]);
+    if (userId) fetchDataset();
+  }, [userId]);
 
   return (
     <div className="InventoryPage">
@@ -142,10 +144,22 @@ useEffect(() => {
               <ShowCSVData dataset={products} />
 
             </div>
-            <DashboardCard10
-              title="AI Waste Reducer"
+            <div className="dataset-feature-2">
+              <DashboardCard10
+                title="Smart Reorder Suggestions"
 
+              />
+            </div>
+            <div className="dataset-feature-2">
+               <DashboardCard12
+              title="AI Waste Reducer"
             />
+            </div>
+                   <div className="dataset-feature-2">
+               <DashboardCard13
+              title="Expiry Products"
+            />
+            </div>
           </>
 
         )}

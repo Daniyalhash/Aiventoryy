@@ -525,7 +525,6 @@ def get_dashboard_visuals(request):
 
     return Response(result)
 
-#inventory count-5
 
 
 @api_view(['GET'])
@@ -533,6 +532,10 @@ def get_current_dataset(request):
     user_id = request.GET.get("user_id")
     response, status = inventory_utils.get_user_products(user_id)
     return Response(response, status=status)
+
+
+
+
 
 #inventory count-6
 
@@ -1037,6 +1040,20 @@ def get_categories(request):
 #insights count-10
 
 @api_view(['GET'])
+def fetch_smart_reorder_products(request):
+    user_id = request.GET.get("user_id")
+    category = request.GET.get("category")
+
+    if not user_id:
+        return Response({"status": "error", "message": "User ID is required"}, status=400)
+
+    try:
+        result, status_code = InsightsUtils.fetch_smart_reorder_products(user_id, category)
+        return Response(result, status=status_code)
+
+    except Exception as e:
+        return Response({"status": "error", "message": str(e)}, status=500)
+@api_view(['GET'])
 def get_top_products_by_category(request):
     user_id = request.query_params.get('user_id')
     category = request.query_params.get('category')
@@ -1053,6 +1070,9 @@ def get_top_products_by_category(request):
     
     except Exception as e:
         return Response({"error": str(e)}, status=500)
+    
+    
+    
 #insights count-11
 
 @api_view(['GET'])
