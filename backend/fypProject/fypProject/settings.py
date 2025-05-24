@@ -92,9 +92,9 @@ DATABASES = {
 
 # MongoDB Atlas Connection String
 MONGO_CLIENT = pymongo.MongoClient(
-    "mongodb+srv://syeddaniyalhashmi123:test123@cluster0.dutvq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://syeddaniyalhashmi123:test123@cluster0.dutvq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+     serverSelectionTimeoutMS=60000  # increase timeout
 )
-
 
 # Specify the database
 MONGO_DB = MONGO_CLIENT["inventory_db"]  # Replace 'my_database' with your database name
