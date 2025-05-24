@@ -72,7 +72,7 @@ useEffect(() => {
       setMessage("Generating prediction...");
       setIsError(false);
 
-      const response = await axios.post('http://127.0.0.1:8000/aiventory/predict-sales/', {
+      const response = await axios.post('https://seal-app-8m3g5.ondigitalocean.app/aiventory/predict-sales/', {
         user_id: userId,
         productname: product,
         category: category,

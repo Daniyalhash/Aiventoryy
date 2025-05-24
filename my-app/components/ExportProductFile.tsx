@@ -18,7 +18,7 @@ const ExportProductFile = () => {
 
   try {
     const response = await axios.get(
-      "http://127.0.0.1:8000/aiventory/export_products/",
+      "https://seal-app-8m3g5.ondigitalocean.app/aiventory/export_products/",
       {
         params: { user_id: userId },
         responseType: 'blob' // 🔥 This is critical for downloading files

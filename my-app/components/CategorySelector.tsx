@@ -15,7 +15,7 @@ const CategorySelector = () => {
       }
 
       try {
-        const response = await axios.get('http://127.0.0.1:8000/aiventory/get-categories/', {
+        const response = await axios.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-categories/', {
           params: { user_id: userId },
         });
 

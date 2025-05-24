@@ -55,7 +55,7 @@ const DashboardCard10 = ({ title }: { title: string }) => {
 
       if (!userId) throw new Error("User ID not found");
 
-      const response = await axios.get("http://127.0.0.1:8000/aiventory/fetch_cached_predictions/", {
+      const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/fetch_cached_predictions/", {
         params: { user_id: userId }
       });
 

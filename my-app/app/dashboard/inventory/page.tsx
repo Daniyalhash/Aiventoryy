@@ -51,10 +51,10 @@ useEffect(() => {
     setLoading(true);
     try {
       const [productsResponse, statsResponse] = await Promise.all([
-        axios.get("http://127.0.0.1:8000/aiventory/get-current-dataset/", {
+        axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-current-dataset/", {
           params: { user_id: userId },
         }),
-        axios.get("http://127.0.0.1:8000/aiventory/get-inventory-summary/", {
+        axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-inventory-summary/", {
           params: { user_id: userId },
         }),
       ]);

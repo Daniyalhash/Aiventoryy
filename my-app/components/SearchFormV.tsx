@@ -37,7 +37,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/aiventory/search-vendor/", {
+      const response = await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/search-vendor/", {
         userId,
         vendorName,
         vendorId,

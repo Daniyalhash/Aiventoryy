@@ -39,10 +39,10 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
 
   const fetchInvoices = useCallback(async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
+      const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-invoices/", {
         params: { user_id: userId }
       });
-      const response2 = await axios.get("http://127.0.0.1:8000/aiventory/get_user_received_orders/", {
+      const response2 = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_received_orders/", {
         params: { user_id: userId }
       });
       // Handle the open orders
@@ -79,7 +79,7 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
     setIsError(false);
 
     try {
-      const response = await axios.delete("http://127.0.0.1:8000/aiventory/delete_open_order_invoice/", {
+      const response = await axios.delete("https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete_open_order_invoice/", {
         data: {
           invoice_id: invoiceId,
           user_id: userId,
@@ -105,7 +105,7 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
     setIsError(false);
 
     try {
-      const response = await axios.delete("http://127.0.0.1:8000/aiventory/delete_received_order_invoice/", {
+      const response = await axios.delete("https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete_received_order_invoice/", {
         data: {
           invoice_id: invoiceId,
           user_id: userId,
@@ -160,7 +160,7 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
       };
       console.log('Sending payload vendor :', payload);
       // Update vendor's reliability score and delivery time
-      const response = await axios.post("http://127.0.0.1:8000/aiventory/update_vendor_reliability/",
+      const response = await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/update_vendor_reliability/",
 
         payload
       );

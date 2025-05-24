@@ -85,7 +85,7 @@ const ButtonFrame3: React.FC<ButtonFrame3Props> = ({
   selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
 async ([, userId, category]) => {
     const response = await axios.get(
-      'http://127.0.0.1:8000/aiventory/get-top-products-by-category/',
+      'https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-top-products-by-category/',
       { params: { user_id: userId, category } }
     );
     return response.data.products || [];

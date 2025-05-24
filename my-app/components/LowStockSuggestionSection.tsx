@@ -51,7 +51,7 @@ const LowStockSuggestionSection: React.FC = () => {
       if (!userId) return;
 
       try {
-        const response = await axios.get('http://127.0.0.1:8000/aiventory/get-categories-p/', {
+        const response = await axios.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-categories-p/', {
           params: { user_id: userId },
         });
 
@@ -79,7 +79,7 @@ const LowStockSuggestionSection: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await axios.get('http://127.0.0.1:8000/aiventory/get-vendor-details/', {
+      const response = await axios.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-vendor-details/', {
         params: {
           user_id: userId,
           category: product.category,
@@ -170,7 +170,7 @@ const LowStockSuggestionSection: React.FC = () => {
       };
       console.log("inovide predictions", predictionPayload)
       // Send prediction request
-      const predictionResponse = await axios.post('http://127.0.0.1:8000/aiventory/predict_demand/', predictionPayload);
+      const predictionResponse = await axios.post('https://seal-app-8m3g5.ondigitalocean.app/aiventory/predict_demand/', predictionPayload);
 
       if (predictionResponse.status >= 200 && predictionResponse.status < 300) {
         const predictedQuantity = predictionResponse.data.prediction || 0; // Use prediction or fallback to 0
@@ -202,7 +202,7 @@ const LowStockSuggestionSection: React.FC = () => {
           vendor_id_value: orderPayload.vendor_id
         });
         // Place the order
-        const orderResponse = await axios.post('http://127.0.0.1:8000/aiventory/save-invoice/', orderPayload);
+        const orderResponse = await axios.post('https://seal-app-8m3g5.ondigitalocean.app/aiventory/save-invoice/', orderPayload);
 
         if (orderResponse.status >= 200 && orderResponse.status < 300) {
           setMessage("Order placed successfully! Redirecting...");
@@ -373,7 +373,7 @@ const LowStockSuggestionSection: React.FC = () => {
       };
       console.log("inovide predictions", predictionPayload)
       // Send prediction request
-      const predictionResponse = await axios.post('http://127.0.0.1:8000/aiventory/predict_demand/', predictionPayload);
+      const predictionResponse = await axios.post('https://seal-app-8m3g5.ondigitalocean.app/aiventory/predict_demand/', predictionPayload);
 
       if (predictionResponse.status >= 200 && predictionResponse.status < 300) {
         const predictedQuantity = predictionResponse.data.prediction || 0; // Use prediction or fallback to 0
@@ -401,7 +401,7 @@ const LowStockSuggestionSection: React.FC = () => {
         user_id: localStorage.getItem("userId")
       };
 
-      const orderResponse = await axios.post('http://127.0.0.1:8000/aiventory/automate_order/', orderPayload);
+      const orderResponse = await axios.post('https://seal-app-8m3g5.ondigitalocean.app/aiventory/automate_order/', orderPayload);
 
       if (orderResponse.status >= 200 && orderResponse.status < 300) {
       setMessage("✅ Automated order placed successfully!");

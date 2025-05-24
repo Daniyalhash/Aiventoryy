@@ -48,10 +48,10 @@ useEffect(() => {
       setLoading(true); // Set loading to true before fetching
       try {
         const [vendorResponse, statsResponse] = await Promise.all([
-          axios.get("http://127.0.0.1:8000/aiventory/get-vendor/", {
+          axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-vendor/", {
             params: { user_id: userId },
           }),
-          axios.get("http://127.0.0.1:8000/aiventory/get_vendor_summary/", {
+          axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_vendor_summary/", {
             params: { user_id: userId },
           })
         ]);

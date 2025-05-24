@@ -35,7 +35,7 @@ const ResetPasswordPage = () => {
     }
 
     try {
-      const response = await axios.post<ResetPasswordResponse>('http://127.0.0.1:8000/aiventory/reset-password/', {
+      const response = await axios.post<ResetPasswordResponse>('https://seal-app-8m3g5.ondigitalocean.app/aiventory/reset-password/', {
         token,
         newPassword: password,
       });

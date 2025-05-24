@@ -83,7 +83,7 @@ const SimpleForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8000/aiventory/add-vendor/", {
+      const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/add-vendor/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

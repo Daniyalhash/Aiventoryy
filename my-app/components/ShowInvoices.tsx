@@ -71,7 +71,7 @@ const [invoices, setInvoices] = useState<Invoice[]>([]);
     const userId = localStorage.getItem('userId');
     if (!userId) return;
     try {
-      const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
+      const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-invoices/", {
         params: { user_id: userId }
       });
       console.log("Invoices response:", response.data.invoices.data);
@@ -100,7 +100,7 @@ const fetchUserData = useCallback(async () => {
     if (!userId) return;
 
     try {
-      await axios.get('http://127.0.0.1:8000/aiventory/get-user-details/', {
+      await axios.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-user-details/', {
         params: { user_id: userId }
       });
       
@@ -175,7 +175,7 @@ const fetchUserData = useCallback(async () => {
       setMessage("Deleting selected invoices...");
       setIsError(false);
       const deletePromises = selectedInvoices.map(id =>
-        axios.delete(`http://127.0.0.1:8000/aiventory/delete-invoice/${id}/`, { // Added trailing slash
+        axios.delete(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete-invoice/${id}/`, { // Added trailing slash
           params: { user_id: userId },
           headers: {
             'Content-Type': 'application/json'
@@ -245,7 +245,7 @@ const fetchUserData = useCallback(async () => {
       };
 
       const response = await axios.put(
-        `http://127.0.0.1:8000/aiventory/update-invoice/${editingInvoice._id}/`,
+        `https://seal-app-8m3g5.ondigitalocean.app/aiventory/update-invoice/${editingInvoice._id}/`,
         updatedData,
         {
           headers: {
@@ -294,7 +294,7 @@ const fetchUserData = useCallback(async () => {
     }
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/aiventory/confirm-invoice/${selectedInvoiceId}/`, // Added trailing slash
+        `https://seal-app-8m3g5.ondigitalocean.app/aiventory/confirm-invoice/${selectedInvoiceId}/`, // Added trailing slash
         selectedInvoice, // 👈 sending full invoice data
 
         {
