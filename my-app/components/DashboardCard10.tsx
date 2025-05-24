@@ -10,8 +10,7 @@ type Prediction = {
   category: string;
   stockquantity: number;
   monthly_sales: number;
-  demand : number;
-  month : string ;
+
   needs_reorder: string;
 };
 
@@ -81,8 +80,7 @@ useEffect(() => {
           category: item.category || "Uncategorized",
           stockquantity: item.stockquantity || 0,
           monthly_sales: item.monthly_sales || new Date().toISOString(),
-          demand:item.demand || 0,
-          month: item.month || "Unknown",
+         
           needs_reorder: item.needs_reorder ? "High" : "Low",
          
         }))
@@ -256,8 +254,7 @@ useEffect(() => {
                 <th>Category</th>
                 <th>Stock</th>
                 <th>Monthly Sales</th>
-                <th>Demand</th>
-                <th>Month</th>
+                
 
                 <th>Action</th>
               </tr>
@@ -275,8 +272,7 @@ useEffect(() => {
                         <td>{item.category}</td>
                         <td>{item.stockquantity}</td>
                         <td>{item.monthly_sales}</td>
-                        <td>{item.demand}</td>
-                        <td>{item.month}</td>
+                  
                         <td>{item.needs_reorder || "–"}</td>
                         {/* <td>
                           {item.risk_level && !item.risk_level.toLowerCase().includes("low") ? (
