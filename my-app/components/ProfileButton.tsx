@@ -161,10 +161,10 @@ const ProfileButton = () => {
     }
   };
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userId");
-    setUser(null); 
-      window.localStorage.removeItem("userId");
+    // localStorage.removeItem("authToken");
+    // localStorage.removeItem("userId");
+    // setUser(null); 
+    //   window.localStorage.removeItem("userId");
 
     window.location.href = "/";
   };
