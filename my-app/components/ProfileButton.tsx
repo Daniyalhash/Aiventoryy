@@ -56,7 +56,7 @@ const ProfileButton = () => {
       if (userId) {
         console.log(`Fetching data for userId: ${userId}`);
 
-        const response = await axios.get(`$https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-user-details/`, {
+        const response = await axios.get(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-user-details/`, {
           params: { user_id: userId },
         });
         setUser(response.data); // Update state with user details
@@ -138,7 +138,7 @@ const ProfileButton = () => {
 
   const fetchUnreadNotificationCount = async (userId: string) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/aiventory/get_notifications/`, {
+      const response = await axios.get(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_notifications/`, {
         params: { user_id: userId },
       });
 
@@ -153,7 +153,7 @@ const ProfileButton = () => {
 
   const markAllNotificationsAsRead = async (userId: string) => {
     try {
-      await axios.post(`http://127.0.0.1:8000/aiventory/mark_all_as_read/`, {
+      await axios.post(`https://seal-app-8m3g5.ondigitalocean.app/mark_all_as_read/`, {
         user_id: userId,
       });
     } catch (error) {
