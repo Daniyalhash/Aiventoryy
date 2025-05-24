@@ -92,7 +92,7 @@ export const fetchStockData = async (userId: string | null) => {
 export const fetchCategories = async (userId: string | null) => {
   if (!userId) throw new Error("User ID is required");
   try {
-    const response = await api.get('http://127.0.0.1:8000/aiventory/get-categories/', { params: { user_id: userId } });
+    const response = await api.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-categories/', { params: { user_id: userId } });
     return response.data;
   } catch (error) {
 
@@ -107,7 +107,7 @@ export const fetchCategories = async (userId: string | null) => {
 export const fetchAvailableMonths = async (userId: string | null) => {
   if (!userId) throw new Error("User ID is required");
   try {
-    const response = await api.get('http://127.0.0.1:8000/aiventory/last-sales-month/', { params: { user_id: userId } });
+    const response = await api.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/last-sales-month/', { params: { user_id: userId } });
     return response.data;
   } catch (error) {
 
@@ -122,7 +122,7 @@ export const fetchAvailableMonths = async (userId: string | null) => {
 export const fetchProductsByCategory = async (userId: string | null, category: string) => {
   if (!userId) throw new Error("User ID is required");
   try {
-    const response = await api.get('http://127.0.0.1:8000/aiventory/get-top-products-by-category/', { params: { user_id: userId, category: category } });
+    const response = await api.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-top-products-by-category/', { params: { user_id: userId, category: category } });
     return response.data.products || []; // Ensure empty array if products is not available
   } catch (error) {
     console.error("Failed to fetch categories of Product", error);
@@ -136,7 +136,7 @@ export const fetchStockNoti = async (userId: string | null) => {
   if (!userId) return null;
 
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/aiventory/check_stock_levels/`, {
+    const response = await axios.get(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/check_stock_levels/`, {
       params: { user_id: userId }
     });
     return response.data;
@@ -151,7 +151,7 @@ export const fetchNotifications = async (userId: string | null) => {
   if (!userId) return [];
 
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/aiventory/get_notifications/`, {
+    const response = await axios.get(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_notifications/`, {
       params: { user_id: userId }
     });
     console.log("Fetched notifications:", response.data);
@@ -166,7 +166,7 @@ export const fetchNotifications = async (userId: string | null) => {
 // Delete notifications
 export const deleteNotifications = async (userId: string, notificationIds: string[]) => {
   try {
-    await axios.delete(`http://127.0.0.1:8000/aiventory/delete_notifications/`, {
+    await axios.delete(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete_notifications/`, {
       data: {
         user_id: userId,
         notification_ids: notificationIds
@@ -181,7 +181,7 @@ export const deleteNotifications = async (userId: string, notificationIds: strin
 // Mark notification as read
 export const markNotificationAsRead = async (userId: string, notificationId: string) => {
   try {
-    await axios.patch(`http://127.0.0.1:8000/aiventory/mark_notification_as_read/`, {
+    await axios.patch(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/mark_notification_as_read/`, {
       user_id: userId,
       notification_id: notificationId
     });
