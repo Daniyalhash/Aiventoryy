@@ -21,7 +21,7 @@ const Cards2 = () => {
     try {
 
       // `${process.env.NEXT_PUBLIC_API_URL}/aiventory/get-invoices/`
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/aiventory/get-invoices/`, {
+      const response = await axios.get(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-invoices/`, {
         params: { user_id: userId }
       });
       console.log("Open order count:", response.data.openOrderLen);
