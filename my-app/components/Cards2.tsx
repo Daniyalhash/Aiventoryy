@@ -19,7 +19,9 @@ const Cards2 = () => {
   useEffect(() => {
   const fetchInvoices = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
+
+      // `${process.env.NEXT_PUBLIC_API_URL}/aiventory/get-invoices/`
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/aiventory/get-invoices/`, {
         params: { user_id: userId }
       });
       console.log("Open order count:", response.data.openOrderLen);

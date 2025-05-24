@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+`${process.env.NEXT_PUBLIC_API_URL}/aiventory/login/`
 // Base API instance
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/aiventory/',
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/aiventory/`,
   timeout: 15000,  // Increase to 15 seconds
   headers: {
     'Content-Type': 'application/json',

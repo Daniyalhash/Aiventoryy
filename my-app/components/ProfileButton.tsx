@@ -55,7 +55,8 @@ const ProfileButton = () => {
     try {
       if (userId) {
         console.log(`Fetching data for userId: ${userId}`);
-        const response = await axios.get("http://127.0.0.1:8000/aiventory/get-user-details/", {
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/aiventory/get-user-details/`, {
           params: { user_id: userId },
         });
         setUser(response.data); // Update state with user details
