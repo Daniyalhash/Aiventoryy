@@ -2,7 +2,7 @@ import axios from 'axios';
 `${process.env.NEXT_PUBLIC_API_URL}/aiventory/login/`
 // Base API instance
 const api = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/aiventory/`,
+  baseURL: 'https://seal-app-8m3g5.ondigitalocean.app/aiventory/',
   timeout: 15000,  // Increase to 15 seconds
   headers: {
     'Content-Type': 'application/json',

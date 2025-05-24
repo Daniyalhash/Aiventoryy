@@ -56,7 +56,7 @@ const ProfileButton = () => {
       if (userId) {
         console.log(`Fetching data for userId: ${userId}`);
 
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/aiventory/get-user-details/`, {
+        const response = await axios.get(`$https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-user-details/`, {
           params: { user_id: userId },
         });
         setUser(response.data); // Update state with user details

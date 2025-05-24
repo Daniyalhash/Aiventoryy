@@ -94,7 +94,7 @@ const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventor
         setIsError(false);
 
         // ✅ Trigger stock check (non-blocking)
-        fetch(`http://127.0.0.1:8000/aiventory/check_stock_levels/?user_id=${userId}`)
+        fetch(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/check_stock_levels/?user_id=${userId}`)
           .then((res) => res.json())
           .then((stockData) => {
             if (!stockData.ok) {
