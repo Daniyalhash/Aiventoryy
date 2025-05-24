@@ -76,7 +76,7 @@ const DashboardCard11 = ({ title }: DashboardCard11Props) => {
 
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/aiventory/get_vendor_performance/",
+        "https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_vendor_performance/",
         { params: { user_id, vendor_id } }
       );
 

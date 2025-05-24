@@ -34,7 +34,7 @@ const ActivityVendor: React.FC = () => {
     return;
   }
   try {
-    const response = await axios.get("http://localhost:8000/aiventory/get_logs/", {
+    const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_logs/", {
       params: { user_id: userId, entity_type: "vendor" }
     });
 

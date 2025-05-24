@@ -24,7 +24,7 @@ const DashboardCard8: React.FC<DashboardCard8Props> = ({ title, link }) => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
 const fetchInvoices = useCallback(async () => {
       try {
-      const response = await axios.get("http://127.0.0.1:8000/aiventory/get-invoices/", {
+      const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-invoices/", {
         params: { user_id: userId }
       });
       if (

@@ -30,7 +30,7 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
 
         const completeSignup = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/aiventory/complete_signup/", {
+                const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/complete_signup/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ user_id: userId }),

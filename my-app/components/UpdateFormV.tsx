@@ -21,7 +21,7 @@ const UpdateForm = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/aiventory/get-vendor-id/", {
+      const response = await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-vendor-id/", {
         userId,
         vendor_id: vendorId,
       });
@@ -72,7 +72,7 @@ const UpdateForm = () => {
     if (reliabilityScore) updateFields.ReliabilityScore = parseFloat(reliabilityScore);
 
     try {
-      const response = await axios.post("http://localhost:8000/aiventory/update-vendor/", {
+      const response = await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/update-vendor/", {
         userId,
         vendor_id: vendorId,
         vendor: vendorName,

@@ -89,7 +89,7 @@ const [isAnimating] = useState(false);
     selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
 async ([, userId, category]) => {
       const response = await axios.get(
-        'http://127.0.0.1:8000/aiventory/get-top-products-by-category/',
+        'https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-top-products-by-category/',
         { params: { user_id: userId, category } }
       );
       return response.data;
@@ -165,7 +165,7 @@ async ([, userId, category]) => {
 
       const vendor_id = product.vendor_id
       // Get all products in the same category, including the selected product
-      const response = await axios.get('http://127.0.0.1:8000/aiventory/get-products-by-name/', {
+      const response = await axios.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-products-by-name/', {
         params: { user_id: userId, category: category, vendor_id: vendor_id },
       });
       console.log("Vendor ID used in API call:", vendor_id, typeof vendor_id);  // should be "string"

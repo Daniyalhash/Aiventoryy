@@ -74,7 +74,7 @@ const AddFormP = () => {
   }, [userId]);
 
   const fetchVendorsByCategory = async (userId: string, category: string) => {
-    const response = await fetch(`http://localhost:8000/aiventory/vendors-by-category/?userId=${userId}&category=${category}`);
+    const response = await fetch(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/vendors-by-category/?userId=${userId}&category=${category}`);
     if (!response.ok) throw new Error("Failed to fetch vendors");
     return await response.json();
   };
@@ -161,7 +161,7 @@ const AddFormP = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8000/aiventory/add-product/", {
+      const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/add-product/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

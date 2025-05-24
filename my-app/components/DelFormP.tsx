@@ -19,7 +19,7 @@ const DelFormP = () => {
     console.log("user for delete",userId)
 
     try {
-      const response = await axios.post("http://localhost:8000/aiventory/delete-product/", {
+      const response = await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete-product/", {
         userId,
         productname_id: productId,
       });

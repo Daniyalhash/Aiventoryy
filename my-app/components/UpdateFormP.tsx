@@ -33,7 +33,7 @@ const UpdateFormP = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/aiventory/get-product-ids/", {
+      const response = await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-product-ids/", {
         userId,
         productId,
       });
@@ -90,7 +90,7 @@ const UpdateFormP = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/aiventory/update-product/", {
+      const response = await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/update-product/", {
         userId,
         productname_id: productId,
         productname: productName,

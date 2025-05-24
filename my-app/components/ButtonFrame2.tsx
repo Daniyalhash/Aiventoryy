@@ -88,7 +88,7 @@ const formData = {
   try {
     // const response = await axios.post("http://127.0.0.1:8000/aiventory/add-vendor/", formData);
 
-    const response = await axios.post("http://127.0.0.1:8000/aiventory/-vendor/", formData);
+    const response = await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/-vendor/", formData);
     console.log("Response:", response.data);
     alert(`Vendor ${formData.vendor_name} added successfully!`);
     

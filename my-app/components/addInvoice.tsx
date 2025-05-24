@@ -83,7 +83,7 @@ const AddInvoice: React.FC = () => {
     try {
       console.log("Fetching vendors for:", { userId, category }); // Debug input
 
-      const response = await fetch(`http://localhost:8000/aiventory/vendors-by-category/?userId=${userId}&category=${category}`);
+      const response = await fetch(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/vendors-by-category/?userId=${userId}&category=${category}`);
       console.log("Raw response:", response); // Debug raw response
 
       if (!response.ok) {
@@ -103,7 +103,7 @@ const AddInvoice: React.FC = () => {
 
   const fetchProductsByCategory = async (userId: string, category: string) => {
     const response = await fetch(
-      `http://localhost:8000/aiventory/products-by-category/?userId=${userId}&category=${category}`
+      `https://seal-app-8m3g5.ondigitalocean.app/aiventory/products-by-category/?userId=${userId}&category=${category}`
     );
     if (!response.ok) throw new Error("Failed to fetch products");
     return await response.json();
@@ -318,7 +318,7 @@ if (!formData.vendor_id || !formData.vendor || formData.products.some(p => !p.na
         }))
       };
       console.log("payload",payload)
-      const response = await fetch("http://localhost:8000/aiventory/save-invoice/", {
+      const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/save-invoice/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
