@@ -9,13 +9,14 @@ type Prediction = {
   productname: string;
   category: string;
   stockquantity: number;
-  monthly_sales: number;
-  needs_reorder: string;
+  expirydate: string;
+  risk_level: string;
+  action_suggestion: string;
 };
 
 
 // const DashboardCard10 = ({ title, link, subTitle }) => {
-const DashboardCard10 = ({ title }: { title: string }) => {
+const DashboardCard13 = ({ title }: { title: string }) => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [visibleCount, setVisibleCount] = useState(10);
@@ -32,79 +33,61 @@ const DashboardCard10 = ({ title }: { title: string }) => {
 
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [filteredPredictions, setFilteredPredictions] = useState<Prediction[]>([]);
-
- const { data: categoryData } = useSWR(
-  userId ? ["get-categories", userId] : null,
-  () => fetchCategories(userId),
-  {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-    dedupingInterval: 30000,
-  }
-);
-
-useEffect(() => {
-  if (categoryData) {
-    const formatted = categoryData.categories.map((cat: string, index: number) => ({
-      _id: `cat-${index}`, // fallback ID
-      name: cat
-    }));
-    setCategories(formatted); // ✅ Now dropdown will show options
-  }
-}, [categoryData]);
-
+  const { data: categoryData } = useSWR(
+    userId ? ["get-categories", userId] : null,
+    () => fetchCategories(userId),
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      dedupingInterval: 30000, // only fetch once every 30s max
+    }
+  );
+ useEffect(() => {
+   if (categoryData) {
+     const formatted = categoryData.categories.map((cat: string, index: number) => ({
+       _id: `cat-${index}`, // fallback ID
+       name: cat
+     }));
+     setCategories(formatted); // ✅ Now dropdown will show options
+   }
+ }, [categoryData]);
   console.log("available categories", categories)
   const fetchPredictions = async () => {
-  setLoading(true);
-  try {
-    const userId = localStorage.getItem("userId");
-    if (!userId) throw new Error("User ID not found");
+    setLoading(true);
+    try {
+      const userId = localStorage.getItem("userId");
 
-    const response = await axios.get(
-      "https://seal-app-8m3g5.ondigitalocean.app/aiventory/fetch_smart_reorder_products/",
-      {
-        params: {
-          user_id: userId,
-          category: selectedCategory !== "all" ? selectedCategory : undefined
-        }
+      if (!userId) throw new Error("User ID not found");
+
+      const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/fetch_cached_predictions/", {
+        params: { user_id: userId }
+      });
+
+      const data = response.data;
+      const predictionList = data.predictions || [];
+
+      // console.log("Fetched  values:", predictionList.length);
+
+      if (data.status === 'success' && Array.isArray(predictionList)) {
+        setPredictions(predictionList); // ✅ Show first 50 only
+        setError(null);
+        setIsError(false); // On success
+
+      } else {
+        setError("No predictions found in the response.");
+        setPredictions([]);
       }
-    );
-
-    const data = response.data;
-    console.log("product u want to reorder", data);
-    // Map backend response to Prediction type
-    const predictionList = Array.isArray(data.data)
-      ? data.data.map((item: any) => ({
-          productname: item.productname || "Unknown",
-          category: item.category || "Uncategorized",
-          stockquantity: item.stockquantity || 0,
-          monthly_sales: item.monthly_sales || new Date().toISOString(),
-          needs_reorder: item.needs_reorder ? "High" : "Low",
-         
-        }))
-      : [];
-
-    console.log("Fetched reorder products:", predictionList.length);
-
-    if (data.status === 'success' && predictionList.length > 0) {
-      setPredictions(predictionList);
-      setError(null);
-      setIsError(false);
-    } else {
-      setError("No products found.");
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      console.error("Error fetching predictions:", err);
+      setError(error?.response?.data?.message || "Failed to fetch predictions.");
       setPredictions([]);
-    }
+      setIsError(true); // Inside catch
 
-  } catch (err: unknown) {
-    const error = err as { response?: { data?: { message?: string } } };
-    console.error("Error fetching reorder products:", err);
-    setError(error?.response?.data?.message || "Failed to fetch reorder products.");
-    setPredictions([]);
-    setIsError(true);
-  } finally {
-    setLoading(false);
-  }
-};
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchPredictions();
@@ -206,7 +189,7 @@ useEffect(() => {
           {subTitle}
         </h3> */}
         <div className="cardSide">
-          {/* <div className="form-group2">
+          <div className="form-group2">
             <input
               type="text"
               name="productName"
@@ -214,7 +197,7 @@ useEffect(() => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div> */}
+          </div>
           <div className="form-group2">
             <select
               name="category"
@@ -251,7 +234,9 @@ useEffect(() => {
                 <th>Product</th>
                 <th>Category</th>
                 <th>Stock</th>
-                <th>Monthly Sales</th>
+                <th>Days Left</th>
+                <th>Risk Level</th>
+                <th>Suggested Discount</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -260,22 +245,26 @@ useEffect(() => {
                 <>
                   {/* Render only visible predictions */}
                   {filteredPredictions.slice(0, visibleCount).map((item, index) => {
-                   
+                    const expiryDate = new Date(item.expirydate);
+                    const today = new Date();
+                    const timeDiff = expiryDate.getTime() - today.getTime();
+                    const daysLeft = Math.max(Math.ceil(timeDiff / (1000 * 3600 * 24)), 0);
 
                     return (
                       <tr key={index}>
                         <td>{item.productname}</td>
                         <td>{item.category}</td>
                         <td>{item.stockquantity}</td>
-                        <td>{item.monthly_sales}</td>
-                        <td>{item.needs_reorder || "–"}</td>
-                        {/* <td>
+                        <td>{daysLeft} days</td>
+                        <td className={`risk ${item.risk_level?.toLowerCase()}`}>{item.risk_level}</td>
+                        <td>{item.action_suggestion || "–"}</td>
+                        <td>
                           {item.risk_level && !item.risk_level.toLowerCase().includes("low") ? (
                             <button className="receivedBtn19">Discount Now</button>
                           ) : (
                             <span className="deleteBtn19">–</span>
                           )}
-                        </td> */}
+                        </td>
                       </tr>
                     );
                   })}
@@ -311,4 +300,4 @@ useEffect(() => {
   );
 };
 
-export default DashboardCard10;
+export default DashboardCard13;
