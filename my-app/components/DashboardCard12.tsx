@@ -102,9 +102,10 @@ const DashboardCard12 = ({ title }: { title: string }) => {
     }
   };
 
-  useEffect(() => {
-    fetchPredictions();
-  }, []);
+useEffect(() => {
+  fetchPredictions();
+}, [selectedCategory]);
+
   // console.log("found these val", predictions, length)
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 

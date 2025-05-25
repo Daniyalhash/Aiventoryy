@@ -69,11 +69,12 @@ class InsightsUtils:
 
             demand_score = (normalized_sales * 0.6 + season_match * 0.3 + recency_score * 0.1) * 100
             product["demand_score"] = round(demand_score, 2)
-
+        print('product',products)
         return products
    
     @staticmethod
     def fetch_top_products(user_id, category):
+        print(f"[DEBUG] fetch_top_products called with user_id={user_id}, category={category}")
         pipeline = [
             {"$match": {"user_id": ObjectId(user_id)}},
             {"$unwind": "$products"},
@@ -106,7 +107,10 @@ class InsightsUtils:
         ]
 
         result = list(db["products"].aggregate(pipeline))
+        print(f"[DEBUG] Aggregation pipeline returned {len(result)} products")
+
         products = InsightsUtils.convert_objectid(result)
+        
         return InsightsUtils.calculate_demand_score(products)
         # return InsightsUtils.convert_objectid(result)
 
