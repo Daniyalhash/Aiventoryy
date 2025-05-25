@@ -250,7 +250,7 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
           <tbody>
             {openOrders.length === 0 ? (
               <tr>
-                <td  style={{ padding: "40px 0" }}>
+                <td  colSpan={8} style={{ padding: "40px 0" }}>
                   <div className="emptyStateBox">
                     <p>🚫 No open orders placed yet</p>
                     <small>Add a new order to get started</small>

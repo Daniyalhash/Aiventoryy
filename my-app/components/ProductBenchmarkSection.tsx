@@ -438,10 +438,11 @@ async ([, userId, category]) => {
                     </div>
                   ))
                 ) : (
-                  <div className="not">
-                    <p className="no-products">Search products</p>
-
-                  </div>
+                 (searchText || selectedCategory || UseCategory) && (
+      <div className="not">
+        <p className="no-products">No products found</p>
+      </div>
+    )
                 )}
               </div>
 
@@ -530,34 +531,34 @@ async ([, userId, category]) => {
               </div>
             </div>
 
-            <div className="stats-container">
-              <div className={`stat-card stock ${isAnimating ? 'fade-in' : ''}`}>
+            <div className="stats-container-in">
+              <div className={`stat-card2 stock ${isAnimating ? 'fade-in' : ''}`}>
                 <h4>Stock Levels</h4>
-                <div className="stat-value">{targetProductDetails?.stockquantity || 'N/A'}</div>
-                <p className="stat-label">Current Stock</p>
-                <div className="stat-threshold">
+                <div className="stat-value-2">{targetProductDetails?.stockquantity || 'N/A'}</div>
+                <p className="stat-label-2">Current Stock</p>
+                <div className="stat-threshold-2">
                   <span>Reorder at: {targetProductDetails?.reorderthreshold || 'N/A'}</span>
                 </div>
               </div>
-              <div className={`stat-card stock ${isAnimating ? 'fade-in' : ''}`}>
+              <div className={`stat-card2 stock ${isAnimating ? 'fade-in' : ''}`}>
                 <h4>Product Weight/Size</h4>
-                <div className="stat-value">{targetProductDetails?.productSize || 'N/A'}</div>
-                <p className="stat-label">Current Product Weight</p>
-                <div className="stat-threshold">
+                <div className="stat-value-2">{targetProductDetails?.productSize || 'N/A'}</div>
+                <p className="stat-label-2">Current Product Weight</p>
+                <div className="stat-threshold-2">
                   {/* <span>Reorder at: {targetProductDetails?.reorderthreshold || 'N/A'}</span> */}
                 </div>
               </div>
-              <div className={`stat-card vendor ${isAnimating ? 'fade-in' : ''}`}>
+              <div className={`stat-card2 vendor ${isAnimating ? 'fade-in' : ''}`}>
                 <h4>Vendor Details</h4>
                 <div className="vendor-name">{targetProductDetails?.vendor || 'N/A'}</div>
-                <div className="vendor-stats">
-                  <div className="vendor-stat">
-                    <span className="stat-value">{targetProductDetails?.ReliabilityScore || 'N/A'}</span>
-                    <span className="stat-label">Reliability</span>
+                <div className="vendor-stats-2">
+                  <div className="vendor-stat-2">
+                    <span className="stat-value-2">{targetProductDetails?.ReliabilityScore || 'N/A'}</span>
+                    <span className="stat-label-2">Reliability</span>
                   </div>
-                  <div className="vendor-stat">
-                    <span className="stat-value">{targetProductDetails?.DeliveryTime || 'N/A'}</span>
-                    <span className="stat-label">Delivery Days</span>
+                  <div className="vendor-stat-2">
+                    <span className="stat-value-2">{targetProductDetails?.DeliveryTime || 'N/A'}</span>
+                    <span className="stat-label-2">Delivery Days</span>
                   </div>
                 </div>
               </div>
