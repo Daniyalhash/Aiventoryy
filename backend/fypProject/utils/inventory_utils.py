@@ -109,16 +109,17 @@ class InventoryUtils:
                 {
                     "$project": {
                         "_id": 1,
+                        "productname_id":1,
                         "productname": 1,
                         "category": 1,
-                        "expirydate": 1
+                        "expirydate": {"$toString":"$expirydate"}
                     }
                 },
                 {
                     "$addFields": {
                         "is_expired": {
                             "$cond": [
-                                {"$ne": ["$expirydate", None]},
+                                {"$ne": ["$expirydate", "N/A"]},
                                 {
                                     "$lt": [
                                         {"$dateFromString": {"dateString": "$expirydate"}},
@@ -131,7 +132,6 @@ class InventoryUtils:
                     }
                 },
                 {"$match": {"is_expired": True}},
-                {"$project": {"is_expired": 0}},  # Hide temporary field
                 {"$sort": {"expirydate": 1}}
             ]
 
@@ -140,7 +140,7 @@ class InventoryUtils:
             # Convert ObjectIds to string
             cleaned_result = [
                 {
-                    "product_id": str(item["_id"]),
+                    "product_id": item.get("productname_id", "N/A"),
                     "productname": item.get("productname", "Unknown"),
                     "category": item.get("category", "Uncategorized"),
                     "expirydate": item.get("expirydate", "N/A")
