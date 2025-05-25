@@ -12,14 +12,17 @@ type Prediction = {
   expirydate: string;
   days_left: number;
   risk_level: string;
-  discount_suggestion: {
+  waste_ratio?: number;
+  prediction?: number;
+  discount_suggestion?: {
     apply_now: boolean;
     percent_off: number;
     on_quantity: number;
     reason: string;
     suggestion: string;
   };
-};
+}
+
 
 
 // const DashboardCard10 = ({ title, link, subTitle }) => {
@@ -79,7 +82,7 @@ const DashboardCard12 = ({ title }: { title: string }) => {
 
       if (data.status === 'success' && Array.isArray(data.predictions)) {
         setPredictions(data.predictions); // ✅ Show first 50 only
-        console.log("aata",predictions)
+        console.log("aata", predictions)
         setError(null);
         setIsError(false); // On success
 
@@ -173,6 +176,22 @@ const DashboardCard12 = ({ title }: { title: string }) => {
 
     return debouncedValue;
   }
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return isNaN(date.getTime())
+      ? "Invalid date"
+      : date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+  };
+
+  const getRiskClass = (riskLevel: string) => {
+    if (riskLevel.includes("🔴")) return "high-risk";
+    if (riskLevel.includes("🟡")) return "medium-risk";
+    return "low-risk";
+  };
 
   // Use inside component:
   return (
@@ -241,16 +260,16 @@ const DashboardCard12 = ({ title }: { title: string }) => {
           <table className="orderTable9">
             <thead>
               <tr>
-               
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Stock</th>
-                    <th>Expiry Date</th>
-                    <th>Days Left</th>
-                    <th>Status</th>
-                    <th>Suggestion</th>
-                    <th>Action</th>
-               
+
+                <th>Product</th>
+                <th>Category</th>
+                <th>Current Stock</th>
+                <th>Expiry Date</th>
+                <th>Days Left</th>
+                <th>Waste Risk</th>
+                <th>Predicted Sales</th>
+                <th>Suggested Action</th>
+
               </tr>
             </thead>
             <tbody>
@@ -258,25 +277,31 @@ const DashboardCard12 = ({ title }: { title: string }) => {
                 <>
                   {/* Render only visible predictions */}
                   {filteredPredictions.slice(0, visibleCount).map((item, index) => {
-                    const expiryDate = new Date(item.expirydate);
-                    const today = new Date();
-                    const timeDiff = expiryDate.getTime() - today.getTime();
-                    const daysLeft = Math.max(Math.ceil(timeDiff / (1000 * 3600 * 24)), 0);
+
                     return (
                       <tr key={index}>
                         <td>{item.productname}</td>
                         <td>{item.category}</td>
                         <td>{item.stockquantity}</td>
-                        <td>{expiryDate.toLocaleDateString()}</td>
-                        <td>{daysLeft > 0 ? `${daysLeft} days` : "Expired!"}</td>
-                        <td className={`risk ${item.risk_level}`}>{item.risk_level}</td>
-                        <td>{item.discount_suggestion?.suggestion || "–"}</td>                        <td>
-                          {item.risk_level && !item.risk_level.toLowerCase().includes("low") ? (
-                            <button className="receivedBtn19">Discount Now</button>
+                        <td>{formatDate(item.expirydate)}</td>
+                        <td>{item.days_left}</td>
+                        <td>
+                          {item.waste_ratio ? `${(item.waste_ratio * 100).toFixed(1)}%` : 'N/A'}
+                        </td>
+                        <td>{item.prediction?.toFixed(0) || 'N/A'}</td>
+                        <td>
+                          {item.discount_suggestion ? (
+                            <div className="suggestion-tooltip">
+                              <button className="action-btn">
+                                {item.discount_suggestion.suggestion}
+                              </button>
+                              <span className="tooltip-text">
+                                {item.discount_suggestion.reason}
+                              </span>
+                            </div>
                           ) : (
-                            <span className="deleteBtn19">–</span>
+                            "No action needed"
                           )}
-
                         </td>
                       </tr>
                     );
