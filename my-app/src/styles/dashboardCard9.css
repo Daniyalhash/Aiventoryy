@@ -16,7 +16,10 @@
     margin: auto;
     flex-direction: column;
   }
-  
+  .red{
+        border: 1px solid red;
+
+  }
   .cardHeader9 {
     display: flex;
     justify-content: space-between;
@@ -280,9 +283,7 @@ min-height: 300px;
     transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 1;
   }
-  .deleteBtn19{
-    
-  }
+
   .actionContainer19.active .actionMenu19 {
     opacity: 1;
     transform: translateX(0);

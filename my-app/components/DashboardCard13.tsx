@@ -65,12 +65,11 @@ const DashboardCard13 = ({ title }: { title: string }) => {
       });
 
       const data = response.data;
-      const expiryList = data.predictions || [];
 
       // console.log("Fetched  values:", predictionList.length);
 
-      if (data.status === 'success' && Array.isArray(expiryList)) {
-        setExpiredProducts(expiryList);
+      if (data.status === 'success' && Array.isArray(data.data)) {
+        setExpiredProducts(data.data);
         setError(null);
         setIsError(false); // On success
 
@@ -96,10 +95,10 @@ const DashboardCard13 = ({ title }: { title: string }) => {
   // console.log("found these val", predictions, length)
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const handleDelete = async (productId: string) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
+    // if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      await axios.delete("https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete_ExpiredProduct/", {
+      await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete_ExpiredProduct/", {
         data: { productname_id: productId, user_id: userId }
       });
 
@@ -188,7 +187,7 @@ const DashboardCard13 = ({ title }: { title: string }) => {
 
   // Use inside component:
   return (
-    <div className="card9">
+    <div className="card9 red">
       {message && (
         <div className={`messageContainer show ${isError ? 'error' : 'success'}`}>
           <div className="message-content">
