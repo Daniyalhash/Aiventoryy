@@ -544,7 +544,40 @@ def get_inventory_visuals(request):
     user_id = request.query_params.get("user_id")
     response, status = inventory_utils.get_inventory_visuals(user_id)
     return Response(response, status=status)
+@api_view(['GET'])
+def get_expired_products(request):
+    user_id = request.query_params.get("user_id")
+    category = request.query_params.get("category")
+    response, status = inventory_utils.get_expired_products(user_id, category)   
+    return Response(response, status=status)
 
+
+@api_view(['POST'])
+def delete_ExpiredProduct(request):
+    data = request.data
+    product_id = data.get("productname_id")
+    user_id = data.get("user_id")
+
+    if not user_id or not product_id:
+        return JsonResponse({"error": "userId and product_id are required"}, status=400)
+
+    try:
+        # 🧠 Step 1: Remove product from array
+        result = db["products"].update_one(
+            {"user_id": ObjectId(user_id), "products.productname_id": product_id},
+            {"$pull": {"products": {"productname_id": product_id}}}
+        )
+
+        if result.modified_count == 0:
+            return Response({"error": "No products found to delete"}, status=404)
+        return JsonResponse({
+            "message": "Expired Product deleted successfully",
+          
+            "modifiedCount": result.modified_count
+        }, status=200)
+
+    except Exception as e:
+        return Response({"status": "error", "message": str(e)}, status=500)
 #vendor count-7
 
 @api_view(['GET'])
