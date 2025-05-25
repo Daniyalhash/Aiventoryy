@@ -51,26 +51,31 @@ class InsightsUtils:
     @staticmethod
     def calculate_demand_score(products):
         """Calculate demand score for each product"""
-        if not products:
-            return []
+        """Calculate demand score for each product"""
+        try:
+            if not products:
+                return []
 
-        max_sales = max((p.get("monthly_sales", 0) or 0) for p in products)
-        max_timespan = max((p.get("timespan", 1) or 1) for p in products)
-        current_season = InsightsUtils.get_current_season()
+            max_sales = max((p.get("monthly_sales", 0) or 0) for p in products)
+            max_timespan = max((p.get("timespan", 1) or 1) for p in products)
+            current_season = InsightsUtils.get_current_season()
 
-        for product in products:
-            sales = product.get("monthly_sales", 0) or 0
-            timespan = product.get("timespan", 1) or 1
-            season = product.get("season", "").lower()
+            for product in products:
+                sales = product.get("monthly_sales", 0) or 0
+                timespan = product.get("timespan", 1) or 1
+                season = product.get("season", "").lower()
 
-            normalized_sales = sales / max_sales if max_sales else 0
-            season_match = 1 if season == current_season else 0
-            recency_score = 1 - (timespan / max_timespan) if max_timespan else 0
+                normalized_sales = sales / max_sales if max_sales else 0
+                season_match = 1 if season == current_season else 0
+                recency_score = 1 - (timespan / max_timespan) if max_timespan else 0
 
-            demand_score = (normalized_sales * 0.6 + season_match * 0.3 + recency_score * 0.1) * 100
-            product["demand_score"] = round(demand_score, 2)
-        print('product',products)
-        return products
+                demand_score = (normalized_sales * 0.6 + season_match * 0.3 + recency_score * 0.1) * 100
+                product["demand_score"] = round(demand_score, 2)
+            print('product',products)
+            return products
+        except Exception as e:
+            print(f"[ERROR] Exception in calculate_demand_score: {e}")
+            raise
    
     @staticmethod
     def fetch_top_products(user_id, category):
@@ -111,7 +116,11 @@ class InsightsUtils:
 
         products = InsightsUtils.convert_objectid(result)
         
-        return InsightsUtils.calculate_demand_score(products)
+        try:
+            return InsightsUtils.calculate_demand_score(products)
+        except Exception as e:
+            print(f"[ERROR] Failed to calculate demand score: {e}")
+            return products 
         # return InsightsUtils.convert_objectid(result)
 
     
