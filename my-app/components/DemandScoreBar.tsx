@@ -1,13 +1,13 @@
 import React from "react";
 
-const DemandScoreBar = ({ score }) => {
-  const getColor = (score) => {
+const DemandScoreBar = ({ score }: { score: number }) => {
+  const getColor = (score: number) => {
     if (score >= 75) return "bg-green-500";
     if (score >= 50) return "bg-yellow-400";
     return "bg-red-500";
   };
 
-  const getLabel = (score) => {
+  const getLabel = (score: number) => {
     if (score >= 75) return "High Demand 🔥";
     if (score >= 50) return "Medium Demand ⚠️";
     return "Low Demand ❄️";
