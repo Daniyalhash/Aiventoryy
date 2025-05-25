@@ -151,7 +151,7 @@ function useDebounce(value: string, delay: number) {
   }, [selectedCategory]);
 
   return (
-    <div className="card9">
+    <div className="card9 dark">
       {message && (
         <div className={`messageContainer show ${isError ? 'error' : 'success'}`}>
           <div className="message-content">

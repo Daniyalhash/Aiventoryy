@@ -2279,8 +2279,8 @@ def delete_product(request):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON"}, status=400)
     except Exception as e:
-        print("Error deleting vendor:", str(e))
-        return JsonResponse({"error": "Failed to delete vendor"}, status=500)
+        print("Error deleting :", str(e))
+        return JsonResponse({"error": "Failed to delete "}, status=500)
 
 @api_view(['POST'])
 def update_product(request):
@@ -4189,11 +4189,18 @@ def get_expiry_forecast(user_id):
         }, status=500)
 
 
+from datetime import datetime, timedelta
+from bson import ObjectId
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from pymongo import ASCENDING
 
 
 @api_view(['GET'])
 def fetch_cached_predictions(request):
     user_id = request.GET.get('user_id')
+    category = request.GET.get('category', None)
+    limit = int(request.GET.get('limit', 100))  # Default to 100
 
     if not user_id:
         return Response({"error": "Missing required parameter: user_id"}, status=400)
@@ -4201,42 +4208,146 @@ def fetch_cached_predictions(request):
     try:
         pipeline = [
             {"$match": {"user_id": ObjectId(user_id)}},
-            {"$project": {
-                "generated_at": 1,
-                "predictions": 1
-            }}
+            {"$unwind": "$predictions"},
+            {"$replaceRoot": {"newRoot": "$predictions"}},
         ]
 
-        result = list(db['expiry_predictions'].aggregate(pipeline))
+        # Optional: filter by category
+        if category and category != "all":
+            pipeline.append({"$match": {"category": category}})
 
-        if not result:
-            return Response({"status": "error", "message": "No cached predictions found for this user."}, status=404)
+        # Sort by expiry date ascending (most urgent first)
+        pipeline.extend([
+            {"$sort": {"expirydate": ASCENDING}},
 
-        cached = result[0]
-        predictions = cached.get("predictions", [])
-        generated_at = cached.get("generated_at")
+            # Add computed fields
+            {
+                "$addFields": {
+                    "days_left": {
+                        "$divide": [
+                            {"$subtract": [{"$dateFromString": {"dateString": "$expirydate"}}, datetime.utcnow()]},
+                            1000 * 60 * 60 * 24
+                        ]
+                    }
+                }
+            },
+            {
+                "$addFields": {
+                    "discount_suggestion": {
+                        "$cond": [
+                            {"$lte": ["$days_left", 7]},
+                            "Apply 30% discount",
+                            {
+                                "$cond": [
+                                    {"$lte": ["$days_left", 30]},
+                                    "Apply 15% discount",
+                                    "No immediate action"
+                                ]
+                            }
+                        ]
+                    },
+                    "risk_level": {
+                        "$cond": [
+                            {"$lte": ["$days_left", 7]},
+                            "🔴 High",
+                            {
+                                "$cond": [
+                                    {"$lte": ["$days_left", 30]},
+                                    "🟡 Medium",
+                                    "🟢 Low"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
 
-        if isinstance(generated_at, datetime):
-            generated_at = generated_at.isoformat()
-        print(len(predictions))
-        # print("sendinf",predictions)
+            # Only show high/medium risk products
+            {"$match": {"risk_level": {"$in": ["🔴 High", "🟡 Medium"]}}},
+            
+            # Final projection – send only needed fields
+            {
+                "$project": {
+                    "_id": 0,
+                    "productname": 1,
+                    "category": 1,
+                    "stockquantity": 1,
+                    "expirydate": 1,
+                    "risk_level": 1,
+                    "discount_suggestion": 1,
+                    "days_left": 1
+                }
+            },
+
+            # Limit final output
+                {"$limit": limit}
+        ])
+
+        result = list(db["expiry_predictions"].aggregate(pipeline))
+
+        generated_at = datetime.utcnow().isoformat()  # or get from main doc
+
         return Response({
             "status": "success",
             "user_id": user_id,
             "generated_at": generated_at,
-            "total_predictions": len(predictions),
-            "predictions": predictions
+            "total_predictions": len(result),
+            "predictions": result
         }, status=200)
 
     except Exception as e:
-        import traceback
-        traceback.print_exc()
+        print("Unexpected error:", str(e))
         return Response({
             "status": "error",
-            "message": f"Unexpected error: {str(e)}",
-            "type": type(e).__name__,
-            "traceback": traceback.format_exc()
+            "message": str(e)
         }, status=500)
+
+# @api_view(['GET'])
+# def fetch_cached_predictions(request):
+#     user_id = request.GET.get('user_id')
+
+#     if not user_id:
+#         return Response({"error": "Missing required parameter: user_id"}, status=400)
+
+#     try:
+#         pipeline = [
+#             {"$match": {"user_id": ObjectId(user_id)}},
+#             {"$project": {
+#                 "generated_at": 1,
+#                 "predictions": 1
+#             }}
+#         ]
+
+#         result = list(db['expiry_predictions'].aggregate(pipeline))
+
+#         if not result:
+#             return Response({"status": "error", "message": "No cached predictions found for this user."}, status=404)
+
+#         cached = result[0]
+#         predictions = cached.get("predictions", [])
+#         generated_at = cached.get("generated_at")
+
+#         if isinstance(generated_at, datetime):
+#             generated_at = generated_at.isoformat()
+#         print(len(predictions))
+#         # print("sendinf",predictions)
+#         return Response({
+#             "status": "success",
+#             "user_id": user_id,
+#             "generated_at": generated_at,
+#             "total_predictions": len(predictions),
+#             "predictions": predictions
+#         }, status=200)
+
+#     except Exception as e:
+#         import traceback
+#         traceback.print_exc()
+#         return Response({
+#             "status": "error",
+#             "message": f"Unexpected error: {str(e)}",
+#             "type": type(e).__name__,
+#             "traceback": traceback.format_exc()
+#         }, status=500)
         
 @api_view(['GET'])
 def get_vendor_performance(request):

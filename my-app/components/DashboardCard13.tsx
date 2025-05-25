@@ -98,12 +98,12 @@ const DashboardCard13 = ({ title }: { title: string }) => {
     // if (!window.confirm("Are you sure you want to delete this product?")) return;
     console.log("Sending delete request with:", {
       productname_id: productId,
-      user_id: userId
+      userId: userId
     });
     try {
       await await axios.post(
         "https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete-product/ ",
-        { productname_id: productId, user_id: userId }, // ← Send raw object, no `.data` wrapper
+        { productname_id: productId, userId: userId }, // ← Send raw object, no `.data` wrapper
         {
           headers: {
             'Content-Type': 'application/json'

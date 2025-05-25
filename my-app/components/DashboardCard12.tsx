@@ -10,8 +10,15 @@ type Prediction = {
   category: string;
   stockquantity: number;
   expirydate: string;
+  days_left: number;
   risk_level: string;
-  action_suggestion: string;
+  discount_suggestion: {
+    apply_now: boolean;
+    percent_off: number;
+    on_quantity: number;
+    reason: string;
+    suggestion: string;
+  };
 };
 
 
@@ -42,15 +49,15 @@ const DashboardCard12 = ({ title }: { title: string }) => {
       dedupingInterval: 30000, // only fetch once every 30s max
     }
   );
- useEffect(() => {
-   if (categoryData) {
-    const formatted = categoryData.categories.map((cat: string, index: number) => ({
-       _id: `cat-${index}`, // fallback ID
-       name: cat
-     }));
-     setCategories(formatted); // ✅ Now dropdown will show options
-   }
- }, [categoryData]);
+  useEffect(() => {
+    if (categoryData) {
+      const formatted = categoryData.categories.map((cat: string, index: number) => ({
+        _id: `cat-${index}`, // fallback ID
+        name: cat
+      }));
+      setCategories(formatted); // ✅ Now dropdown will show options
+    }
+  }, [categoryData]);
   console.log("available categories", categories)
   const fetchPredictions = async () => {
     setLoading(true);
@@ -60,16 +67,19 @@ const DashboardCard12 = ({ title }: { title: string }) => {
       if (!userId) throw new Error("User ID not found");
 
       const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/fetch_cached_predictions/", {
-        params: { user_id: userId }
+        params: {
+          user_id: userId,
+          category: selectedCategory !== "all" ? selectedCategory : undefined,
+          limit: 100
+        }
       });
 
       const data = response.data;
-      const predictionList = data.predictions || [];
 
-      // console.log("Fetched  values:", predictionList.length);
 
-      if (data.status === 'success' && Array.isArray(predictionList)) {
-        setPredictions(predictionList); // ✅ Show first 50 only
+      if (data.status === 'success' && Array.isArray(data.predictions)) {
+        setPredictions(data.predictions); // ✅ Show first 50 only
+        console.log("aata",predictions)
         setError(null);
         setIsError(false); // On success
 
@@ -96,13 +106,13 @@ const DashboardCard12 = ({ title }: { title: string }) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   useEffect(() => {
-      let results = [...predictions];
+    let results = [...predictions];
 
     if (selectedCategory === "all") {
       setFilteredPredictions(predictions);
     } else {
       setFilteredPredictions(
-    results = results.filter(
+        results = results.filter(
           (p) =>
             p.category &&
             p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
@@ -166,7 +176,7 @@ const DashboardCard12 = ({ title }: { title: string }) => {
 
   // Use inside component:
   return (
-    <div className="card9">
+    <div className="card9 green">
       {message && (
         <div className={`messageContainer show ${isError ? 'error' : 'success'}`}>
           <div className="message-content">
@@ -231,13 +241,16 @@ const DashboardCard12 = ({ title }: { title: string }) => {
           <table className="orderTable9">
             <thead>
               <tr>
-                <th>Product</th>
-                <th>Category</th>
-                <th>Stock</th>
-                <th>Days Left</th>
-                <th>Risk Level</th>
-                <th>Suggested Discount</th>
-                <th>Action</th>
+               
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Expiry Date</th>
+                    <th>Days Left</th>
+                    <th>Status</th>
+                    <th>Suggestion</th>
+                    <th>Action</th>
+               
               </tr>
             </thead>
             <tbody>
@@ -249,21 +262,21 @@ const DashboardCard12 = ({ title }: { title: string }) => {
                     const today = new Date();
                     const timeDiff = expiryDate.getTime() - today.getTime();
                     const daysLeft = Math.max(Math.ceil(timeDiff / (1000 * 3600 * 24)), 0);
-
                     return (
                       <tr key={index}>
                         <td>{item.productname}</td>
                         <td>{item.category}</td>
                         <td>{item.stockquantity}</td>
-                        <td>{daysLeft} days</td>
-                        <td className={`risk ${item.risk_level?.toLowerCase()}`}>{item.risk_level}</td>
-                        <td>{item.action_suggestion || "–"}</td>
-                        <td>
+                        <td>{expiryDate.toLocaleDateString()}</td>
+                        <td>{daysLeft > 0 ? `${daysLeft} days` : "Expired!"}</td>
+                        <td className={`risk ${item.risk_level}`}>{item.risk_level}</td>
+                        <td>{item.discount_suggestion?.suggestion || "–"}</td>                        <td>
                           {item.risk_level && !item.risk_level.toLowerCase().includes("low") ? (
                             <button className="receivedBtn19">Discount Now</button>
                           ) : (
                             <span className="deleteBtn19">–</span>
                           )}
+
                         </td>
                       </tr>
                     );
