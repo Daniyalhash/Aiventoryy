@@ -108,32 +108,30 @@ const DashboardCard12 = ({ title }: { title: string }) => {
   // console.log("found these val", predictions, length)
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  useEffect(() => {
-    let results = [...predictions];
+//   useEffect(() => {
+//   let results = [...predictions];
 
-    if (selectedCategory === "all") {
-      setFilteredPredictions(predictions);
-    } else {
-      setFilteredPredictions(
-        results = results.filter(
-          (p) =>
-            p.category &&
-            p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
-        )
-      );
+//   // 🔁 Apply category filter
+//   if (selectedCategory !== "all") {
+//     results = results.filter(
+//       (p) =>
+//         p.category &&
+//         p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
+//     );
+//   }
 
-    }
-    if (debouncedSearchTerm) {
-      const lowercasedTerm = debouncedSearchTerm.toLowerCase();
-      results = results.filter((p) =>
-        p.productname?.toLowerCase().includes(lowercasedTerm)
-      );
-    }
+//   // 🔍 Apply search term filter
+//   if (debouncedSearchTerm) {
+//     const lowercasedTerm = debouncedSearchTerm.toLowerCase();
+//     results = results.filter((p) =>
+//       p.productname?.toLowerCase().includes(lowercasedTerm)
+//     );
+//   }
 
-    setFilteredPredictions(results);
-    setVisibleCount(10);
-  }, [selectedCategory, debouncedSearchTerm, predictions]);
-
+//   // ✅ Update filtered list
+//   setFilteredPredictions(results);
+//   setVisibleCount(10);
+// }, [selectedCategory, debouncedSearchTerm, predictions]);
   // console.log(`Filtered count for "${selectedCategory}":`, filteredPredictions.length);
 
   // Function to handle deleting an invoice
@@ -163,6 +161,7 @@ const DashboardCard12 = ({ title }: { title: string }) => {
     setFilteredPredictions(results);
     setVisibleCount(10); // Reset visible count when filters change
   }, [selectedCategory, searchTerm, predictions]);
+  
   function useDebounce(value: string, delay: number) {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -187,12 +186,27 @@ const DashboardCard12 = ({ title }: { title: string }) => {
       });
   };
 
-  const getRiskClass = (riskLevel: string) => {
-    if (riskLevel.includes("🔴")) return "high-risk";
-    if (riskLevel.includes("🟡")) return "medium-risk";
-    return "low-risk";
+const getRiskEmoji = (riskLevel: string) => {
+  const emojiMap: Record<string, string> = {
+    'critical': '🔴', // U+1F534
+    'high': '🟠',     // U+1F7E0
+    'medium': '🟡',   // U+1F7E1
+    'low': '🟢',      // U+1F7E2
+    default: '⚪'     // U+26AA
   };
+  
+  if (riskLevel.includes('High')) return emojiMap['critical'];
+  if (riskLevel.includes('Medium')) return emojiMap['medium'];
+  if (riskLevel.includes('Low')) return emojiMap['low'];
+  return emojiMap.default;
+};
 
+const getRiskClass = (riskLevel: string) => {
+  if (riskLevel.includes('High')) return 'critical-risk';
+  if (riskLevel.includes('Medium')) return 'medium-risk';
+  if (riskLevel.includes('Low')) return 'low-risk';
+  return 'neutral-risk';
+};
   // Use inside component:
   return (
     <div className="card9 green">
@@ -267,7 +281,7 @@ const DashboardCard12 = ({ title }: { title: string }) => {
                 <th>Expiry Date</th>
                 <th>Days Left</th>
                 <th>Waste Risk</th>
-                <th>Predicted Sales</th>
+                {/* <th>Predicted Sales</th> */}
                 <th>Suggested Action</th>
 
               </tr>
@@ -279,20 +293,35 @@ const DashboardCard12 = ({ title }: { title: string }) => {
                   {filteredPredictions.slice(0, visibleCount).map((item, index) => {
 
                     return (
-                      <tr key={index}>
+                      <tr key={`${item.productname}-${index}`}
+                      >
                         <td>{item.productname}</td>
                         <td>{item.category}</td>
                         <td>{item.stockquantity}</td>
                         <td>{formatDate(item.expirydate)}</td>
                         <td>{item.days_left}</td>
-                        <td>
-                          {item.waste_ratio ? `${(item.waste_ratio * 100).toFixed(1)}%` : 'N/A'}
+                        <td className="waste-risk-cell">
+                          {item.waste_ratio ? (
+                            <div className="waste-ratio-display">
+                              <span className="risk-emoji">{getRiskEmoji(item.risk_level)}</span>
+                              <span className={`ratio-value ${getRiskClass(item.risk_level)}`}>
+                                {(item.waste_ratio * 100).toFixed(1)}%
+                              </span>
+                              <span className="tooltip">
+                                {item.waste_ratio > 0.7 ? 'High waste probability' :
+                                  item.waste_ratio > 0.3 ? 'Moderate waste risk' :
+                                    'Low waste risk'}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="na-value">N/A</span>
+                          )}
                         </td>
-                        <td>{item.prediction?.toFixed(0) || 'N/A'}</td>
+                        {/* <td>{item.prediction?.toFixed(0) || 'N/A'}</td> */}
                         <td>
                           {item.discount_suggestion ? (
                             <div className="suggestion-tooltip">
-                              <button className="action-btn">
+                              <button className="receivedBtn19">
                                 {item.discount_suggestion.suggestion}
                               </button>
                               <span className="tooltip-text">

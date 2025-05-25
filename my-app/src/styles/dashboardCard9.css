@@ -16,6 +16,59 @@
     margin: auto;
     flex-direction: column;
   }
+  
+.waste-risk-cell {
+  position: relative;
+}
+
+.waste-ratio-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.risk-emoji {
+  font-size: 1.1em;
+}
+
+.ratio-value {
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.critical-risk { color: #d32f2f; background-color: #ffebee; }
+.medium-risk { color: #f57c00; background-color: #fff3e0; }
+.low-risk { color: #388e3c; background-color: #e8f5e9; }
+.neutral-risk { color: #616161; }
+
+.tooltip {
+  visibility: hidden;
+  width: 160px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+}
+
+.waste-ratio-display:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.na-value {
+  color: #9e9e9e;
+  font-style: italic;
+}
+  
   .dark{
       border: 1px solid #004b23;
          background-color: rgba(52, 97, 53, 0.1);

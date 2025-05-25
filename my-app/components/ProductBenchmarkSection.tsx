@@ -102,9 +102,13 @@ async ([, userId, category]) => {
 
   useEffect(() => {
     if (topProductsData) {
-      console.log("ddd",topProductsData.products || []);
-      setAllProducts(topProductsData.products || []);
-      setProducts(topProductsData.products.slice(0, 5));
+     const products = topProductsData.products || [];
+     if (products.length === 0) {
+      console.log("No products found for the selected category.");
+    }
+    console.log("ddd", products);
+    setAllProducts(products);
+    setProducts(products.slice(0, 5));
     }
   }, [topProductsData]);
 
