@@ -102,6 +102,7 @@ async ([, userId, category]) => {
 
   useEffect(() => {
     if (topProductsData) {
+      console.log("ddd",topProductsData.products || []);
       setAllProducts(topProductsData.products || []);
       setProducts(topProductsData.products.slice(0, 5));
     }
