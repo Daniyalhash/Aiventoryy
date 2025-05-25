@@ -5,13 +5,11 @@ import { fetchCategories } from "@/utils/api";
 import useSWR from 'swr';
 
 
-type Prediction = {
+type ExpiredProduct = {
+  product_id: string;
   productname: string;
   category: string;
-  stockquantity: number;
   expirydate: string;
-  risk_level: string;
-  action_suggestion: string;
 };
 
 
@@ -31,8 +29,8 @@ const DashboardCard13 = ({ title }: { title: string }) => {
   const [message, setMessage] = useState(""); // Can be error or success
   const [isError, setIsError] = useState(false); // To differentiate between error and success
 
-  const [predictions, setPredictions] = useState<Prediction[]>([]);
-  const [filteredPredictions, setFilteredPredictions] = useState<Prediction[]>([]);
+  const [expiredProducts, setExpiredProducts] = useState<ExpiredProduct[]>([]);
+  const [filteredPredictions, setFilteredPredictions] = useState<ExpiredProduct[]>([]);
   const { data: categoryData } = useSWR(
     userId ? ["get-categories", userId] : null,
     () => fetchCategories(userId),
@@ -42,46 +40,49 @@ const DashboardCard13 = ({ title }: { title: string }) => {
       dedupingInterval: 30000, // only fetch once every 30s max
     }
   );
- useEffect(() => {
-   if (categoryData) {
-     const formatted = categoryData.categories.map((cat: string, index: number) => ({
-       _id: `cat-${index}`, // fallback ID
-       name: cat
-     }));
-     setCategories(formatted); // ✅ Now dropdown will show options
-   }
- }, [categoryData]);
+  useEffect(() => {
+    if (categoryData) {
+      const formatted = categoryData.categories.map((cat: string, index: number) => ({
+        _id: `cat-${index}`, // fallback ID
+        name: cat
+      }));
+      setCategories(formatted); // ✅ Now dropdown will show options
+    }
+  }, [categoryData]);
   console.log("available categories", categories)
-  const fetchPredictions = async () => {
+  const fetchExpiryProducts = async () => {
     setLoading(true);
     try {
       const userId = localStorage.getItem("userId");
 
       if (!userId) throw new Error("User ID not found");
 
-      const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/fetch_cached_predictions/", {
-        params: { user_id: userId }
+      const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_expired_products/", {
+        params: {
+          user_id: userId,
+          category: selectedCategory !== "all" ? selectedCategory : undefined
+        }
       });
 
       const data = response.data;
-      const predictionList = data.predictions || [];
+      const expiryList = data.predictions || [];
 
       // console.log("Fetched  values:", predictionList.length);
 
-      if (data.status === 'success' && Array.isArray(predictionList)) {
-        setPredictions(predictionList); // ✅ Show first 50 only
+      if (data.status === 'success' && Array.isArray(expiryList)) {
+        setExpiredProducts(expiryList);
         setError(null);
         setIsError(false); // On success
 
       } else {
         setError("No predictions found in the response.");
-        setPredictions([]);
+        setExpiredProducts([]);
       }
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      console.error("Error fetching predictions:", err);
-      setError(error?.response?.data?.message || "Failed to fetch predictions.");
-      setPredictions([]);
+      console.error("Error fetching Expired Products:", err);
+      setError(error?.response?.data?.message || "Failed to fetch Expired Products.");
+      setExpiredProducts([]);
       setIsError(true); // Inside catch
 
     } finally {
@@ -90,19 +91,40 @@ const DashboardCard13 = ({ title }: { title: string }) => {
   };
 
   useEffect(() => {
-    fetchPredictions();
+    fetchExpiryProducts();
   }, []);
   // console.log("found these val", predictions, length)
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const handleDelete = async (productId: string) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
 
+    try {
+      await axios.delete("https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete_ExpiredProduct/", {
+        data: { productname_id: productId, user_id: userId }
+      });
+
+      // Remove from state
+      setExpiredProducts(prev =>
+        prev.filter(p => p.product_id !== productId)
+      );
+
+      setMessage("Product deleted successfully.");
+            setIsError(false)
+
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      setMessage("Failed to delete product.");
+      setIsError(true)
+    }
+  };
   useEffect(() => {
-      let results = [...predictions];
+    let results = [...expiredProducts];
 
     if (selectedCategory === "all") {
-      setFilteredPredictions(predictions);
+      setFilteredPredictions(expiredProducts);
     } else {
       setFilteredPredictions(
-    results = results.filter(
+        results = results.filter(
           (p) =>
             p.category &&
             p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
@@ -119,7 +141,7 @@ const DashboardCard13 = ({ title }: { title: string }) => {
 
     setFilteredPredictions(results);
     setVisibleCount(10);
-  }, [selectedCategory, debouncedSearchTerm, predictions]);
+  }, [selectedCategory, debouncedSearchTerm, expiredProducts]);
 
   // console.log(`Filtered count for "${selectedCategory}":`, filteredPredictions.length);
 
@@ -128,7 +150,7 @@ const DashboardCard13 = ({ title }: { title: string }) => {
     setVisibleCount(10); // Reset count when selectedCategory changes
   }, [selectedCategory]);
   useEffect(() => {
-    let results = [...predictions];
+    let results = [...expiredProducts];
 
     // Filter by category
     if (selectedCategory !== "all") {
@@ -149,7 +171,7 @@ const DashboardCard13 = ({ title }: { title: string }) => {
 
     setFilteredPredictions(results);
     setVisibleCount(10); // Reset visible count when filters change
-  }, [selectedCategory, searchTerm, predictions]);
+  }, [selectedCategory, searchTerm, expiredProducts]);
   function useDebounce(value: string, delay: number) {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -189,7 +211,7 @@ const DashboardCard13 = ({ title }: { title: string }) => {
           {subTitle}
         </h3> */}
         <div className="cardSide">
-          <div className="form-group2">
+          {/* <div className="form-group2">
             <input
               type="text"
               name="productName"
@@ -197,7 +219,7 @@ const DashboardCard13 = ({ title }: { title: string }) => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
+          </div> */}
           <div className="form-group2">
             <select
               name="category"
@@ -231,12 +253,10 @@ const DashboardCard13 = ({ title }: { title: string }) => {
           <table className="orderTable9">
             <thead>
               <tr>
-                <th>Product</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
                 <th>Category</th>
-                <th>Stock</th>
-                <th>Days Left</th>
-                <th>Risk Level</th>
-                <th>Suggested Discount</th>
+                <th>Expiry Date</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -252,18 +272,17 @@ const DashboardCard13 = ({ title }: { title: string }) => {
 
                     return (
                       <tr key={index}>
+                        <td>{item.product_id}</td>
                         <td>{item.productname}</td>
                         <td>{item.category}</td>
-                        <td>{item.stockquantity}</td>
-                        <td>{daysLeft} days</td>
-                        <td className={`risk ${item.risk_level?.toLowerCase()}`}>{item.risk_level}</td>
-                        <td>{item.action_suggestion || "–"}</td>
+                        <td>{item.expirydate}</td>
                         <td>
-                          {item.risk_level && !item.risk_level.toLowerCase().includes("low") ? (
-                            <button className="receivedBtn19">Discount Now</button>
-                          ) : (
-                            <span className="deleteBtn19">–</span>
-                          )}
+                          <button
+                            className="deleteBtn19"
+                            onClick={() => handleDelete(item.product_id)}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     );
@@ -284,8 +303,8 @@ const DashboardCard13 = ({ title }: { title: string }) => {
                 <tr>
                   <td colSpan={7} style={{ textAlign: 'center' }}>
                     {searchTerm
-                      ? `No predictions found for "${searchTerm}" in "${selectedCategory}".`
-                      : `No predictions found for "${selectedCategory}".`}
+                      ? `No expiry found for "${searchTerm}" in "${selectedCategory}".`
+                      : `No expiry found for "${selectedCategory}".`}
                   </td>
                 </tr>
               )}

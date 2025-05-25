@@ -107,10 +107,10 @@ class InsightsUtils:
             ])
 
             result = list(db["products"].aggregate(pipeline))
-            print(result)
+            # print(result)
             if not result:
                 return {"status": "success", "data": []}, HTTP_200_OK
-            print(result)
+            # print(result)
             return {"status": "success", "data": result}, HTTP_200_OK
 
         except Exception as e:
