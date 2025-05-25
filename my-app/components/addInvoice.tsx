@@ -17,7 +17,11 @@ import "@/styles/addInvoice.css";
 //   date: string;
 //   products: Product[];
 // }
-const AddInvoice: React.FC = () => {
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
+
+const AddInvoice: React.FC<AddInvoiceProps> = ({ onSuccess }) => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [categories, setCategories] = useState([]);
   interface Product {
@@ -343,7 +347,12 @@ if (!formData.vendor_id || !formData.vendor || formData.products.some(p => !p.na
             stockquantity: 1,
             price: 0
           }]
+          
         });
+           // Delay a bit to show message, then close & refresh
+        setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
       } else {
         throw new Error(result.message || "Failed to create invoice");
       }

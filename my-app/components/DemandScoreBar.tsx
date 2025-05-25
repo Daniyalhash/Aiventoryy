@@ -1,10 +1,12 @@
 import React from "react";
+import "@/styles/DemandScoreBar.css"
+
 
 const DemandScoreBar = ({ score }: { score: number }) => {
-  const getColor = (score: number) => {
-    if (score >= 75) return "bg-green-500";
-    if (score >= 50) return "bg-yellow-400";
-    return "bg-red-500";
+  const getColorClass = (score: number) => {
+    if (score >= 75) return "green-bar";
+    if (score >= 50) return "yellow-bar";
+    return "red-bar";
   };
 
   const getLabel = (score: number) => {
@@ -14,18 +16,18 @@ const DemandScoreBar = ({ score }: { score: number }) => {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex justify-between mb-1 text-sm font-medium text-gray-700">
+    <div className="demand-score-container">
+      <div className="demand-score-header">
         <span>Demand Score</span>
         <span>{score}/100</span>
       </div>
-      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+      <div className="progress-bar-background">
         <div
-          className={`h-full ${getColor(score)}`}
+          className={`progress-bar-fill ${getColorClass(score)}`}
           style={{ width: `${score}%` }}
         ></div>
       </div>
-      <div className="mt-1 text-sm text-gray-600">{getLabel(score)}</div>
+      <div className="demand-score-label">{getLabel(score)}</div>
     </div>
   );
 };

@@ -40,7 +40,7 @@ export default function ProductBenchmarkSection() {
   const [isError, setIsError] = useState(false); // To differentiate between error and success
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
-const [isAnimating] = useState(false);
+  const [isAnimating] = useState(false);
 
 
   // fetching just categories using SWR
@@ -85,10 +85,10 @@ const [isAnimating] = useState(false);
 
   const {
     data: topProductsData
-   
+
   } = useSWR(
     selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
-async ([, userId, category]) => {
+    async ([, userId, category]) => {
       const response = await axios.get(
         'https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-top-products-by-category/',
         { params: { user_id: userId, category } }
@@ -103,13 +103,13 @@ async ([, userId, category]) => {
 
   useEffect(() => {
     if (topProductsData) {
-     const products = topProductsData.products || [];
-     if (products.length === 0) {
-      console.log("No products found for the selected category.");
-    }
-    console.log("ddd", products);
-    setAllProducts(products);
-    setProducts(products.slice(0, 5));
+      const products = topProductsData.products || [];
+      if (products.length === 0) {
+        console.log("No products found for the selected category.");
+      }
+      console.log("ddd", products);
+      setAllProducts(products);
+      setProducts(products.slice(0, 5));
     }
   }, [topProductsData]);
 
@@ -259,7 +259,7 @@ async ([, userId, category]) => {
     // Clear search text when a category is selected
     setUseCategory(category)
     if (category) {
-      fetchProductsByCategory(userId,category);
+      fetchProductsByCategory(userId, category);
     } else {
       setProducts([]); // Clear products if no category is selected
     }
@@ -357,7 +357,7 @@ async ([, userId, category]) => {
             </div>
 
             <div className="search-container">
-            <FontAwesomeIcon icon={faPlus} className="search-icon" />
+              <FontAwesomeIcon icon={faPlus} className="search-icon" />
 
               <input
                 type="text"
@@ -378,7 +378,7 @@ async ([, userId, category]) => {
             </div>
 
             <div className="search-container">
-            <FontAwesomeIcon icon={faTrash} className="search-icon" />
+              <FontAwesomeIcon icon={faTrash} className="search-icon" />
 
               <button
                 onClick={() => {
@@ -391,11 +391,11 @@ async ([, userId, category]) => {
               >
                 Clear Search
               </button>
-              
+
             </div>
 
             <div className="search-container">
-            <FontAwesomeIcon icon={faTruck} className="search-icon" />
+              <FontAwesomeIcon icon={faTruck} className="search-icon" />
 
               <button
                 onClick={handleApplyProduct}
@@ -409,7 +409,8 @@ async ([, userId, category]) => {
           </div>
 
 
-          {loading ? (
+         {(selectedCategory || UseCategory) && (
+  loading ? (
             <div className="loading-state">
               <div className="loading-dots">
                 <div className="dot"></div>
@@ -444,18 +445,18 @@ async ([, userId, category]) => {
                     </div>
                   ))
                 ) : (
-                 (searchText || selectedCategory || UseCategory) && (
-      <div className="not">
-        <p className="no-products">No products found</p>
-      </div>
-    )
+                  (searchText || selectedCategory || UseCategory) && (
+                    <div className="not">
+                      <p className="no-products">No products found</p>
+                    </div>
+                  )
                 )}
               </div>
 
             </div>
-          )}
-
-          {error && <p className="error-message">{error}</p>}
+        )
+)}
+          {/* {error && <p className="error-message">{error}</p>} */}
 
 
         </div>
@@ -536,10 +537,10 @@ async ([, userId, category]) => {
                 )}
               </div>
             </div>
-                   <div className="stats-container-in">
-                <DemandScoreBar score={targetProductDetails?.demand_score || 'N/A'} />
+            <div className="stats-container-in2">
+              <DemandScoreBar score={targetProductDetails?.demand_score || 'N/A'} />
 
-              </div>
+            </div>
             <div className="stats-container-in">
               <div className={`stat-card2 stock ${isAnimating ? 'fade-in' : ''}`}>
                 <h4>Stock Levels</h4>
@@ -557,7 +558,7 @@ async ([, userId, category]) => {
                   {/* <span>Reorder at: {targetProductDetails?.reorderthreshold || 'N/A'}</span> */}
                 </div>
               </div>
-             
+
               <div className={`stat-card2 vendor ${isAnimating ? 'fade-in' : ''}`}>
                 <h4>Vendor Details</h4>
                 <div className="vendor-name">{targetProductDetails?.vendor || 'N/A'}</div>

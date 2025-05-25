@@ -244,7 +244,7 @@ const ProfileButton = () => {
               <div className="lineDiv"></div>
               <button className="logoutButtonDas" onClick={handleLogout}>
                 <FontAwesomeIcon icon={faRightFromBracket} className="IconLogout" />
-                Logout
+                Websites
               </button>
             </div>
           </div>

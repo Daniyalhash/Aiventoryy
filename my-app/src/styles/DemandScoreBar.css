@@ -1,0 +1,56 @@
+.demand-score-container {
+  width: 100%;
+  max-width: 2900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+
+.demand-score-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.progress-bar-background {
+  width: 100%;
+  height: 20px; /* Increased height */
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.6s ease-in-out;
+}
+
+.green-bar {
+  background: linear-gradient(90deg, #38b000, #70e000);
+}
+
+.yellow-bar {
+  background: linear-gradient(90deg, #ffcc00, #ffdd57);
+}
+
+.red-bar {
+  background: linear-gradient(90deg, #ff4d4d, #ff6b6b);
+}
+
+.demand-score-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #333;
+}

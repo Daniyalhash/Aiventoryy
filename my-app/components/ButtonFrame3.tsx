@@ -299,8 +299,8 @@ async ([, userId, category]) => {
         />
       </div>
       <div className="buttonDowner">
-        {productsData === undefined ? (
-          <div className="loading-state">
+{productsData === undefined && selectedCategory ? (
+            <div className="loading-state">
             <div className="loading-dots">
               <div className="dot"></div>
               <div className="dot"></div>

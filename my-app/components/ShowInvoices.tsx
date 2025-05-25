@@ -580,7 +580,12 @@ const fetchUserData = useCallback(async () => {
                 </div>
 
                 <div className="form-content">
-                  <AddInvoice />
+                  <AddInvoice
+          onSuccess={() => {
+            setIsAddingInvoice(false); // Close modal
+            window.location.reload(); // Reload page
+          }}
+        />
                 </div>
               </div>
             </div>
