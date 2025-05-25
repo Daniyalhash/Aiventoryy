@@ -7,6 +7,7 @@ import ProfitMarginChart from "@/components/ProfitMarginChart";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useSWR from 'swr';
 import { faPlus, faTimes, faSearch, faChartLine, faBoxOpen, faTruck, faFilter, faTrash } from '@fortawesome/free-solid-svg-icons';
+import DemandScoreBar from "./DemandScoreBar";
 
 
 export default function ProductBenchmarkSection() {
@@ -535,7 +536,10 @@ async ([, userId, category]) => {
                 )}
               </div>
             </div>
+                   <div className="stats-container-in">
+                <DemandScoreBar score={targetProductDetails?.demand_score || 'N/A'} />
 
+              </div>
             <div className="stats-container-in">
               <div className={`stat-card2 stock ${isAnimating ? 'fade-in' : ''}`}>
                 <h4>Stock Levels</h4>
@@ -553,6 +557,7 @@ async ([, userId, category]) => {
                   {/* <span>Reorder at: {targetProductDetails?.reorderthreshold || 'N/A'}</span> */}
                 </div>
               </div>
+             
               <div className={`stat-card2 vendor ${isAnimating ? 'fade-in' : ''}`}>
                 <h4>Vendor Details</h4>
                 <div className="vendor-name">{targetProductDetails?.vendor || 'N/A'}</div>

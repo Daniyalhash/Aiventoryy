@@ -133,61 +133,6 @@ class InsightsUtils:
             return products 
         # return InsightsUtils.convert_objectid(result)
 
-    
-
-    @staticmethod
-    def fetch_smart_reorder_products(user_id, category=None, limit=100):
-        try:
-            pipeline = [
-                {"$match": {"user_id": ObjectId(user_id)}},
-                {"$unwind": "$products"},
-                {"$replaceRoot": {"newRoot": "$products"}},
-            ]
-
-            if category:
-                pipeline.append({"$match": {"category": category}})
-
-            pipeline.extend([
-                {
-                    "$addFields": {
-                        "needs_reorder": {"$lt": ["$stockquantity", "$monthly_sales"]}
-                    }
-                },
-                {
-                    "$project": {
-                        "_id": 0,
-                        "productname": 1,
-                        "category": 1,
-                        "monthly_sales": 1,
-                        "stockquantity": 1,
-                        "needs_reorder": 1
-                    }
-                },
-                {"$sort": {"monthly_sales": -1}},
-                {"$limit": limit}
-            ])
-
-            result = list(db["products"].aggregate(pipeline))
-            # print(result)
-            if not result:
-                return {"status": "success", "data": []}, HTTP_200_OK
-            # print(result)
-            return {"status": "success", "data": result}, HTTP_200_OK
-
-        except Exception as e:
-            print(f"Error fetching reorder products: {e}")
-            return {"status": "error", "message": str(e)}, HTTP_400_BAD_REQUEST
-
-
-
-
-
-    @staticmethod
-    def calculate_profit_margin(selling_price, cost_price):
-        """ Calculate profit margin percentage """
-        return ((selling_price - cost_price) / selling_price) * 100 if selling_price else 0
-
-    
     @staticmethod
     def fetch_products_by_name(user_id, category, vendor_id):
         try:
@@ -264,10 +209,68 @@ class InsightsUtils:
                     product.get("costprice", 0)
             )
 
-            return InsightsUtils.convert_objectid(result)
+            # return InsightsUtils.convert_objectid(result)
+            # Calculate demand score here as well
+            products_with_scores = InsightsUtils.calculate_demand_score(result)
 
+            return InsightsUtils.convert_objectid(products_with_scores)
         except Exception as e:
             import traceback
             print("🔥 Internal Error in fetch_products_by_name:", str(e))
             traceback.print_exc()
             return {"error": f"Internal server error: {str(e)}"}
+
+    @staticmethod
+    def fetch_smart_reorder_products(user_id, category=None, limit=100):
+        try:
+            pipeline = [
+                {"$match": {"user_id": ObjectId(user_id)}},
+                {"$unwind": "$products"},
+                {"$replaceRoot": {"newRoot": "$products"}},
+            ]
+
+            if category:
+                pipeline.append({"$match": {"category": category}})
+
+            pipeline.extend([
+                {
+                    "$addFields": {
+                        "needs_reorder": {"$lt": ["$stockquantity", "$monthly_sales"]}
+                    }
+                },
+                {
+                    "$project": {
+                        "_id": 0,
+                        "productname": 1,
+                        "category": 1,
+                        "monthly_sales": 1,
+                        "stockquantity": 1,
+                        "needs_reorder": 1
+                    }
+                },
+                {"$sort": {"monthly_sales": -1}},
+                {"$limit": limit}
+            ])
+
+            result = list(db["products"].aggregate(pipeline))
+            # print(result)
+            if not result:
+                return {"status": "success", "data": []}, HTTP_200_OK
+            # print(result)
+            return {"status": "success", "data": result}, HTTP_200_OK
+
+        except Exception as e:
+            print(f"Error fetching reorder products: {e}")
+            return {"status": "error", "message": str(e)}, HTTP_400_BAD_REQUEST
+
+
+
+
+
+    @staticmethod
+    def calculate_profit_margin(selling_price, cost_price):
+        """ Calculate profit margin percentage """
+        return ((selling_price - cost_price) / selling_price) * 100 if selling_price else 0
+
+    
+    
