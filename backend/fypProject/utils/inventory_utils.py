@@ -147,7 +147,7 @@ class InventoryUtils:
                 }
                 for item in result
             ]
-            print("expired",cleaned_result)
+            # print("expired",cleaned_result)
             if not cleaned_result:
                 return {"message": "No expired products found.", "data": []}, 200
 
