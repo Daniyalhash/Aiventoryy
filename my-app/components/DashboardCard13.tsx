@@ -96,11 +96,20 @@ const DashboardCard13 = ({ title }: { title: string }) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const handleDelete = async (productId: string) => {
     // if (!window.confirm("Are you sure you want to delete this product?")) return;
-
+    console.log("Sending delete request with:", {
+      productname_id: productId,
+      user_id: userId
+    });
     try {
-      await axios.post("https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete_ExpiredProduct/", {
-        data: { productname_id: productId, user_id: userId }
-      });
+      await await axios.post(
+        "https://seal-app-8m3g5.ondigitalocean.app/aiventory/delete-product/ ",
+        { productname_id: productId, user_id: userId }, // ← Send raw object, no `.data` wrapper
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
       // Remove from state
       setExpiredProducts(prev =>
@@ -108,7 +117,7 @@ const DashboardCard13 = ({ title }: { title: string }) => {
       );
 
       setMessage("Product deleted successfully.");
-            setIsError(false)
+      setIsError(false)
 
     } catch (err) {
       console.error("Error deleting product:", err);
