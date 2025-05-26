@@ -54,7 +54,7 @@ const SignupPage = () => {
     }
 
     // Fetch user status from backend
-    fetch(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details?user_id=${user_id}`)
+    fetch(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-user-details?user_id=${user_id}`)
       .then(res => res.json())
       .then(data => {
             console.log("API response:", data); // Debug API response
