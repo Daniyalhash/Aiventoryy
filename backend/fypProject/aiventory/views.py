@@ -45,7 +45,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from pymongo.errors import DuplicateKeyError
 import pymongo
-    
+from twilio.rest import Client
+
 from datetime import datetime
 from bson import ObjectId
 from bson import ObjectId
@@ -1989,7 +1990,18 @@ def confirm_invoice(request, invoice_id):
                 open_order.pop('_id',None)
 
                 openOrders_collection.insert_one(open_order)
-                send_invoice_sms('+923452284199', 'Your invoice has been sent.')
+                ACCOUNT_SID = 'AC315cc5ec7c39aaef3cc30151cb726d11'
+                AUTH_TOKEN = '305ac669bd59b03a0888ccadbd0dc7a0'  # replace with your real token
+                TWILIO_NUMBER = '+12704564698'
+                client = Client(ACCOUNT_SID, AUTH_TOKEN)
+
+                message = client.messages.create(
+                    body='This is a test message',
+                    from_=TWILIO_NUMBER,
+                    to='+923452284199'
+                )
+
+                print(f"Sent! SID: {message.sid}")
 
             return Response(
                 {
@@ -4396,26 +4408,25 @@ def get_vendor_performance(request):
     
     # sms_sender.py
 from twilio.rest import Client
+# from sms_sender import send_invoice_sms
 
 # Twilio credentials
-ACCOUNT_SID = 'AC315cc5ec7c39aaef3cc30151cb726d11'
-AUTH_TOKEN = '305ac669bd59b03a0888ccadbd0dc7a0'  # replace with your real token
-TWILIO_NUMBER = '+12704564698'  # your Twilio number
+  # your Twilio number
 
-def send_sms(to_number, message):
-    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+# def send_sms(to_number, message):
+#     client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
-    try:
-        message = client.messages.create(
-            body=message,
-            from_=TWILIO_NUMBER,
-            to=to_number
-        )
-        return f"Message sent! SID: {message.sid}"
-    except Exception as e:
-        return f"Error: {e}"
+#     try:
+#         message = client.messages.create(
+#             body=message,
+#             from_=TWILIO_NUMBER,
+#             to=to_number
+#         )
+#         return f"Message sent! SID: {message.sid}"
+#     except Exception as e:
+#         return f"Error: {e}"
 
 
-def send_invoice_sms(to_number, invoice_text):
-    result = send_sms(to_number, invoice_text)
-    return result
+# def send_invoice_sms(to_number, invoice_text):
+#     result = send_sms(to_number, invoice_text)
+#     return result
