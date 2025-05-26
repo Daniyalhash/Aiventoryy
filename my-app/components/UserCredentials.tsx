@@ -136,7 +136,7 @@ const UserCredentials = ({ onApproved }: UserCredentialsProps) => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/aiventory/signup/", {
+      const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/signup/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -179,7 +179,7 @@ const UserCredentials = ({ onApproved }: UserCredentialsProps) => {
       }
     } catch (error) { // Changed from 'err' to 'error'
       console.error("Signup error:", error); // Using the error variable
-      setMessage("Failed to update credentials");
+      setMessage("Failed to SignUp");
       setIsError(true);
       setTimeout(() => setMessage(""), 3000);
     }
