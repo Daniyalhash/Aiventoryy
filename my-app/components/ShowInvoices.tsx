@@ -100,7 +100,7 @@ const fetchUserData = useCallback(async () => {
     if (!userId) return;
 
     try {
-      await axios.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-user-details/', {
+      await axios.get('https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/', {
         params: { user_id: userId }
       });
       

@@ -28,7 +28,7 @@ const UserProfileCard = ({ userId }) => {
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://127.0.0.1:8000/aiventory/get-user-details/`, {
+        const response = await axios.get(`http://127.0.0.1:8000/aiventory/get_user_details/`, {
           params: { user_id: userId }
         });
         setContextUser(response.data);

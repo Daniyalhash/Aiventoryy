@@ -32,7 +32,6 @@ urlpatterns = [
         path('forgot_password/', forgot_password, name='forgot_password'),  # Add this line
         path('reset-password/', reset_password, name='reset_password'),  # Add this line
         path('update-user/', update_user, name='update_user'),  # Add this line
-                path('get-user-details/', get_user_details, name='get_user_details'),  # Add this line
                 path('get_user_details/', get_user_details, name='get_user_details'),  # Add this line
 
         path('get-stock-levels/', get_stock_levels, name='get_stock_levels'),  # Add this line
