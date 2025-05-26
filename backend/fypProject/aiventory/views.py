@@ -1990,18 +1990,18 @@ def confirm_invoice(request, invoice_id):
                 open_order.pop('_id',None)
 
                 openOrders_collection.insert_one(open_order)
-                ACCOUNT_SID = 'AC315cc5ec7c39aaef3cc30151cb726d11'
-                AUTH_TOKEN = '305ac669bd59b03a0888ccadbd0dc7a0'  # replace with your real token
-                TWILIO_NUMBER = '+12704564698'
-                client = Client(ACCOUNT_SID, AUTH_TOKEN)
+                # ACCOUNT_SID = 'AC315cc5ec7c39aaef3cc30151cb726d11'
+                # AUTH_TOKEN = '305ac669bd59b03a0888ccadbd0dc7a0'  # replace with your real token
+                # TWILIO_NUMBER = '+12704564698'
+                # client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
-                message = client.messages.create(
-                    body='This is a test message',
-                    from_=TWILIO_NUMBER,
-                    to='+923452284199'
-                )
+                # message = client.messages.create(
+                #     body='This is a test message',
+                #     from_=TWILIO_NUMBER,
+                #     to='+923452284199'
+                # )
 
-                print(f"Sent! SID: {message.sid}")
+                # print(f"Sent! SID: {message.sid}")
 
             return Response(
                 {
