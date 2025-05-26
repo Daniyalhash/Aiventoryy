@@ -1989,7 +1989,8 @@ def confirm_invoice(request, invoice_id):
                 open_order.pop('_id',None)
 
                 openOrders_collection.insert_one(open_order)
-                
+                send_invoice_sms('+923452284199', 'Your invoice has been sent.')
+
             return Response(
                 {
                     "message": "Invoice confirmed successfully",
@@ -4390,3 +4391,31 @@ def get_vendor_performance(request):
         print(f"Type: {type(e)}")
         print(f"Error: {str(e)}")
         return Response({"error": str(e)}, status=500)
+    
+    
+    
+    # sms_sender.py
+from twilio.rest import Client
+
+# Twilio credentials
+ACCOUNT_SID = 'AC315cc5ec7c39aaef3cc30151cb726d11'
+AUTH_TOKEN = '305ac669bd59b03a0888ccadbd0dc7a0'  # replace with your real token
+TWILIO_NUMBER = '+12704564698'  # your Twilio number
+
+def send_sms(to_number, message):
+    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+
+    try:
+        message = client.messages.create(
+            body=message,
+            from_=TWILIO_NUMBER,
+            to=to_number
+        )
+        return f"Message sent! SID: {message.sid}"
+    except Exception as e:
+        return f"Error: {e}"
+
+
+def send_invoice_sms(to_number, invoice_text):
+    result = send_sms(to_number, invoice_text)
+    return result
