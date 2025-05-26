@@ -10,7 +10,7 @@ import { Suspense } from 'react'; // ✅ Import Suspense
 
 import Link from "next/link";
 import Image from 'next/image';
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 type UserInfo = {
   user_id: string;
@@ -19,19 +19,15 @@ type UserInfo = {
 };
 
 
-const SignupPage = () => {
-  // const router = useRouter();
+import axios from 'axios'; // Add this at the top if not already there
 
+const SignupPage = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
-
-
-
+  const [message, setMessage] = useState({ text: '', type: 'info' });
 
   useEffect(() => {
-    // const user_id = localStorage.getItem('userId');
-    // const email = localStorage.getItem('email');
     let user_id = localStorage.getItem('user_id');
     let email = localStorage.getItem('email');
 
@@ -40,57 +36,59 @@ const SignupPage = () => {
       user_id = params.get("userId") || user_id;
       email = params.get("email") || email;
     }
-    // Get 'step' from query param if exists
-    let stepFromQuery = 1;
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const stepParam = params.get("step");
-      stepFromQuery = stepParam ? parseInt(stepParam) : 1;
-    }
+
     if (!user_id || !email) {
-      setStep(1); // No user found, start at credentials
+      setStep(1);
       setLoading(false);
       return;
     }
 
-    // Fetch user status from backend
+    // Save to state
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
 
-    fetch(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-user-details?user_id=${user_id}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log("API response:", data); // Debug API response
+        const response = await axios.get(
+          `https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/ `,
+          {
+            params: { user_id }
+          }
+        );
+
+        const data = response.data;
+
+        console.log("API Response:", data);
 
         if (data.error) {
-          console.error("User fetch error:", data.error);
-          localStorage.removeItem('user_id');
-          localStorage.removeItem('email');
-          alert("Session expired or invalid user. Please start over.");
-          setStep(1);
-        } else {
-          setFormData({
-            user_id,
-            email: data.email,
-            status: data.status
-          });
-
-          // Decide next step based on user status
-          if (data.status === "complete") {
-            setStep(3); // Go to Dashboard
-          } else {
-            setStep(2); // Directly go to DatasetUpload when status is incomplete
-          }
+          throw new Error(data.error || "Failed to fetch user details");
         }
-      })
-      .catch(err => {
-        console.error("Fetch failed:", err);
+
+        setFormData({
+          user_id,
+          email: data.email,
+          status: data.status
+        });
+
+        if (data.status === "complete") {
+          setStep(3); // Go to Dashboard
+        } else {
+          setStep(2); // Incomplete → Dataset Upload
+        }
+
+      } catch (error: any) {
+        console.error("Error fetching user details:", error.message);
+        setMessage({ text: 'Session expired or invalid user.', type: 'error' });
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('email');
         setStep(1);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchUserData();
+
   }, []);
-
-
 
   console.log("Initial user_id:", formData?.user_id);
   console.log("Initial email:", formData?.email);
