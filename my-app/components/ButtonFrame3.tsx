@@ -8,7 +8,7 @@ import { fetchCategories, fetchAvailableMonths } from "@/utils/api";
 import React, { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faPlus, faBoxOpen, faFilter, faCalendarAlt, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faPlus, faBoxOpen, faFilter, faCalendarAlt, faArrowAltCircleRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 type ButtonFrame3Props = {
   onProductSelect: (productName: string) => void;
@@ -40,7 +40,7 @@ const ButtonFrame3: React.FC<ButtonFrame3Props> = ({
     productname: string;
     // Add other fields if needed
   };
-  
+
   const [suggestedProducts, setSuggestedProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Added this line
 
@@ -80,21 +80,21 @@ const ButtonFrame3: React.FC<ButtonFrame3Props> = ({
 
 
   const {
-  data: productsData,
-} = useSWR(
-  selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
-async ([, userId, category]) => {
-    const response = await axios.get(
-      'https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-top-products-by-category/',
-      { params: { user_id: userId, category } }
-    );
-    return response.data.products || [];
-  },
-  {
-    revalidateOnFocus: false,
-    dedupingInterval: 30000,
-  }
-);
+    data: productsData,
+  } = useSWR(
+    selectedCategory ? ["get-top-products-by-category", userId, selectedCategory] : null,
+    async ([, userId, category]) => {
+      const response = await axios.get(
+        'https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-top-products-by-category/',
+        { params: { user_id: userId, category } }
+      );
+      return response.data.products || [];
+    },
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 30000,
+    }
+  );
   // Update suggested products when data changes
   useEffect(() => {
     if (productsData) {
@@ -131,7 +131,7 @@ async ([, userId, category]) => {
     try {
       // Simulate prediction logic (replace with actual API call)
       const result = await onPredict(productInput, selectedCategory, selectedMonth, selectedGranularity);
-    console.log('Prediction result:', result); // Use the result or handle it appropriately
+      console.log('Prediction result:', result); // Use the result or handle it appropriately
 
       // Store the prediction result
     } catch (error) {
@@ -198,7 +198,7 @@ async ([, userId, category]) => {
         </div>
 
         {/* Product Input Field */}
-        <div className="product-input-wrapper">
+        <div className="product-input-wrapper2">
           <input
             type="text"
             value={productInput}
@@ -222,9 +222,17 @@ async ([, userId, category]) => {
             }}
 
             placeholder="Enter product name"
-            className="product-input-field"
-          />
+            className="product-input-field3"
 
+          />
+          {productInput && (
+            <button
+              onClick={() => setProductInput("")}
+              className="clear-search-icon"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          )}
         </div>
         {/* Granularity Selection (Radio Buttons) */}
         <div className="granularity-container">
@@ -290,17 +298,20 @@ async ([, userId, category]) => {
 
         {/* Predict Button */}
         {/* Predict Button */}
-        <Button
+        <div className="">
+  <Button
           text="Predict Demand"
           icon={faArrowAltCircleRight}
           onClick={handlePredict}
           disabled={!productInput || !selectedCategory || !selectedMonth || isPredicting}
-          // isPrimary={true}
+        // isPrimary={true}
         />
+        </div>
+      
       </div>
       <div className="buttonDowner">
-{productsData === undefined && selectedCategory ? (
-            <div className="loading-state">
+        {productsData === undefined && selectedCategory ? (
+          <div className="loading-state">
             <div className="loading-dots">
               <div className="dot"></div>
               <div className="dot"></div>
@@ -335,16 +346,16 @@ async ([, userId, category]) => {
                 <div className="empty-state">
                   <FontAwesomeIcon icon={faBoxOpen} className="empty-icon" />
                   <p className="empty-message">
-                     {!selectedCategory 
-        ? "Please select a category to view products"
-        : productInput 
-          ? `No products found matching "${productInput}" in ${selectedCategory}`
-          : `No products available in ${selectedCategory}. Try selecting a different category.`
-      }
+                    {!selectedCategory
+                      ? "Please select a category to view products"
+                      : productInput
+                        ? `No products found matching "${productInput}" in ${selectedCategory}`
+                        : `No products available in ${selectedCategory}. Try selecting a different category.`
+                    }
                   </p>
-                   <p className="empty-submessage">
-      {selectedCategory && "You can also try searching with a different keyword"}
-    </p>
+                  <p className="empty-submessage">
+                    {selectedCategory && "You can also try searching with a different keyword"}
+                  </p>
                 </div>
               )}
 

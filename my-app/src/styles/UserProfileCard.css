@@ -14,7 +14,11 @@
     text-align: center;
     color: white;
   }
-  
+  .avatar-placeholder{
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
   .avatar-section {
     display: flex;
     flex-direction: column;
