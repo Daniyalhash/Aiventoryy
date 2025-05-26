@@ -58,13 +58,22 @@ console.log("userDetails", userDetails);
       alert("Email not found.");
       return;
     }
-    window.location.href = `/signup?step=2&userId=${userId}&email=${encodeURIComponent(targetEmail)}`;
+     window.location.href = `/signup?step=2&userId=${encodeURIComponent(userId)}&email=${encodeURIComponent(targetEmail)}`;
+    // window.location.href = `/signup?step=2&userId=${userId}&email=${encodeURIComponent(targetEmail)}`;
     // router.push(`/signup?step=2&userId=${userId}&email=${encodeURIComponent(email)}`);
   };
 const handleConfirmRetrain = () => {
     setIsRetrainPopupOpen(false);
+    const targetEmail = email || userDetails?.email;
+
+    if (!targetEmail) {
+      alert("Email not found.");
+      return;
+    }
     // Redirect to model retrain page or perform retrain logic
-   window.location.href = `/signup?step=3&userId=${userId}`;
+      window.location.href = `/signup?step=3&userId=${encodeURIComponent(userId)}&email=${encodeURIComponent(targetEmail)}`;
+
+    // window.location.href = `/signup?step=3&userId=${encodeURIComponent(userId)}`;
   };
 
   return (

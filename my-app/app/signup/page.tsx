@@ -26,6 +26,7 @@ const SignupPage = () => {
   const [formData, setFormData] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState({ text: '', type: 'info' });
+  let urlStep: string | null = null;
 
   useEffect(() => {
     let user_id = localStorage.getItem('user_id');
@@ -35,6 +36,8 @@ const SignupPage = () => {
       const params = new URLSearchParams(window.location.search);
       user_id = params.get("userId") || user_id;
       email = params.get("email") || email;
+      urlStep = params.get("step"); // <-- Read from URL
+
     }
 
     if (!user_id || !email) {
@@ -69,11 +72,17 @@ const SignupPage = () => {
           status: data.status
         });
 
-        if (data.status === "complete") {
-          setStep(3); // Go to Dashboard
-        } else {
-          setStep(2); // Incomplete → Dataset Upload
-        }
+       // 👇 Scenario override via URL
+      if (urlStep === "2") {
+        setStep(2); // Force dataset upload
+      } else if (urlStep === "3") {
+        setStep(3); // Force dashboard button
+      } else if (data.status === "complete") {
+        setStep(3); // Normal: complete user
+      } else {
+        setStep(2); // Normal: incomplete user
+      }
+
 
       } catch (error: any) {
         console.error("Error fetching user details:", error.message);
