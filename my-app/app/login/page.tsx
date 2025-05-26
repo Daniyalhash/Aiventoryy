@@ -72,6 +72,8 @@ const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventor
 
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("user_id", userId); // snake_case, for signup compatibility
+
         localStorage.setItem("username", data.username || "");
         localStorage.setItem("loginTime", Date.now().toString());
         sessionStorage.setItem("justSignedUp", "true");

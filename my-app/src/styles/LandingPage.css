@@ -77,3 +77,27 @@ text-decoration: none;
   right: 100px; /* Move it to the right */
   transform: translateX(-50%);
 }
+/* 🟢 Mobile Devices: up to 600px */
+@media (max-width: 600px) {
+  /* Styles for phones */
+}
+
+/* 🔵 Small Tablets: 601px to 768px */
+@media (min-width: 601px) and (max-width: 768px) {
+  /* Styles for small tablets */
+}
+
+/* 🟡 Tablets / Small Laptops: 769px to 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Styles for tablets and small laptops */
+}
+
+/* 🟠 Standard Laptops (like yours): 1025px to 1536px */
+@media (min-width: 1025px) and (max-width: 1536px) {
+  /* Styles for laptops */
+}
+
+/* 🔴 Large Screens: 1537px and above */
+@media (min-width: 1537px) {
+  /* Styles for large desktops or 4K displays */
+}

@@ -64,6 +64,8 @@
   transform: translateX(-50%); /* Centers it horizontally */
   width: 90%; /* Adjust width to fit */
   padding: 10px;
+    overflow: visible; /* ensures all elements can animate */
+
 }
 
 .keyword {

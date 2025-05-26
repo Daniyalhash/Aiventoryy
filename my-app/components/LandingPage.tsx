@@ -11,6 +11,8 @@ const LandingPage = () => {
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
   }, []);
+// console.log(`Screen size: ${window.screen.width} x ${window.screen.height}`);
+// console.log(`Available viewport: ${window.innerWidth} x ${window.innerHeight}`);
 
   return (
     <div id="product-section" className="landingContainer">
