@@ -37,7 +37,7 @@ PyJWT==2.10.1
 
 # For password hashing
 bcrypt==4.1.2
-
+twilio==9.0.3
 # For concurrent operations
 # futures==3.0.5
 
