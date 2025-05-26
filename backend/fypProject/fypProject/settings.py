@@ -147,6 +147,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (not recommended for producti
 # OR specify allowed origins
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://www.aiventory.pro"
     # "*"# Frontend origin
 ]
 # Email Configuration

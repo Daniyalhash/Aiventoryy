@@ -54,15 +54,17 @@ const SignupPage = () => {
     }
 
     // Fetch user status from backend
+
     fetch(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get-user-details?user_id=${user_id}`)
       .then(res => res.json())
       .then(data => {
-            console.log("API response:", data); // Debug API response
+        console.log("API response:", data); // Debug API response
 
         if (data.error) {
           console.error("User fetch error:", data.error);
           localStorage.removeItem('user_id');
           localStorage.removeItem('email');
+          alert("Session expired or invalid user. Please start over.");
           setStep(1);
         } else {
           setFormData({
@@ -75,7 +77,7 @@ const SignupPage = () => {
           if (data.status === "complete") {
             setStep(3); // Go to Dashboard
           } else {
-        setStep(2); // Directly go to DatasetUpload when status is incomplete
+            setStep(2); // Directly go to DatasetUpload when status is incomplete
           }
         }
       })
@@ -90,8 +92,8 @@ const SignupPage = () => {
 
 
 
-console.log("Initial user_id:", formData?.user_id);
-console.log("Initial email:", formData?.email);
+  console.log("Initial user_id:", formData?.user_id);
+  console.log("Initial email:", formData?.email);
 
 
 
