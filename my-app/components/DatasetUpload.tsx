@@ -93,7 +93,7 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }: DatasetUploadProps
     formData.append("user_id", userId);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://127.0.0.1:8000/aiventory/upload_dataset/", true);
+    xhr.open("POST", "https://seal-app-8m3g5.ondigitalocean.app/aiventory/upload_dataset/", true);
     const uploadTimeout = setTimeout(() => {
       xhr.abort();
       setMessage("Upload timed out. Please try again.");
@@ -152,7 +152,7 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }: DatasetUploadProps
   };
   const handleDiscardChanges = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/aiventory/discard_signup/", {
+      const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/discard_signup/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -200,7 +200,7 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }: DatasetUploadProps
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/aiventory/in_complete_signup/", {
+      const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/in_complete_signup/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
