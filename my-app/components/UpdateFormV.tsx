@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "@/styles/form.css";
-
-const UpdateForm = () => {
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
+const UpdateForm : React.FC<AddInvoiceProps> = ({ onSuccess }) => {
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
   const [vendorId, setVendorId] = useState("");
   const [vendorName, setVendorName] = useState("");
@@ -85,6 +87,9 @@ const UpdateForm = () => {
       setMessage(response.data.message || "Vendor updated successfully!");
       setIsError(false);
       console.log("Server Response:", response.data);
+         setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
     } catch (error) {
       let errorMsg = "Failed to update vendor";
       if (axios.isAxiosError(error)) {

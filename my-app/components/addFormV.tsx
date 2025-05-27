@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import useSWR from 'swr';
 import { fetchCategories } from "@/utils/api";
 import "@/styles/form.css";
-
-const SimpleForm = () => {
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
+const SimpleForm : React.FC<AddInvoiceProps> = ({ onSuccess }) => {
 
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
@@ -108,6 +110,10 @@ const SimpleForm = () => {
           ReliabilityScore: "",
           last_updated: generateCurrentDateTime(),
         });
+                         // Delay a bit to show message, then close & refresh
+        setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
       } else {
         console.error("Error:", result);
         setMessage("❌ Failed to add vendor.");

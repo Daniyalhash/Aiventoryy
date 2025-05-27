@@ -67,16 +67,36 @@ const  ButtonFrame5 = () => {
 
   // Content for each popup
   const addVendorContent = (
-    <SimpleForm />
+    <SimpleForm
+         onSuccess={() => {
+           closePopup(); // Use your existing closePopup function
+
+            window.location.reload(); // Reload page
+          }} />
    
   );
 
   const deleteVendorContent = (
-   <DelForm />
+   <DelForm 
+                onSuccess={() => {
+           closePopup(); // Use your existing closePopup function
+
+            window.location.reload(); // Reload page
+          }}
+   
+   
+   />
   );
 
   const updateVendorContent = (
-   <UpdateForm />
+   <UpdateForm
+              onSuccess={() => {
+           closePopup(); // Use your existing closePopup function
+
+            window.location.reload(); // Reload page
+          }}
+   
+   />
   );
 
   const searchVendorContent = (
@@ -86,7 +106,14 @@ const  ButtonFrame5 = () => {
   <ActivityProduct />
   );
    const exportProduct = (
-  <ExportProductFile />
+  <ExportProductFile
+       onSuccess={() => {
+           closePopup(); // Use your existing closePopup function
+
+            window.location.reload(); // Reload page
+          }}
+  
+  />
   );
   const buttonData = [
     {

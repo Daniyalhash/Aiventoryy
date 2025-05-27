@@ -19,7 +19,7 @@ const ForgotPage = () => {
         setIsError(false);
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/aiventory/forgot_password/', {
+            const response = await fetch('https://seal-app-8m3g5.ondigitalocean.app/aiventory/forgot_password/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
@@ -89,14 +89,7 @@ const ForgotPage = () => {
                         />
                     </Link>
                 </div>
-          
-            </div>
-        </div>
-    );
-};
-
-export default ForgotPage;
-      <video
+            <video
           className="animatedVideo"
           autoPlay
           loop
@@ -106,3 +99,10 @@ export default ForgotPage;
           <source src="/video/vid2.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+            </div>
+        </div>
+    );
+};
+
+export default ForgotPage;
+    

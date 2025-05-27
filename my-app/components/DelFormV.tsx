@@ -1,8 +1,10 @@
 import React, {  useState } from "react";
 import axios from "axios";
 import "@/styles/form.css";
-
-const DelForm = () => {
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
+const DelForm : React.FC<AddInvoiceProps> = ({ onSuccess }) => {
   const [vendorId, setVendorId] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -29,6 +31,10 @@ const DelForm = () => {
       setMessage(response.data.message || "Vendor deleted successfully!");
       setIsError(false);
       console.log("Server Response:", response.data);
+                       // Delay a bit to show message, then close & refresh
+        setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
     } catch (error) {
       let errorMsg = "Failed to delete vendor";
       if (axios.isAxiosError(error)) {

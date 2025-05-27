@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "@/styles/form.css";
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
 
-const UpdateFormP = () => {
+const UpdateFormP : React.FC<AddInvoiceProps> = ({ onSuccess }) => {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
   const [productId, setProductId] = useState("");
@@ -64,7 +67,8 @@ const UpdateFormP = () => {
         console.log("Product Data:", product.timespan); // Log the product data
         setMessage("Product loaded successfully.");
         setIsError(false);
-        setProductLoaded(true); // Product was found and loaded
+        setProductLoaded(true);
+         // Product was found and loaded
       } else {
         setMessage("Product not found.");
         setIsError(true);
@@ -112,6 +116,10 @@ const UpdateFormP = () => {
 
       setMessage(response.data.message || "Product updated successfully!");
       setIsError(false);
+                         // Delay a bit to show message, then close & refresh
+        setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
       console.log("Server Response:", response.data);
     } catch (error) {
       

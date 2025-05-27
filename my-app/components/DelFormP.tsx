@@ -1,8 +1,11 @@
 import React, {  useState } from "react";
 import axios from "axios";
 import "@/styles/form.css";
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
 
-const DelFormP = () => {
+const DelFormP : React.FC<AddInvoiceProps> = ({ onSuccess }) => {
   const [productId, setProductId] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -29,6 +32,10 @@ const DelFormP = () => {
       setMessage(response.data.message || "product deleted successfully!");
       setIsError(false);
       console.log("Server Response:", response.data);
+                     // Delay a bit to show message, then close & refresh
+        setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
     } catch (error) {
       let errorMsg = "Failed to delete product";
       if (axios.isAxiosError(error)) {

@@ -28,7 +28,11 @@ import "@/styles/form.css";
 //   season: string;
 //   last_updated: string;
 // }
-const AddFormP = () => {
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
+
+const AddFormP: React.FC<AddInvoiceProps> = ({ onSuccess }) => {
 
 
   const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
@@ -193,6 +197,11 @@ const AddFormP = () => {
           season: "",
           last_updated: generateCurrentDateTime(),
         });
+
+                   // Delay a bit to show message, then close & refresh
+        setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
       } else {
         console.error("Error:", result);
         setMessage("❌ Failed to add vendor.");

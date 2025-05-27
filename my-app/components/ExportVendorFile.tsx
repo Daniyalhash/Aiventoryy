@@ -7,7 +7,11 @@ import "@/styles/form.css";
 //   success: boolean;
 //   message: string;
 // }
-const ExportVendorFile = () => {
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
+const ExportVendorFile : React.FC<AddInvoiceProps> = ({ onSuccess }) => {
+
   
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -36,6 +40,9 @@ const ExportVendorFile = () => {
     link.click();
     link.remove();
 setMessage("✅ Vendors exported successfully!");
+   setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
       setIsError(false);
   } catch (error) {
    setMessage("🚨 Error exporting vendors: " + (error instanceof Error ? error.message : String(error)));

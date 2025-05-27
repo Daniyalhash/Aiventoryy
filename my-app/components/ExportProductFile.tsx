@@ -7,7 +7,11 @@ import "@/styles/form.css";
 //   success: boolean;
 //   message: string;
 // }
-const ExportProductFile = () => {
+type AddInvoiceProps = {
+  onSuccess: () => void;
+};
+
+const ExportProductFile : React.FC<AddInvoiceProps> = ({ onSuccess }) => {
   
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -37,6 +41,10 @@ const ExportProductFile = () => {
     link.remove();
     setMessage("✅ Products exported successfully!");
       setIsError(false);
+                         // Delay a bit to show message, then close & refresh
+        setTimeout(() => {
+          onSuccess(); // Close modal and refresh page
+        }, 1000);
 
 
   } catch (error) {

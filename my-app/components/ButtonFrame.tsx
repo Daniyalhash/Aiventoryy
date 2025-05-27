@@ -57,23 +57,43 @@ const  ButtonFrame = () => {
 
   // Content for each popup
   const addVendorContent = (
-    <SimpleForm />
+    <SimpleForm 
+    onSuccess={() => {
+           closePopup(); // Use your existing closePopup function
+
+            window.location.reload(); // Reload page
+          }} />
    
   );
 
   const deleteVendorContent = (
-   <DelForm />
+   <DelForm 
+   onSuccess={() => {
+           closePopup(); // Use your existing closePopup function
+
+            window.location.reload(); // Reload page
+          }} />
   );
 
   const updateVendorContent = (
-   <UpdateForm />
+   <UpdateForm
+   onSuccess={() => {
+           closePopup(); // Use your existing closePopup function
+
+            window.location.reload(); // Reload page
+          }} />
   );
 
   const searchVendorContent = (
   <SearchForm />
   );
  const exportCSV = (
-  <ExportVendorFile />
+  <ExportVendorFile 
+  onSuccess={() => {
+           closePopup(); // Use your existing closePopup function
+
+            window.location.reload(); // Reload page
+          }}/>
   );
 
    const activityLogs = (
