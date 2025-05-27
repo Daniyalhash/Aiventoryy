@@ -1,6 +1,7 @@
 "use client";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useUser } from './UserContext';
 
-import React from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -28,6 +29,7 @@ type ActionOption = {
   className?: string;
 };
 type Option = LinkOption | ActionOption;
+import axios from "axios";
 
 const defaultSettingsOptions = [
   { name: "Edit Profile", path: "/dashboard/setting/editProfile", icon: faUser },
@@ -39,9 +41,41 @@ const defaultSettingsOptions = [
 ];
 
 const SetOptions: React.FC<{ additionalOptions?: Option[] }> = ({ additionalOptions = [] }) => {
+
+  const [userId, setUserId] = useState<string | null>(null);
+  const { user, setUser } = useUser();
+
+  const fetchUserData = useCallback(async () => {
+
+    try {
+      if (userId) {
+        console.log(`Fetching data for userId: ${userId}`);
+        const response = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/", {
+          params: { user_id: userId },
+        });
+        setUser(response.data); // Update state with user details
+      }
+    } catch (error) {
+      if (typeof error === "object" && error !== null && "response" in error) {
+        // @ts-ignore
+        console.error("Error fetching user details:", error.response?.data?.error || error.message);
+      } else {
+        console.error("Error fetching user details:", (error as Error).message || error);
+      }
+    }
+  }, [userId, setUser]);
+
+  useEffect(() => {
+      fetchUserData();
+    }, [fetchUserData]);
+
+    
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    console.log("User logged out");
+    localStorage.clear();
+    sessionStorage.clear();
+    setUser(null);
+    // signOut({ redirect: false });
     window.location.href = "/";
   };
 

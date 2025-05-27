@@ -96,7 +96,7 @@ const MainSiteProfileButton = () => {
     localStorage.clear();
     sessionStorage.clear();
     setUser(null);
-    signOut({ redirect: false }); // Optional if using NextAuth for social login
+    // signOut({ redirect: false }); // Optional if using NextAuth for social login
     window.location.href = "/";;
 
   };
