@@ -90,5 +90,80 @@ cursor: pointer;
   height: 20px;
   margin-right: 8px;
 } */
+/* Hide hamburger on desktop */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+}
 
+/* Mobile styles */
+@media (max-width: 768px) {
+  .navbarWeb {
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
 
+  .hamburger {
+    display: block;
+  }
+
+  .menuWeb {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+    gap: 0;
+    padding: 1rem 0;
+    background-color: #fff;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .menuWeb.mobileOpen {
+    display: flex;
+  }
+
+  .menuWeb .item {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+  }
+
+  .authButtons {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .signUp,
+  .logIn {
+    width: 80%;
+    text-align: center;
+  }
+}
+
+/* 🔵 Small Tablets: 601px to 768px */
+@media (min-width: 601px) and (max-width: 768px) {
+  /* Styles for small tablets */
+}
+
+/* 🟡 Tablets / Small Laptops: 769px to 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Styles for tablets and small laptops */
+}
+
+/* 🟠 Standard Laptops (like yours): 1025px to 1536px */
+@media (min-width: 1025px) and (max-width: 1536px) {
+  /* Styles for laptops */
+}
+
+/* 🔴 Large Screens: 1537px and above */
+@media (min-width: 1537px) {
+  /* Styles for large desktops or 4K displays */
+}

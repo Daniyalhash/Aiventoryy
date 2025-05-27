@@ -44,7 +44,11 @@ const NavbarWeb = () => {
     }
   }, []);
 
+const [menuOpen, setMenuOpen] = useState(false);
 
+const toggleMenu = () => {
+  setMenuOpen(!menuOpen);
+};
   return (
     <nav className="navbarWeb">
       <div className="logoWeb">
@@ -65,7 +69,11 @@ const NavbarWeb = () => {
             />
         </Link>
       </div>
-      <div className="menuWeb">
+       {/* Hamburger Icon */}
+  <div className="hamburger" onClick={toggleMenu}>
+    ☰
+  </div>
+  <div className={`menuWeb ${menuOpen ? 'mobileOpen' : ''}`}>
         <a className="item" onClick={() => scrollToSection("#product-section")}>Product</a>
         <a className="item" onClick={() => scrollToSection("#solution-section")}>Solution</a>
         <a className="item" onClick={() => scrollToSection("#features-section")}>Features</a>
