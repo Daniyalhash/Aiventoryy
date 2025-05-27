@@ -187,6 +187,7 @@ const LowStockSuggestionSection: React.FC = () => {
           vendorPhone: vendor.vendorPhone,
           date: new Date().toISOString().split("T")[0],
           products: [{
+            product_id: selectedProduct.productname_id,
             name: selectedProduct.productname,
             category: selectedProduct.category,
             quantity: predictedQuantity || selectedProduct.stockquantity,
@@ -397,6 +398,7 @@ const LowStockSuggestionSection: React.FC = () => {
           category: selectedProduct?.category || "",
           quantity: selectedProduct?.stockquantity || 0,
           price: selectedProduct?.costprice || 0,
+          productname_id: selectedProduct.productname_id,
         }],
         user_id: localStorage.getItem("userId")
       };

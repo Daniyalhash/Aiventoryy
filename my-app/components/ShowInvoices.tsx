@@ -39,6 +39,7 @@ interface EditingInvoice extends Invoice {
 }
 
 interface ProductChange {
+  
   name: string;
   category: string;
   quantity: number;

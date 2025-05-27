@@ -799,7 +799,36 @@ def update_vendor_reliability(request):
             print("done updating vendor perfomance score card")
         else:
             print("⚠️ perf_doc not found after insert")
-        
+        # 🔁 Update stockquantity in products collection
+        if invoice_data:
+            delivered_products = invoice_data.get("products", [])
+            for product in delivered_products:
+                productname_id = product.get("productname_id")
+                delivered_quantity = product.get("stockquantity", 0)
+
+                if not productname_id:
+                    print("⚠️ Skipping product without barcode")
+                    continue
+
+                print(f"Updating stock for product with barcode: {productname_id}, adding quantity: {delivered_quantity}")
+
+                update_result = db.products.update_one(
+                    {
+                        "user_id": ObjectId(user_id),
+                        "products.productname_id": productname_id
+                    },
+                    {
+                        "$inc": {
+                            "products.$.stockquantity": delivered_quantity
+                        }
+                    }
+                )
+
+                if update_result.matched_count:
+                    print(f"✅ Stock updated for product {productname_id}")
+                else:
+                    print(f"❌ Product with barcode {productname_id} not found for stock update")
+
         
         
         print("===============")
@@ -1681,6 +1710,7 @@ def save_invoice(request):
             "vendor_id":data["vendor_id"],  # Convert vendor_id to ObjectId
 
             "products": [{
+                "productname_id": p.get("product_id", ""),
                 "name": p["name"].strip(),
                 "category": p.get("category", "").strip(),
                 "quantity": int(p["quantity"]),
@@ -1698,7 +1728,7 @@ def save_invoice(request):
         # Insert into database
         result = invoices_collection.insert_one(invoice)
         invoice["_id"] = result.inserted_id  # Add the _id to reuse it in openOrders
-
+        print("Invoice saved:", invoice)
          # Save the same invoice in openOrders collection
         # openOrders_collection.insert_one(invoice)
         return Response({
