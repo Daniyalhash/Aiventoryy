@@ -364,6 +364,7 @@ def login(request):
 
 @api_view(['POST'])
 def complete_signup(request):
+    print("METHOD:", request.method)
     try:
         # 1. Validate user_id
         user_id = request.data.get("user_id")

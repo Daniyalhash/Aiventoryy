@@ -60,13 +60,13 @@ const LoginPage = () => {
       // });
 
       // fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/login/ ", { ... })
-const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/login/ ", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-    credentials: "include", // Ensures cookies/sessions are sent if your backend uses them
+      const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/login/ ", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // Ensures cookies/sessions are sent if your backend uses them
 
-  body: JSON.stringify({ email, password }),
-});
+        body: JSON.stringify({ email, password }),
+      });
       const data: LoginResponse = await response.json();
 
       if (response.ok) {
@@ -132,7 +132,7 @@ const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventor
       <div className="loginLeft">
         <div className="logocontainer">
           <div className="logo">
-   <Image
+            <Image
               src="/images/logoPro.png"
               alt="Logo"
               width={100}
@@ -168,7 +168,7 @@ const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventor
             Log In
           </button>
           <p className="login-text">
-           Don&apos;t have an account? <a href="/signup" className="login-text-link">Sign up</a>
+            Don&apos;t have an account? <a href="/signup" className="login-text-link">Sign up</a>
           </p>
         </form>
 
@@ -185,7 +185,7 @@ const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventor
             <p className="reset-message">Forgot Password?</p>
           </Link>
         </div>
-    
+
       </div>
 
       <div className="loginright ">
@@ -202,7 +202,7 @@ const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventor
           </Link>
         </div>
 
-           <video
+        <video
           className="animatedVideo"
           autoPlay
           loop

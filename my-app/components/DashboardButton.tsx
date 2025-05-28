@@ -39,8 +39,9 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
                 const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/complete_signup/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ user_id: userId }),
                     credentials: "include", // again, needed for Django sessions
+                    body: JSON.stringify({ user_id: userId }),
+                    
                 });
 
                 const data = await response.json();
