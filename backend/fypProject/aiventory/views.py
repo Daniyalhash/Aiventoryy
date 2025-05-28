@@ -364,6 +364,8 @@ def login(request):
 
 @api_view(['POST'])
 def complete_signup(request):
+    if request.method != 'POST':
+        return Response({"error": "Method not allowed"}, status=405)
     print("METHOD:", request.method)
     try:
         # 1. Validate user_id
