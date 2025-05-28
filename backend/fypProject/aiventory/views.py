@@ -359,14 +359,22 @@ def login(request):
 
     return Response(response_data, status=status_code)
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0]
+    return request.META.get('REMOTE_ADDR')
 
+import logging
 
-
-@api_view(['POST'])
+logger = logging.getLogger(__name__)
+@api_view(['POST', 'GET'])  # temporarily allow GET just for logging
 def complete_signup(request):
-    if request.method != 'POST':
-        return Response({"error": "Method not allowed"}, status=405)
-    print("METHOD:", request.method)
+    if request.method == 'GET':
+        logger.warning("⚠️ Unexpected GET request to complete_signup")
+        logger.warning(f"IP Address: {get_client_ip(request)}")
+        logger.warning(f"Headers: {dict(request.headers)}")
+        return Response({'error': 'GET not allowed'}, status=405)
     try:
         # 1. Validate user_id
         user_id = request.data.get("user_id")
