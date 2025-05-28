@@ -172,31 +172,7 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }: DatasetUploadProps
     }
   };
 
-// useEffect(() => {
-//   const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-//     e.preventDefault();
-//     e.returnValue = ''; // This shows the native browser confirmation
-//   };
 
-//   const handlePopState = () => {
-//     // Show your custom popup
-//     setShowPopup(true);
-//     // Push back to prevent actual back navigation
-//     window.history.pushState(null, '', window.location.href);
-//   };
-
-//   // For browser refresh or tab close
-//   window.addEventListener('beforeunload', handleBeforeUnload);
-//   // For browser back button
-//   window.addEventListener('popstate', handlePopState);
-//   // Prevent default back navigation
-//   window.history.pushState(null, '', window.location.href);
-
-//   return () => {
-//     window.removeEventListener('beforeunload', handleBeforeUnload);
-//     window.removeEventListener('popstate', handlePopState);
-//   };
-// }, []);
 
   const handleSaveChanges = async () => {
     try {

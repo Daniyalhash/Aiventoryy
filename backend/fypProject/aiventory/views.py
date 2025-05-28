@@ -378,7 +378,11 @@ def complete_signup(request):
         if not predictor.is_model_already_trained():
             print("Training model for new user...")
             start_time = time.time()  # Start timing the model training
-            training_results = predictor.train_models()  # Train model
+            try:
+                training_results = predictor.train_models()  # Train model
+            except Exception as e:
+                print("Training failed:", str(e))
+                return Response({ "error": "Training failed", "details": str(e) }, status=500)
             print(f"Model training completed in {time.time() - start_time} seconds")
             print("Model trained & saved to MongoDB")
         else:
@@ -420,8 +424,13 @@ def complete_signup(request):
             }, status=400)
         # 4. Initialize ai waster and load data
          # ⏳ Train the model
-        get_expiry_forecast(user_id, force_retrain=True)
-
+         
+        try:
+            get_expiry_forecast(user_id, force_retrain=True)
+        except Exception as e:
+            print("expiry training failed:", str(e))
+            return Response({ "error": "Training failed", "details": str(e) }, status=500)
+            
         print("💾 Model saved successfully")
         
         # 4. Finalize signup

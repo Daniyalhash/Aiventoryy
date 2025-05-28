@@ -64,7 +64,7 @@ class InventoryUtils:
                         "monthly_sales": item.get("monthly_sales"),
                         "Barcode": item.get("Barcode"),
                         "vendor_id": str(item.get("vendor_id")) if item.get("vendor_id") else None,
-                        "Product Size": item.get("productSize"),
+                        "productSize": item.get("productSize"),
                         "sale_date": item.get("sale_date"),
                         "season": item.get("season")
 

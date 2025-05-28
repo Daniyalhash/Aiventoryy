@@ -6,12 +6,18 @@ import '@/styles/SignupPage.css';
 interface DashboardButtonProps {
     userId: string;
 }
+import axios from 'axios'; // Add this at the top if not already there
 
 const DashboardButton = ({ userId }: DashboardButtonProps) => {
     const [loadingText, setLoadingText] = useState("Analyzing your data...");
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
-
+const [user_id, setUser] = useState<string | null>(null);
+    useEffect(() => {
+  if (userId) {
+    setUser(userId); // or setUserExists(true)
+  }
+}, [userId]);
     useEffect(() => {
         if (!userId) return;
 
@@ -42,17 +48,28 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
                     localStorage.setItem("userId", userId);
                     setMessage("Signup completed successfully! Redirecting to dashboard...");
                     setIsError(false);
-                    setTimeout(() => {
-                        window.location.href = "/dashboard";
-                    }, 2000);
+                    // poll for user status
+                    setInterval(async () => {
+                        const response = await axios.get(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/`,
+                            {
+                                params: { user_id }
+                            }
+                        );
+                        const data = response.data;
+                        if (data.status === "complete") {
+                            window.location.href = "/dashboard";
+                        }
+                    }, 5000);
                 } else {
                     setMessage(data.error || "Failed to complete signup. Try again.");
                     setIsError(true);
                 }
-            } catch (error) {
+            } catch (error : any) {
                 console.error("Error during signup:", error);
                 setMessage("Something went wrong. Please try again.");
                 setIsError(true);
+                setMessage(error.details || error.error || "Something went wrong.");
+
             } finally {
                 clearInterval(interval);
             }
@@ -65,7 +82,7 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
 
     return (
         <div className="stepContainer">
-                        <p className='dashHeadingSub'>Your smart inventory management starts here.</p>
+            <p className='dashHeadingSub'>Your smart inventory management starts here.</p>
 
             <h2 className='shinyText'>{loadingText}</h2>
 
