@@ -804,7 +804,7 @@ def update_vendor_reliability(request):
             delivered_products = invoice_data.get("products", [])
             for product in delivered_products:
                 productname_id = product.get("productname_id")
-                delivered_quantity = product.get("stockquantity", 0)
+                delivered_quantity = product.get("quantity", 0)
 
                 if not productname_id:
                     print("⚠️ Skipping product without barcode")

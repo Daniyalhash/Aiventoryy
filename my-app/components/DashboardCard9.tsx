@@ -9,6 +9,8 @@ import '@/styles/dashboardCard9.css';
 // Define interfaces for type safety
 interface Product {
   name: string;
+  product_id: string;
+
   quantity: number;
   price: number;
 }
