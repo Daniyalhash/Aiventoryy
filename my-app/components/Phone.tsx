@@ -20,10 +20,10 @@ const Phone = () => {
         {/* Left Section */}
         <div className="left-section" data-aos="fade-right">
           <h2 className="title">
-            <span className="customer">Customer</span> Barcode Scanning
+            <span className="customer">Customer</span> Product Benchmarking
           </h2>
           <p className="description" data-aos="fade-up" data-aos-delay="200">
-            Scan products to get real-time product details and alternatives.
+            Search products to get real-time product details and alternatives.
           </p>
           <div className="buttonContainer" data-aos="fade-up" data-aos-delay="400">
             <button className="download-button">Download now</button>

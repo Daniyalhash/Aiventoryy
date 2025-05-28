@@ -53,7 +53,7 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
                     const pollUserStatus = async () => {
                         try {
                             const response = await axios.get(
-                                "https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/  ",
+                                "https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/",
                                 {
                                     params: { user_id: userId }
                                 }
