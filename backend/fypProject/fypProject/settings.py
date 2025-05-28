@@ -142,13 +142,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Add this line
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ORIGIN_ALLOW_ALL = True  # For development; you can restrict in production
+# CORS_ORIGIN_ALLOW_ALL = True  # For development; you can restrict in production
 
-CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (not recommended for production)
+# CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (not recommended for production)
 # OR specify allowed origins
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://www.aiventory.pro",
+    # "http://localhost:3000",
+     "https://www.aiventory.pro",
     "https://aiventory.pro",  # also allow without www if needed
 
     # "*"# Frontend origin
