@@ -9,6 +9,8 @@ import axios from "axios";
 import AddInvoice from '@/components/addInvoice';
 import Image from 'next/image';
 interface Product {
+  product_id: string;
+
   category: string;
   name: string;
   price: number;

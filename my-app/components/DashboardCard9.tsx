@@ -45,6 +45,7 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
       const response2 = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_received_orders/", {
         params: { user_id: userId }
       });
+      console.log('orders',response.data)
       // Handle the open orders
       if (response.data && response.data.open_orders && Array.isArray(response.data.open_orders.data)) {
         setOpenOrders(response.data.open_orders.data.map((order: any) => ({
@@ -70,7 +71,7 @@ const DashboardCard9: React.FC<DashboardCard9Props> = ({ title, subTitle }) => {
       setOpenOrders([]);
     }
   }, [userId]);
-
+  
 
   const handleDelete = async (invoiceId: string) => {
     setIsUpdating(true);
