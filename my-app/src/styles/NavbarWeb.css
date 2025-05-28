@@ -5,13 +5,15 @@
   margin: 0;
   padding: 0;
   box-sizing: inherit;
-  font-family: 'Poppins',sans-serif;
+  font-family: 'Poppins', sans-serif;
 
 }
 
-body { /* Or a more specific selector */
+body {
+  /* Or a more specific selector */
   font-family: 'Poppins', sans-serif;
 }
+
 .navbarWeb {
   display: flex;
   justify-content: space-between;
@@ -22,10 +24,11 @@ body { /* Or a more specific selector */
 }
 
 /* Logo */
-.logoWeb{
+.logoWeb {
   padding: 1.5rem;
   cursor: pointer;
 }
+
 .logoWeb .logImgWeb {
   width: 100px;
   height: 40px;
@@ -34,23 +37,28 @@ body { /* Or a more specific selector */
 /* Navigation links container */
 .menuWeb {
   display: flex;
-  justify-content: center; /* Centers items horizontally */
-  align-items: center; /* Centers items vertically */
+  justify-content: center;
+  /* Centers items horizontally */
+  align-items: center;
+  /* Centers items vertically */
   gap: 1rem;
   border-radius: 50px;
-  height: 60px; /* Adjusted height */
+  height: 60px;
+  /* Adjusted height */
 }
 
 
 /* Navigation links */
 .menuWeb .item {
   font-family: 'Poppins', sans-serif;
-  font-weight: 400; /* Light font style */
+  font-weight: 400;
+  /* Light font style */
   text-decoration: none;
   color: #000000;
   font-size: 1.2rem;
-  align-items: center; /* Vertically centers items */
-cursor: pointer;
+  align-items: center;
+  /* Vertically centers items */
+  cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 25px;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -70,8 +78,10 @@ cursor: pointer;
 
   background: transparent;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
-  backdrop-filter: blur(30px); /* Adjust the blur amount as needed */
+  background: rgba(255, 255, 255, 0.5);
+  /* Semi-transparent background */
+  backdrop-filter: blur(30px);
+  /* Adjust the blur amount as needed */
   border-radius: 50px;
 }
 
@@ -85,6 +95,7 @@ cursor: pointer;
   cursor: pointer;
   border-radius: 50px;
 }
+
 /* .icon {
   width: 20px;
   height: 20px;
@@ -105,47 +116,77 @@ cursor: pointer;
     padding: 1rem;
   }
 
+  .logoWeb {
+    padding: 1rem;
+  }
+
+  .logoWeb .logImgWeb {
+    width: 160px;
+    /* Larger width on mobile */
+    height: auto;
+    /* Maintain aspect ratio */
+  }
+
   .hamburger {
     display: block;
   }
 
   .menuWeb {
     flex-direction: column;
-    width: 100%;
-    display: none;
-    gap: 0;
-    padding: 1rem 0;
-    background-color: #fff;
-    position: absolute;
-    top: 90px;
-    left: 0;
+    position: fixed;
+    top: 0;
+    right: 63%;
+    width: 38%;
+    height: 100vh;
+    background-color: #eee;
     z-index: 1000;
+    padding-top: 5rem;
+    transition: right 0.3s ease-in-out;
+    align-items: center;
   }
 
   .menuWeb.mobileOpen {
-    display: flex;
+    right: 0;
   }
 
+  /* Close button inside menu */
+  .closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: #17412D;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+
+  /* Nav items spacing */
   .menuWeb .item {
+    font-size: 1.4rem;
     padding: 1rem;
+    color: #17412D;
     text-align: center;
+
+    width: 100%;
     border-bottom: 1px solid #eee;
   }
-
-  .authButtons {
-    width: 100%;
-    justify-content: center;
-    margin-top: 1rem;
+.authButtons{
+  display: block;
+}
+.authButtonsMobile .signUp,
+.authButtonsMobile .logIn {
+  color: white;
+  background-color: #17412D;
+}
+  /* Auth buttons within menu */
+  .authButtonsMobile {
+    margin-top: 2rem;
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    gap: 15px;
+    width: 80%;
   }
 
-  .signUp,
-  .logIn {
-    width: 80%;
-    text-align: center;
-  }
+
 }
 
 /* 🔵 Small Tablets: 601px to 768px */

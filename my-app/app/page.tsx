@@ -40,7 +40,7 @@ export default function Home() {
       <Phone />
       <Text />
       <Laptop />
-      <Plan />
+      {/* <Plan /> */}
       <Testimonials />
       <Footer />
     </div>

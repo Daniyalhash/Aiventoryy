@@ -29,8 +29,9 @@ const Footer = () => {
         
         <div className="footer-subHeading">
         <Link href="/login" shallow>
+       
         Get Started
-                <FontAwesomeIcon icon={faArrowUp} className="arrow-icon" />
+         <FontAwesomeIcon icon={faArrowUp} className="arrow-icon" />
             </Link>
             </div>
       <div className="footer-section">

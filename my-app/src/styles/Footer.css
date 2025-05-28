@@ -71,7 +71,7 @@ margin-top: -30px;
     transition: all 0.3s ease; /* Smooth transition */
     position: absolute;
     top: 0;
-    right: -30; /* Stick to the right of the footer */
+    right: -30px; /* Stick to the right of the footer */
     bottom: 0; /* Stick to the bottom */
 
 }

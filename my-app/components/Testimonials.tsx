@@ -69,7 +69,7 @@ const Testimonials = () => {
         </div>
 
         <div className="star" data-aos="zoom-in" data-aos-delay="800">
-          <Image src="/images/star2.png" alt="Star" width={800} height={800} />
+          <Image src="/images/star2.png" alt="Star" width={750} className='star2' height={800} />
         </div>
       </div>
     </div>

@@ -850,20 +850,20 @@ def update_vendor_reliability(request):
                     print(f"❌ Product with barcode {productname_id} not found for stock update")
 
         
-        metadata = {
-            "product_id": product.get("productname_id"),
-            "vendor":request.data.get('vendor_id'),
-            "category": product.get("category"),
-            "timestamp": datetime.utcnow().isoformat()
-        }
-        log_audit_action(
-                    db=db,
-                    user_id=user_id,
-                    action="Update",
-                    entity_type="Product",
-                    entity_id=None,  # Optional: vendor if you have one
-                    metadata=metadata
-                )
+        # metadata = {
+        #     "product_id": product.get("productname_id"),
+        #     "vendor":request.data.get('vendor_id'),
+        #     "category": product.get("category"),
+        #     "timestamp": datetime.utcnow().isoformat()
+        # }
+        # log_audit_action(
+        #             db=db,
+        #             user_id=user_id,
+        #             action="Update",
+        #             entity_type="Product",
+        #             entity_id=None,  # Optional: vendor if you have one
+        #             metadata=metadata
+        #         )
         print("===============")
         if invoice_data:
             invoice_id = invoice_data.get("_id")
@@ -2057,41 +2057,41 @@ def confirm_invoice(request, invoice_id):
 
                 openOrders_collection.insert_one(open_order)
                 #  # 🔍 Get user info from users_collection
-                # user_info = db['users'].find_one({"_id": ObjectId(user_id)})
-                # shop_name = user_info.get('shop_name', 'Shahjeee') if user_info else 'Shahjeee'
-                # # 📦 Prepare invoice content
-                # vendor = confirmed_invoice.get('vendor', 'Unknown Vendor')
-                # total_amount = confirmed_invoice.get('total_amount', 0)
-                # formatted_date = confirmed_invoice.get('formatted_date', str(datetime.utcnow()))
-                # product_lines = ""
+                user_info = db['users'].find_one({"_id": ObjectId(user_id)})
+                shop_name = user_info.get('shop_name', 'Shahjeee') if user_info else 'Shahjeee'
+                # 📦 Prepare invoice content
+                vendor = confirmed_invoice.get('vendor', 'Unknown Vendor')
+                total_amount = confirmed_invoice.get('total_amount', 0)
+                formatted_date = confirmed_invoice.get('formatted_date', str(datetime.utcnow()))
+                product_lines = ""
 
-                # for product in confirmed_invoice.get('products', []):
-                #     name = product.get('name', 'Unnamed')
-                #     price = product.get('price', 0)
-                #     quantity = product.get('quantity', 0)
-                #     line_total = round(price * quantity, 2)
-                #     product_lines += f"\n🟢 {name}\n   Qty: {quantity} × Rs.{price:.2f} = Rs.{line_total:.2f}"
+                for product in confirmed_invoice.get('products', []):
+                    name = product.get('name', 'Unnamed')
+                    price = product.get('price', 0)
+                    quantity = product.get('quantity', 0)
+                    line_total = round(price * quantity, 2)
+                    product_lines += f"\n🟢 {name}\n   Qty: {quantity} × Rs.{price:.2f} = Rs.{line_total:.2f}"
 
-                # # 📄 Final message body
-                # message_body = (
-                #     f"📦 *Business Inventory Confirmation*\n"
-                #     f"🛍️ Shop: {shop_name}\n"
-                #     f"🏷️ Vendor: {vendor}\n"
-                #     f"📅 Date: {formatted_date}\n"
-                #     f"📌 Status: Confirmed\n\n"
-                #     f"📋 Products:{product_lines}\n\n"
-                #     f"💰 Total Amount: Rs.{total_amount:.2f}\n"
-                #     f"✅ Thank you for using Business Inventory!"
-                # )
-                # vendor_phone = confirmed_invoice.get('vendorPhone', None)
-                # if vendor_phone:
-                #     phone_number = f"+{vendor_phone}" if not str(vendor_phone).startswith("+") else str(vendor_phone)
-                #     message = client.messages.create(
-                #         body=message_body,
-                #         from_=TWILIO_NUMBER,
-                #         to=phone_number
-                #     )
-                # print(f"📤 Twilio message sent! SID: {message.sid}")
+                # 📄 Final message body
+                message_body = (
+                    f"📦 *Business Inventory Confirmation*\n"
+                    f"🛍️ Shop: {shop_name}\n"
+                    f"🏷️ Vendor: {vendor}\n"
+                    f"📅 Date: {formatted_date}\n"
+                    f"📌 Status: Confirmed\n\n"
+                    f"📋 Products:{product_lines}\n\n"
+                    f"💰 Total Amount: Rs.{total_amount:.2f}\n"
+                    f"✅ Thank you for using Business Inventory!"
+                )
+                vendor_phone = confirmed_invoice.get('vendorPhone', None)
+                if vendor_phone:
+                    phone_number = f"+{vendor_phone}" if not str(vendor_phone).startswith("+") else str(vendor_phone)
+                    message = client.messages.create(
+                        body=message_body,
+                        from_=TWILIO_NUMBER,
+                        to=phone_number
+                    )
+                print(f"📤 Twilio message sent! SID: {message.sid}")
                 # message = client.messages.create(
                 #     body='This is a test message',
                 #     from_=TWILIO_NUMBER,
