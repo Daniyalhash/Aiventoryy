@@ -63,6 +63,8 @@ const LoginPage = () => {
 const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/login/ ", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
+    credentials: "include", // Ensures cookies/sessions are sent if your backend uses them
+
   body: JSON.stringify({ email, password }),
 });
       const data: LoginResponse = await response.json();

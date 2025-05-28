@@ -150,6 +150,18 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+# Headers that can be sent from frontend
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS_ORIGIN_ALLOW_ALL = True  # For development; you can restrict in production
 
@@ -174,8 +186,3 @@ DEFAULT_FROM_EMAIL = 'Your App <your-email@gmail.com>'
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# In production, you should:
-DEBUG = False  # Change to False in production
-CSRF_COOKIE_SECURE = True  # Only send CSRF cookie over HTTPS
-SESSION_COOKIE_SECURE = True  # Only send session cookie over HTTPS
-SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
