@@ -141,6 +141,8 @@ const UserCredentials = ({ onApproved }: UserCredentialsProps) => {
         headers: {
           "Content-Type": "application/json",
         },
+          credentials: "include", // important for session-based auth
+
         body: JSON.stringify(formData),
       });
 

@@ -94,6 +94,8 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }: DatasetUploadProps
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "https://seal-app-8m3g5.ondigitalocean.app/aiventory/upload_dataset/", true);
+    xhr.withCredentials = true; // Important if using session cookies
+
     const uploadTimeout = setTimeout(() => {
       xhr.abort();
       setMessage("Upload timed out. Please try again.");

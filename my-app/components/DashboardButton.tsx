@@ -40,6 +40,7 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ user_id: userId }),
+                    credentials: "include", // again, needed for Django sessions
                 });
 
                 const data = await response.json();
