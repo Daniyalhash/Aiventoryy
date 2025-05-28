@@ -12,12 +12,12 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
     const [loadingText, setLoadingText] = useState("Analyzing your data...");
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
-const [user_id, setUser] = useState<string | null>(null);
+    const [user_id, setUser] = useState<string | null>(null);
     useEffect(() => {
-  if (userId) {
-    setUser(userId); // or setUserExists(true)
-  }
-}, [userId]);
+        if (userId) {
+            setUser(userId); // or setUserExists(true)
+        }
+    }, [userId]);
     useEffect(() => {
         if (!userId) return;
 
@@ -49,27 +49,37 @@ const [user_id, setUser] = useState<string | null>(null);
                     setMessage("Signup completed successfully! Redirecting to dashboard...");
                     setIsError(false);
                     // poll for user status
-                    setInterval(async () => {
-                        const response = await axios.get(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/`,
-                            {
-                                params: { user_id }
+                    // Start polling
+                    const pollUserStatus = async () => {
+                        try {
+                            const response = await axios.get(
+                                "https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/  ",
+                                {
+                                    params: { user_id: userId }
+                                }
+                            );
+
+                            const data = response.data;
+
+                            if (data.status === "complete") {
+                                clearInterval(pollingInterval);
+                                window.location.href = "/dashboard";
                             }
-                        );
-                        const data = response.data;
-                        if (data.status === "complete") {
-                            window.location.href = "/dashboard";
+                        } catch (error) {
+                            console.error("Polling failed:", error);
                         }
-                    }, 5000);
+                    };
+
+                    const pollingInterval = setInterval(pollUserStatus, 5000);
+
                 } else {
                     setMessage(data.error || "Failed to complete signup. Try again.");
                     setIsError(true);
                 }
-            } catch (error : any) {
+            } catch (error: any) {
                 console.error("Error during signup:", error);
-                setMessage("Something went wrong. Please try again.");
-                setIsError(true);
                 setMessage(error.details || error.error || "Something went wrong.");
-
+                setIsError(true);
             } finally {
                 clearInterval(interval);
             }
