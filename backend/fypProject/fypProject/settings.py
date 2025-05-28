@@ -141,17 +141,27 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Add this line
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
+CORS_ALLOW_CREDENTIALS = True  # If using cookies/sessions
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS_ORIGIN_ALLOW_ALL = True  # For development; you can restrict in production
 
 # CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (not recommended for production)
 # OR specify allowed origins
 CORS_ALLOWED_ORIGINS = [
-    # "http://localhost:3000",
      "https://www.aiventory.pro",
     "https://aiventory.pro",  # also allow without www if needed
 
     # "*"# Frontend origin
+        # "http://localhost:3000",
+
 ]
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -164,3 +174,8 @@ DEFAULT_FROM_EMAIL = 'Your App <your-email@gmail.com>'
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# In production, you should:
+DEBUG = False  # Change to False in production
+CSRF_COOKIE_SECURE = True  # Only send CSRF cookie over HTTPS
+SESSION_COOKIE_SECURE = True  # Only send session cookie over HTTPS
+SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
