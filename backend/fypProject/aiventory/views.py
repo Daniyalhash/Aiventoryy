@@ -839,7 +839,20 @@ def update_vendor_reliability(request):
                     print(f"❌ Product with barcode {productname_id} not found for stock update")
 
         
-        
+        metadata = {
+            "product_id": product.get("productname_id"),
+            "vendor":request.data.get('vendor_id'),
+            "category": product.get("category"),
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        log_audit_action(
+                    db=db,
+                    user_id=user_id,
+                    action="Update",
+                    entity_type="Product",
+                    entity_id=None,  # Optional: vendor if you have one
+                    metadata=metadata
+                )
         print("===============")
         if invoice_data:
             invoice_id = invoice_data.get("_id")
