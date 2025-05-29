@@ -44,71 +44,83 @@ const NavbarWeb = () => {
     }
   }, []);
 
-const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-const toggleMenu = () => {
-  setMenuOpen(prev => !prev);
-};
+  const toggleMenu = () => {
+    setMenuOpen(prev => !prev);
+  };
 
-  return (
-    <nav className="navbarWeb">
-      <div className="logoWeb">
-        <Link href="/">
-          <Image
-            src="/images/logoPro3.png"
-            alt="Logo"
-            className="logImgWeb"
-            width={0}
-            height={0}
-            sizes="100vw"
+// NavbarWeb.tsx
 
-            priority
+return (
 
-          />
-        </Link>
-      </div>
-      {/* Hamburger Icon */}
-      <div className="hamburger" onClick={toggleMenu}>
-        ☰
-      </div>
-      <div className={`menuWeb ${menuOpen ? 'mobileOpen' : ''}`}>
+  <nav className="navbarWeb">
+    <div className="logoWeb">
+      <Link href="/">
+        <Image
+          src="/images/logoPro3.png"
+          alt="Logo"
+          className="logImgWeb"
+          width={0}
+          height={0}
+          sizes="100vw"
+          priority
+        />
+      </Link>
+    </div>
 
-        <div className="closeBtn" onClick={toggleMenu}>✕</div>
+    {/* Hamburger Icon */}
+    <div className="hamburger" onClick={toggleMenu}>
+      ☰
+    </div>
+
+    {/* Mobile Menu */}
+    <div className={`menuWeb ${menuOpen ? 'mobileOpen' : ''}`}>
+      <div className="closeBtn" onClick={toggleMenu}>✕</div>
+
+      <div className="menuItemsContainer">
         <a className="item" onClick={() => scrollToSection("#product-section")}>Product</a>
         <a className="item" onClick={() => scrollToSection("#solution-section")}>Solution</a>
         <a className="item" onClick={() => scrollToSection("#features-section")}>Features</a>
         <a className="item" onClick={() => scrollToSection("#pricing-section")}>Pricing</a>
         <a className="item" onClick={() => scrollToSection("#testimonials-section")}>Testimonials</a>
 
-       {/* Auth buttons in mobile menu */}
-  {!isLoggedIn && (
-    <div className="authButtonsMobile">
-      <Link href="/signup">
-        <button className="signUp">Sign Up</button>
-      </Link>
-      <Link href="/login">
-        <button className="logIn">Log In</button>
-      </Link>
+       
+           <div className="authButtonsMobile">
+      {isLoggedIn ? (
+        <MainSiteProfileButton />
+      ) : (
+        <>
+          <Link href="/signup">
+            <button className="signUp">Sign Up</button>
+          </Link>
+          <Link href="/login">
+            <button className="logIn">Log In</button>
+          </Link>
+        </>
+      )}
     </div>
-  )}
       </div>
-      <div className="authButtons">
-        {isLoggedIn ? (
-          <MainSiteProfileButton />
-        ) : (
-          <>
-            <Link href="/signup">
-              <button className="signUp">Sign Up</button>
-            </Link>
-            <Link href="/login">
-              <button className="logIn">Log In</button>
-            </Link>
-          </>
-        )}
-      </div>
+    </div>
 
-    </nav>
-  );
+    {/* Desktop Auth Buttons */}
+    <div className="authButtons">
+      {isLoggedIn ? (
+        <MainSiteProfileButton />
+      ) : (
+        <>
+          <Link href="/signup">
+            <button className="signUp">Sign Up</button>
+          </Link>
+          <Link href="/login">
+            <button className="logIn">Log In</button>
+          </Link>
+        </>
+      )}
+    </div>
+  </nav>
+
+);
 };
 
 export default NavbarWeb;

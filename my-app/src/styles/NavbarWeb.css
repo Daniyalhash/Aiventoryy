@@ -8,12 +8,26 @@
   font-family: 'Poppins', sans-serif;
 
 }
-
+:root {
+  --primary-color: #17412D;
+  --secondary-color: #52c41a;
+  --accent-color: #326D3C;
+  --light-accent: #A9E6A0;
+  --text-dark: #333333;
+  --text-light: #f9f9f9;
+  --bg-light: #f8f8f8;
+  --border-radius: 12px;
+  --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 body {
   /* Or a more specific selector */
   font-family: 'Poppins', sans-serif;
 }
-
+.pageContainer.mobileMenuOpen {
+  overflow: hidden;
+  
+}
 .navbarWeb {
   display: flex;
   justify-content: space-between;
@@ -69,6 +83,10 @@ body {
   display: flex;
   gap: 10px;
 }
+/* Hide mobile auth buttons by default */
+.authButtonsMobile {
+  display: none;
+}
 
 .signUp {
   padding: 8px 30px;
@@ -96,98 +114,168 @@ body {
   border-radius: 50px;
 }
 
-/* .icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-} */
-/* Hide hamburger on desktop */
+
 .hamburger {
   display: none;
   font-size: 2rem;
   cursor: pointer;
   z-index: 1001;
 }
-
-/* Mobile styles */
+  .closeBtn {
+  display: none;
+  }
 @media (max-width: 768px) {
   .navbarWeb {
     flex-wrap: wrap;
     padding: 1rem;
-  }
-
-  .logoWeb {
-    padding: 1rem;
-  }
-
-  .logoWeb .logImgWeb {
-    width: 160px;
-    /* Larger width on mobile */
+    position: relative;
     height: auto;
-    /* Maintain aspect ratio */
   }
-
   .hamburger {
-    display: block;
+    display: flex;
+    font-size: 2rem;
+    margin-left: 150px;
+    cursor: pointer;
+    z-index: 999;
   }
 
   .menuWeb {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 0;
     right: 63%;
-    width: 38%;
+    width: 37%;
     height: 100vh;
-    background-color: #eee;
+    background-color: #fff;
     z-index: 1000;
-    padding-top: 5rem;
     transition: right 0.3s ease-in-out;
-    align-items: center;
+    padding-top: 5rem;
   }
 
   .menuWeb.mobileOpen {
     right: 0;
   }
 
-  /* Close button inside menu */
+  /* Hide hamburger when menu is open */
+  .menuWeb.mobileOpen ~ .hamburger {
+    display: none !important;
+  }
+
   .closeBtn {
+    display: block;
     position: absolute;
-    top: 20px;
-    right: 25px;
-    color: #17412D;
+    top: 2.5rem;
+    right: 3.3rem;
     font-size: 2rem;
-    cursor: pointer;
-  }
-
-  /* Nav items spacing */
-  .menuWeb .item {
-    font-size: 1.4rem;
-    padding: 1rem;
     color: #17412D;
-    text-align: center;
-
-    width: 100%;
-    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    z-index: 1002;
   }
-.authButtons{
-  display: block;
-}
-.authButtonsMobile .signUp,
-.authButtonsMobile .logIn {
-  color: white;
-  background-color: #17412D;
-}
-  /* Auth buttons within menu */
-  .authButtonsMobile {
-    margin-top: 2rem;
+
+  .menuItemsContainer {
+    text-align: center;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    width: 80%;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: -100px;
+  }
+
+  .menuWeb .item {
+    font-size: 1.4rem;
+    color: #17412D;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+
+  }
+  .menuWeb .item:hover {
+    background-color: #17412D;
+    color: white;
+  }
+
+ .authButtonsMobile {
+    display: flex;
+    flex-direction: row; /* Display auth buttons in a row */
+    align-items: center;
+    gap: 1rem;
+    width: auto;
+    margin-top: 0; /* Remove extra top margin */
   }
 
 
+  .authButtonsMobile .logIn {
+     background: black;
+  padding: 8px 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  color: azure;
+  cursor: pointer;
+  border-radius: 50px;
+  }
+
+  .authButtonsMobile .signUp{
+    padding: 8px 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 1.2rem;
+
+  background: transparent;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.5);
+  /* Semi-transparent background */
+  backdrop-filter: blur(30px);
+  /* Adjust the blur amount as needed */
+  border-radius: 50px;
+  }
+.navbarWeb:not(.menuOpen) .hamburger {
+    display: flex;
+  }
+
+  /* Hide hamburger when menu is open */
+  .navbarWeb.menuOpen .hamburger {
+    display: none;
+  }
+  .authButtonsMobile .signUp {
+    background-color: transparent;
+    color: #17412D;
+  }
+
+  .authButtonsMobile .logIn {
+    background-color: #17412D;
+    color: white;
+    border: none;
+  }
+
+  /* Hide desktop auth buttons on mobile */
+  .authButtons {
+    display: none;
+    
+  }
+  .authButtons .logIn,
+  .authButtons .signUp{
+    display: none;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 /* 🔵 Small Tablets: 601px to 768px */
 @media (min-width: 601px) and (max-width: 768px) {
