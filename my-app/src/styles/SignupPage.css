@@ -482,9 +482,7 @@ body{
 
 /* file button */
  /* Container styles */
- .stepContainer {
-  
-}
+
 
 .fileInputButton{
   padding: 0.7rem 2rem;
@@ -1249,5 +1247,47 @@ display: none;
     font-size: 1rem; /* Adjust font size for smaller screens */
     margin-left: 0; /* Center the subtext */
   }
-  
+
+
+   .stepContainer .loginText .welcometext {
+    width: 100%;
+    font-size: 1.5rem; /* Adjust font size for smaller screens */
+    margin-left: 0; /* Center the heading */
+  }
+  .loginText .subtext {
+    width: 100%;
+    font-size: 1rem; /* Adjust font size for smaller screens */
+    margin-left: 0; /* Center the subtext */
+  }
+  .leaveInfo{
+     position: absolute;
+  top: 80px;
+  right: 20px;
+  background: none;
+  border: none;
+  width: 100%;
+  color: #ff4d4f;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  }
+  .fileUploadContainer{
+    width: 100%; /* Full width for file upload container */
+    
+  }
+  .customFileButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background-color: #17412D;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  width: 100%; /* Full width for the button */
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
 }
