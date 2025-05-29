@@ -51,7 +51,17 @@ const NavbarWeb = () => {
   };
 
 // NavbarWeb.tsx
+useEffect(() => {
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
 
+  if (isIOS) {
+    document.documentElement.classList.add('ios');
+  } else if (isAndroid) {
+    document.documentElement.classList.add('android');
+  }
+}, []);
 return (
 
   <nav className="navbarWeb">
