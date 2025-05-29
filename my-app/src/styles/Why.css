@@ -443,7 +443,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    max-height: 100vh;
+    min-height: 100vh;
     height: auto;
     padding: 20px 20px 60px 20px;
     position: relative;
@@ -491,7 +491,8 @@
     margin-bottom: 10px;
     /* Add some space between keywords */
   }
-
+.keyword {
+  padding: 8px 20px;}
   /* integration */
 
   .keyword:nth-child(1) {
