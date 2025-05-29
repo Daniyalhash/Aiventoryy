@@ -119,6 +119,145 @@
     background-color: white;
     border: 2px solid black;
 }
+@media (max-width: 768px) {
+  .whyContainer {
+      display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Centers vertically */
+  align-items: center;      /* Centers horizontally */
+  text-align: center;
+  height: 100vh; /* Full viewport height */
+  padding: 20px;
+  position: relative;
+  background-color: #FFFFFF;
+  }
+  .whyContainer h2 {
+    font-size: 30px; /* Smaller font size for smaller screens */
+  }
+  .whyContainer p {
+    font-size: 16px; /* Smaller font size for smaller screens */
+    width: 90%; /* Adjust width for smaller screens */
+  }
+  .whyContainer .brand {
+    font-size: 48px; /* Smaller font size for smaller screens */
+  }
+  .whyContainer .brandSub2 {
+    font-size: 48px; /* Smaller font size for smaller screens */
+  }
+  .keywords {
+    flex-direction: column; /* Stack keywords vertically */
+    align-items: center; /* Center them horizontally */
+    bottom: 10px; /* Adjust bottom position for smaller screens */
+    width: 100%; /* Full width on smaller screens */
+  }
+  .keyword {
+    width: auto; /* Make keywords wider on smaller screens */
+    margin-bottom: 10px; /* Add some space between keywords */
+  }
+  /* integration */
+
+.keyword:nth-child(1) {
+  --original-transform: rotate(-10deg) translateX(-40px) translateY(-10px);
+}
+/* simplicity */
+
+.keyword:nth-child(2) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(4deg) translateY(70px) translateX(-190px); */
+}
+/* security */
+
+.keyword:nth-child(3) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(-50deg) translateX(-160px) translateY(-150px); */
+}
+/* insights */
+.keyword:nth-child(4) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(-10deg) translateX(-145px); */
+}
+/* Compliance */
+.keyword:nth-child(5) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(-10deg) translateX(-278px) translateY(17px); */
+}
+/* visibility */
+.keyword:nth-child(6) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(-15deg) translateX(-300px) translateY(-110px); */
+}
+/* Optimization */
+.keyword:nth-child(7) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(-14deg) translateX(-430px) translateY(-100px); */
+}
+/* Scalability */
+.keyword:nth-child(8) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(-46deg) translateX(-177px) translateY(-140px); */
+}
+/* reliabiliyt */
+.keyword:nth-child(9) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(4deg) translateX(165px); */
+}
+/* automtion */
+.keyword:nth-child(10) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(-14deg) translateX(80px) translateY(-45px); */
+}
+/* Replenishment */
+.keyword:nth-child(11) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(30deg) translateX(270px) translateY(-180px); */
+}
+/* efficiency */
+.keyword:nth-child(12) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(0deg) translateX(12px); */
+}
+/* Accuracy */
+.keyword:nth-child(13) {
+  /* transform: rotate(30deg) translateX(-22px) translateY(-50px); */
+    display: none; /* Hide the last keyword on smaller screens */
+
+}
+/* Forecasting */
+.keyword:nth-child(14) {
+  /* transform: rotate(-76deg) translateX(27px) translateY(-70px); */
+    display: none; /* Hide the last keyword on smaller screens */
+
+}
+/*  Stock Control*/
+.keyword:nth-child(15) {
+  /* transform: rotate(-26deg) translateX(-47px) translateY(-60px); */
+    display: none; /* Hide the last keyword on smaller screens */
+
+}
+/*  Real-time Tracking*/
+.keyword:nth-child(16) {
+    display: none; /* Hide the last keyword on smaller screens */
+
+  /* transform: rotate(0deg) translateX(697px) translateY(-60px); */
+}
+/*Supply Chain*/
+.keyword:nth-child(17) {
+  display: none; /* Hide the last keyword on smaller screens */
+  /* transform: rotate(20deg) translateX(457px) translateY(-290px); */
+}
+
+}
 /* integration */
 
 .keyword:nth-child(1) {
