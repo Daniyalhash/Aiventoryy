@@ -368,7 +368,7 @@ def get_client_ip(request):
 import logging
 
 logger = logging.getLogger(__name__)
-@api_view(['POST', 'GET'])  # temporarily allow GET just for logging
+@api_view(['POST'])  # only allow POST for real use
 def complete_signup(request):
     if request.method == 'GET':
         logger.warning("⚠️ Unexpected GET request to complete_signup")
