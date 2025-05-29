@@ -19,8 +19,9 @@ const Laptop = () => {
                 loop 
                 muted 
                 playsInline 
-                width="840" 
-                height="490"
+          
+                width={840}
+                height={490}
             >
                 <source src="/video/see.mp4" type="video/mp4" /> 
                 Your browser does not support the video tag.

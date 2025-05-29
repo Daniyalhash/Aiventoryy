@@ -4,20 +4,86 @@
     justify-content: center;
     padding: 2.5rem 0;
     height: 90vh;
-    position: relative; /* Added for absolute positioning of video */
+    position: relative;
+    /* Added for absolute positioning of video */
     background-color: #FFFFFF;
 
 }
 
 .laptop-image {
-    position: absolute; /* Allow video to overlay on the laptop image */
-    z-index: 1; /* Ensure laptop image is below video */
+    position: absolute;
+    /* Allow video to overlay on the laptop image */
+    z-index: 1;
+    /* Ensure laptop image is below video */
 }
 
 .laptop-video {
-    position: absolute; /* Positioning the video on top of the laptop image */
-    top: 140px; /* Adjust according to your design */
-    left: 340px; /* Adjust according to your design */
-    z-index: 2; /* Ensure video is on top */
-    border-radius: 30px; /* Optional: for rounded corners */
+    position: absolute;
+    /* Positioning the video on top of the laptop image */
+    top: 140px;
+    /* Adjust according to your design */
+    left: 340px;
+    /* Adjust according to your design */
+    z-index: 2;
+    /* Ensure video is on top */
+    border-radius: 30px;
+    /* Optional: for rounded corners */
+}
+
+@media (max-width: 768px) {
+    .laptop-section {
+        flex-direction: column;
+        padding: 1rem;
+        height: auto;
+        width: 100%;
+        height: auto; /* Adjust height for smaller screens */
+        overflow: hidden;
+        /* Adjust height for smaller screens */
+    }
+
+    .Laptop-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        padding: 2.5rem 0;
+        height: 70vh;
+        position: relative;
+        /* Added for absolute positioning of video */
+        background-color: #FFFFFF;
+
+    }
+
+    .laptop-image {
+        position: absolute;
+        /* Allow video to overlay on the laptop image */
+        z-index: 1;
+        /* Ensure laptop image is below video */
+    }
+ .laptop-image {
+        width: 90%;
+        height: auto;
+    }
+    .laptop-video {
+        position: absolute;
+        /* Positioning the video on top of the laptop image */
+        top: 140px;
+        /* Adjust according to your design */
+        left: 340px;
+        /* Adjust according to your design */
+        z-index: 2;
+        /* Ensure video is on top */
+        border-radius: 30px;
+        /* Optional: for rounded corners */
+    }
+    .laptop-video {
+  
+               position: absolute;
+        top: 5.5%;        /* Adjust if needed */
+        left: 12.5%;       /* Adjust if needed */
+        width: 75%;
+        height: 90%;       /* ✅ Increased height */
+        z-index: 2;
+        border-radius: 30px;
+    }
 }

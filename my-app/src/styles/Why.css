@@ -3,40 +3,48 @@
 .whyContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* Centers vertically */
-  align-items: center;      /* Centers horizontally */
+  justify-content: center;
+  /* Centers vertically */
+  align-items: center;
+  /* Centers horizontally */
   text-align: center;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
+  /* Full viewport height */
   padding: 20px;
   position: relative;
   background-color: #FFFFFF;
 }
 
 .whyContainer h2 {
-    font-size: 48px;
-    font-weight: bold;
-    font-family: 'Poppins', sans-serif; /* Apply Poppins as the default font */
+  font-size: 48px;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  /* Apply Poppins as the default font */
 
 }
 
 .whyContainer .brand {
-    font-family: 'Silkscreen', cursive;
-    color: #70D560;
-    font-weight: bold;
-    font-size: 64px;
+  font-family: 'Silkscreen', cursive;
+  color: #70D560;
+  font-weight: bold;
+  font-size: 64px;
 }
-.whyContainer p{
+
+.whyContainer p {
   font-size: 20px;
   width: 50%;
-  font-family: 'Poppins',sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 200;
 }
+
 .whyContainer .brandSub {
-    color: #70D560;
-    font-family: 'Poppins', sans-serif; /* Apply Poppins as the default font */
+  color: #70D560;
+  font-family: 'Poppins', sans-serif;
+  /* Apply Poppins as the default font */
 
 }
-.whyContainer .brandSub2{
+
+.whyContainer .brandSub2 {
   color: black;
   font-size: 64px;
   font-family: 'Silkscreen', cursive;
@@ -45,26 +53,32 @@
 
 
 .icon {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .highlight {
-    font-weight: bold;
-    color: black;
+  font-weight: bold;
+  color: black;
 }
+
 /* Pushes the keywords section to the bottom */
 .keywords {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Centers horizontally */
+  justify-content: center;
+  /* Centers horizontally */
   gap: 12px;
   position: absolute;
-  bottom: 20px; /* Distance from the bottom */
+  bottom: 20px;
+  /* Distance from the bottom */
   left: 50%;
-  transform: translateX(-50%); /* Centers it horizontally */
-  width: 90%; /* Adjust width to fit */
+  transform: translateX(-50%);
+  /* Centers it horizontally */
+  width: 90%;
+  /* Adjust width to fit */
   padding: 10px;
-    overflow: visible; /* ensures all elements can animate */
+  overflow: visible;
+  /* ensures all elements can animate */
 
 }
 
@@ -75,256 +89,141 @@
 
   background: transparent;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
-  backdrop-filter: blur(30px); /* Adjust the blur amount as needed */
+  background: rgba(255, 255, 255, 0.5);
+  /* Semi-transparent background */
+  backdrop-filter: blur(30px);
+  /* Adjust the blur amount as needed */
   border-radius: 50px;
-  
+
 }
 
 .yellow {
-    background-color: yellow;
-    
+  background-color: yellow;
+
 }
+
 .red {
   background-color: rgb(236, 2, 2);
   color: white;
 
 }
+
 .black {
   background-color: rgb(0, 0, 0);
   color: white;
 
 }
+
 .purple {
-    background-color: #d560d5;
-    color: white;
+  background-color: #d560d5;
+  color: white;
 }
 
 .green {
-    background-color: #70D560;
-    color: white;
+  background-color: #70D560;
+  color: white;
 }
 
 .blue {
-    background-color: blue;
-    color: white;
+  background-color: blue;
+  color: white;
 }
 
 .pink {
-    background-color: #d560d5;
-    color: white;
+  background-color: #d560d5;
+  color: white;
 }
 
 .white {
-    background-color: white;
-    border: 2px solid black;
-}
-@media (max-width: 768px) {
-  .whyContainer {
-      display: flex;
-  flex-direction: column;
-  justify-content: center;  /* Centers vertically */
-  align-items: center;      /* Centers horizontally */
-  text-align: center;
-  height: 100vh; /* Full viewport height */
-  padding: 20px;
-  position: relative;
-  background-color: #FFFFFF;
-  }
-  .whyContainer h2 {
-    font-size: 30px; /* Smaller font size for smaller screens */
-  }
-  .whyContainer p {
-    font-size: 16px; /* Smaller font size for smaller screens */
-    width: 90%; /* Adjust width for smaller screens */
-  }
-  .whyContainer .brand {
-    font-size: 48px; /* Smaller font size for smaller screens */
-  }
-  .whyContainer .brandSub2 {
-    font-size: 48px; /* Smaller font size for smaller screens */
-  }
-  .keywords {
-    flex-direction: column; /* Stack keywords vertically */
-    align-items: center; /* Center them horizontally */
-    bottom: 10px; /* Adjust bottom position for smaller screens */
-    width: 100%; /* Full width on smaller screens */
-  }
-  .keyword {
-    width: auto; /* Make keywords wider on smaller screens */
-    margin-bottom: 10px; /* Add some space between keywords */
-  }
-  /* integration */
-
-.keyword:nth-child(1) {
-  --original-transform: rotate(-10deg) translateX(-40px) translateY(-10px);
-}
-/* simplicity */
-
-.keyword:nth-child(2) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(4deg) translateY(70px) translateX(-190px); */
-}
-/* security */
-
-.keyword:nth-child(3) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(-50deg) translateX(-160px) translateY(-150px); */
-}
-/* insights */
-.keyword:nth-child(4) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(-10deg) translateX(-145px); */
-}
-/* Compliance */
-.keyword:nth-child(5) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(-10deg) translateX(-278px) translateY(17px); */
-}
-/* visibility */
-.keyword:nth-child(6) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(-15deg) translateX(-300px) translateY(-110px); */
-}
-/* Optimization */
-.keyword:nth-child(7) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(-14deg) translateX(-430px) translateY(-100px); */
-}
-/* Scalability */
-.keyword:nth-child(8) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(-46deg) translateX(-177px) translateY(-140px); */
-}
-/* reliabiliyt */
-.keyword:nth-child(9) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(4deg) translateX(165px); */
-}
-/* automtion */
-.keyword:nth-child(10) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(-14deg) translateX(80px) translateY(-45px); */
-}
-/* Replenishment */
-.keyword:nth-child(11) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(30deg) translateX(270px) translateY(-180px); */
-}
-/* efficiency */
-.keyword:nth-child(12) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(0deg) translateX(12px); */
-}
-/* Accuracy */
-.keyword:nth-child(13) {
-  /* transform: rotate(30deg) translateX(-22px) translateY(-50px); */
-    display: none; /* Hide the last keyword on smaller screens */
-
-}
-/* Forecasting */
-.keyword:nth-child(14) {
-  /* transform: rotate(-76deg) translateX(27px) translateY(-70px); */
-    display: none; /* Hide the last keyword on smaller screens */
-
-}
-/*  Stock Control*/
-.keyword:nth-child(15) {
-  /* transform: rotate(-26deg) translateX(-47px) translateY(-60px); */
-    display: none; /* Hide the last keyword on smaller screens */
-
-}
-/*  Real-time Tracking*/
-.keyword:nth-child(16) {
-    display: none; /* Hide the last keyword on smaller screens */
-
-  /* transform: rotate(0deg) translateX(697px) translateY(-60px); */
-}
-/*Supply Chain*/
-.keyword:nth-child(17) {
-  display: none; /* Hide the last keyword on smaller screens */
-  /* transform: rotate(20deg) translateX(457px) translateY(-290px); */
+  background-color: white;
+  border: 2px solid black;
 }
 
-}
+
+
 /* integration */
 
 .keyword:nth-child(1) {
   --original-transform: rotate(-10deg) translateX(-40px) translateY(-10px);
 }
+
 /* simplicity */
 
 .keyword:nth-child(2) {
   transform: rotate(4deg) translateY(70px) translateX(-190px);
 }
+
 /* security */
 
 .keyword:nth-child(3) {
   transform: rotate(-50deg) translateX(-160px) translateY(-150px);
 }
+
 /* insights */
 .keyword:nth-child(4) {
   transform: rotate(-10deg) translateX(-145px);
 }
+
 /* Compliance */
 .keyword:nth-child(5) {
   transform: rotate(-10deg) translateX(-278px) translateY(17px);
 }
+
 /* visibility */
 .keyword:nth-child(6) {
   transform: rotate(-15deg) translateX(-300px) translateY(-110px);
 }
+
 /* Optimization */
 .keyword:nth-child(7) {
   transform: rotate(-14deg) translateX(-430px) translateY(-100px);
 }
+
 /* Scalability */
 .keyword:nth-child(8) {
   transform: rotate(-46deg) translateX(-177px) translateY(-140px);
 }
+
 /* reliabiliyt */
 .keyword:nth-child(9) {
   transform: rotate(4deg) translateX(165px);
 }
+
 /* automtion */
 .keyword:nth-child(10) {
   transform: rotate(-14deg) translateX(80px) translateY(-45px);
 }
+
 /* Replenishment */
 .keyword:nth-child(11) {
   transform: rotate(30deg) translateX(270px) translateY(-180px);
 }
+
 /* efficiency */
 .keyword:nth-child(12) {
   transform: rotate(0deg) translateX(12px);
 }
+
 /* Accuracy */
 .keyword:nth-child(13) {
   transform: rotate(30deg) translateX(-22px) translateY(-50px);
 }
+
 /* Forecasting */
 .keyword:nth-child(14) {
   transform: rotate(-76deg) translateX(27px) translateY(-70px);
 }
+
 /*  Stock Control*/
 .keyword:nth-child(15) {
   transform: rotate(-26deg) translateX(-47px) translateY(-60px);
 }
+
 /*  Real-time Tracking*/
 .keyword:nth-child(16) {
   transform: rotate(0deg) translateX(697px) translateY(-60px);
 }
+
 /*Supply Chain*/
 .keyword:nth-child(17) {
   transform: rotate(20deg) translateX(457px) translateY(-290px);
@@ -333,12 +232,13 @@
 
 /* Custom animation for falling from 100px integraion */
 /* Each keyword has a custom initial and final transform */
-[data-aos="fade-down"].keyword-fall-1 {
+.keyword-fall-1 {
   transform: translateY(-1000px);
   opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
-[data-aos="fade-down"].aos-animate.keyword-fall-1 {
+
+.keyword-fall-1 {
   transform: rotate(-10deg) translateX(-40px) translateY(-10px) !important;
   opacity: 1 !important;
 }
@@ -348,6 +248,7 @@
   opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-2 {
   transform: rotate(4deg) translateY(70px) translateX(-190px) !important;
   opacity: 1 !important;
@@ -358,6 +259,7 @@
   opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-3 {
   transform: rotate(-50deg) translateX(-160px) translateY(-150px) !important;
   opacity: 1 !important;
@@ -368,6 +270,7 @@
   opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-4 {
   transform: rotate(-10deg) translateX(-145px) !important;
   opacity: 1 !important;
@@ -376,100 +279,132 @@
 /* And so on for all 17 keywords... */
 
 [data-aos="fade-down"].keyword-fall-5 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-5 {
   transform: rotate(-10deg) translateX(-278px) translateY(17px) !important;
   opacity: 1 !important;
 }
 
 [data-aos="fade-down"].keyword-fall-6 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-6 {
   transform: rotate(-15deg) translateX(-300px) translateY(-110px) !important;
   opacity: 1 !important;
 }
 
 [data-aos="fade-down"].keyword-fall-7 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-7 {
   transform: rotate(-14deg) translateX(-430px) translateY(-100px) !important;
   opacity: 1 !important;
 }
 
 [data-aos="fade-down"].keyword-fall-8 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-8 {
   transform: rotate(-46deg) translateX(-177px) translateY(-140px) !important;
   opacity: 1 !important;
 }
+
 [data-aos="fade-down"].keyword-fall-9 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-9 {
   transform: rotate(4deg) translateX(165px) !important;
   opacity: 1 !important;
 }
+
 [data-aos="fade-down"].keyword-fall-10 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-10 {
   transform: rotate(-14deg) translateX(80px) translateY(-45px) !important;
   opacity: 1 !important;
 }
+
 [data-aos="fade-down"].keyword-fall-11 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-11 {
   transform: rotate(30deg) translateX(270px) translateY(-180px) !important;
   opacity: 1 !important;
 }
+
 [data-aos="fade-down"].keyword-fall-12 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-12 {
   transform: rotate(0deg) translateX(12px) !important;
   opacity: 1 !important;
 }
+
 [data-aos="fade-down"].keyword-fall-13 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-13 {
   transform: rotate(30deg) translateX(-22px) translateY(-50px) !important;
   opacity: 1 !important;
 }
+
 [data-aos="fade-down"].keyword-fall-14 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-14 {
   transform: rotate(-76deg) translateX(27px) translateY(-70px) !important;
   opacity: 1 !important;
 }
+
 [data-aos="fade-down"].keyword-fall-15 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-15 {
   transform: rotate(-26deg) translateX(-47px) translateY(-60px) !important;
   opacity: 1 !important;
 }
+
 [data-aos="fade-down"].keyword-fall-16 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-16 {
   transform: rotate(0deg) translateX(697px) translateY(-60px) !important;
   opacity: 1 !important;
@@ -479,9 +414,11 @@
 /* Continue until keyword-fall-17 using their original transforms... */
 
 [data-aos="fade-down"].keyword-fall-17 {
-  transform: translateY(-1000px); opacity: 0;
+  transform: translateY(-1000px);
+  opacity: 0;
   transition: transform 1s ease-out, opacity 1s ease-out;
 }
+
 [data-aos="fade-down"].aos-animate.keyword-fall-17 {
   transform: rotate(20deg) translateX(457px) translateY(-290px) !important;
   opacity: 1 !important;
@@ -493,4 +430,233 @@
   transition-property: transform, opacity;
   transition-duration: 1s;
   transition-timing-function: ease-out;
+}
+
+
+
+
+@media (max-width: 768px) {
+  .whyContainer {
+    /* Green border */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100dvh;
+    height: auto;
+    padding: 20px 20px 60px 20px;
+    position: relative;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .whyContainer h2 {
+    font-size: 30px;
+    /* Smaller font size for smaller screens */
+  }
+
+  .whyContainer p {
+    font-size: 16px;
+    /* Smaller font size for smaller screens */
+    width: 90%;
+    /* Adjust width for smaller screens */
+  }
+
+  .whyContainer .brand {
+    font-size: 48px;
+    /* Smaller font size for smaller screens */
+  }
+
+  .whyContainer .brandSub2 {
+    font-size: 48px;
+    /* Smaller font size for smaller screens */
+  }
+
+  .keywords {
+    flex-direction: column;
+    /* Stack keywords vertically */
+    align-items: center;
+    /* Center them horizontally */
+    bottom: 10px;
+    /* Adjust bottom position for smaller screens */
+    width: 100%;
+    /* Full width on smaller screens */
+  }
+
+  .keyword {
+    width: auto;
+    /* Make keywords wider on smaller screens */
+    margin-bottom: 10px;
+    /* Add some space between keywords */
+  }
+
+  /* integration */
+
+  .keyword:nth-child(1) {
+    --original-transform: rotate(-10deg) translateX(-40px) translateY(-10px);
+  }
+
+  .keyword-fall-1 {
+    transform: rotate(-20deg) translateX(-120px) translateY(320px) !important;
+    opacity: 1 !important;
+  }
+
+  /* simplicity */
+
+  .keyword:nth-child(2) {
+
+    transform: rotate(4deg) translateY(80px) translateX(-590px);
+  }
+
+  .keyword-fall-2 {
+    transform: rotate(9deg) translateY(290px) translateX(150px) !important;
+    opacity: 1 !important;
+  }
+
+  /* security */
+
+  .keyword:nth-child(3) {
+    /* display: none; */
+    /* Hide the last keyword on smaller screens */
+
+    transform: rotate(-50deg) translateX(-160px) translateY(-150px);
+  }
+.keyword-fall-3 {
+  transform: rotate(-20deg) translateX(-30px) translateY(320px) !important;
+  opacity: 1 !important;
+}
+  /* insights */
+  .keyword:nth-child(4) {
+    /* display: none; */
+    /* Hide the last keyword on smaller screens */
+
+    transform: rotate(-10deg) translateX(-145px);
+  }
+.keyword-fall-4 {
+  transform: rotate(0deg) translateX(-145px) translateY(197px) !important;
+  opacity: 1 !important;
+}
+  /* Compliance */
+  .keyword:nth-child(5) {
+    /* display: none; */
+    /* Hide the last keyword on smaller screens */
+
+    transform: rotate(-10deg) translateX(-278px) translateY(17px);
+  }
+.keyword-fall-5 {
+  transform: rotate(10deg) translateX(138px) translateY(236px) !important;
+  opacity: 1 !important;
+}
+  /* visibility */
+  .keyword:nth-child(6) {
+    /* display: none; */
+    /* Hide the last keyword on smaller screens */
+
+    transform: rotate(-15deg) translateX(-300px) translateY(-110px);
+  }
+.keyword-fall-6 {
+  transform: rotate(10deg) translateX(-120px) translateY(140px) !important;
+  opacity: 1 !important;
+}
+  /* Optimization */
+  .keyword:nth-child(7) {
+    /* display: none; */
+    /* Hide the last keyword on smaller screens */
+
+    transform: rotate(-14deg) translateX(-430px) translateY(-100px);
+  }
+.keyword-fall-7 {
+  transform: rotate(-10deg) translateX(-120px) translateY(90px) !important;
+  opacity: 1 !important;
+}
+  /* Scalability */
+  .keyword:nth-child(8) {
+    /* display: none; */
+    /* Hide the last keyword on smaller screens */
+
+    transform: rotate(-46deg) translateX(-177px) translateY(-140px);
+  }
+.keyword-fall-8 {
+  transform: rotate(6deg) translateX(-70px) translateY(150px) !important;
+  opacity: 1 !important;
+}
+  /* reliabiliyt */
+  .keyword:nth-child(9) {
+    /* display: none; */
+    /* Hide the last keyword on smaller screens */
+
+    transform: rotate(4deg) translateX(165px);
+  }
+.keyword-fall-9 {
+  transform: rotate(4deg) translateX(-10px)  translateY(25px) !important;
+  opacity: 1 !important;
+}
+  /* automtion */
+  .keyword:nth-child(10) {
+    /* display: none; */
+    /* Hide the last keyword on smaller screens */
+
+    transform: rotate(-14deg) translateX(80px) translateY(-45px);
+  }
+.keyword-fall-10 {
+  transform: rotate(-14deg) translateX(80px) translateY(25px) !important;
+  opacity: 1 !important;
+}
+  /* Replenishment */
+  .keyword:nth-child(11) {
+    display: none;
+    /* Hide the last keyword on smaller screens */
+
+    /* transform: rotate(30deg) translateX(270px) translateY(-180px); */
+  }
+
+  /* efficiency */
+  .keyword:nth-child(12) {
+    display: none;
+    /* Hide the last keyword on smaller screens */
+
+    /* transform: rotate(0deg) translateX(12px); */
+  }
+
+  /* Accuracy */
+  .keyword:nth-child(13) {
+    /* transform: rotate(30deg) translateX(-22px) translateY(-50px); */
+    display: none;
+    /* Hide the last keyword on smaller screens */
+
+  }
+
+  /* Forecasting */
+  .keyword:nth-child(14) {
+    /* transform: rotate(-76deg) translateX(27px) translateY(-70px); */
+    display: none;
+    /* Hide the last keyword on smaller screens */
+
+  }
+
+  /*  Stock Control*/
+  .keyword:nth-child(15) {
+    /* transform: rotate(-26deg) translateX(-47px) translateY(-60px); */
+    display: none;
+    /* Hide the last keyword on smaller screens */
+
+  }
+
+  /*  Real-time Tracking*/
+  .keyword:nth-child(16) {
+    display: none;
+    /* Hide the last keyword on smaller screens */
+
+    /* transform: rotate(0deg) translateX(697px) translateY(-60px); */
+  }
+
+  /*Supply Chain*/
+  .keyword:nth-child(17) {
+    display: none;
+    /* Hide the last keyword on smaller screens */
+    /* transform: rotate(20deg) translateX(457px) translateY(-290px); */
+  }
+
 }
