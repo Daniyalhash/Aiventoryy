@@ -72,16 +72,16 @@ const SignupPage = () => {
           status: data.status
         });
 
-       // 👇 Scenario override via URL
-      if (urlStep === "2") {
-        setStep(2); // Force dataset upload
-      } else if (urlStep === "3") {
-        setStep(3); // Force dashboard button
-      } else if (data.status === "complete") {
-        setStep(3); // Normal: complete user
-      } else {
-        setStep(2); // Normal: incomplete user
-      }
+        // 👇 Scenario override via URL
+        if (urlStep === "2") {
+          setStep(2); // Force dataset upload
+        } else if (urlStep === "3") {
+          setStep(3); // Force dashboard button
+        } else if (data.status === "complete") {
+          setStep(3); // Normal: complete user
+        } else {
+          setStep(2); // Normal: incomplete user
+        }
 
 
       } catch (error: any) {
@@ -127,18 +127,26 @@ const SignupPage = () => {
         {/* Left Section */}
         <div className="signLeft">
           <div className="logocontainer">
+
             <div className="logo">
-              <Image
-                src="/images/logoPro.png"
-                alt="Logo"
-                className="logImg"
-                width={100}
-                height={100}
-                hidden
-              />
+              <Link href="/">
+
+                <Image
+                  src="/images/logoPro.png"
+                  alt="Logo"
+                  className="logImg"
+                  width={100}
+                  height={100}
+
+                />
+              </Link>
             </div>
 
-
+            <div className="homeLink">
+              <Link href="/" className="homeLinkAnchor">
+                <span className="arrow">←</span> Home
+              </Link>
+            </div>
           </div>
 
 

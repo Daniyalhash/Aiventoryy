@@ -31,13 +31,10 @@
 }
 
 @media (max-width: 768px) {
+    
     .laptop-section {
-        flex-direction: column;
-        padding: 1rem;
-        height: auto;
         width: 100%;
-        height: auto; /* Adjust height for smaller screens */
-        overflow: hidden;
+        height: 100vh; /* Adjust height for smaller screens */
         /* Adjust height for smaller screens */
     }
 

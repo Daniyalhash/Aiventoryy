@@ -132,14 +132,17 @@ const LoginPage = () => {
       <div className="loginLeft">
         <div className="logocontainer">
           <div className="logo">
+            <Link href="/">
             <Image
               src="/images/logoPro.png"
               alt="Logo"
               width={100}
               height={100}
               className="logImg"
-              hidden
-            />          </div>
+              
+            />   
+            </Link>       </div>
+            
         </div>
         <div className="loginText">
           <h1 className="welcometext">Welcome back!</h1>

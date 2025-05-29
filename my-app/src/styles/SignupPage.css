@@ -7,7 +7,10 @@
   box-sizing: border-box;
 }
 /* Container */
-
+body{
+  margin: 0;
+  padding: 0;
+}
 .SignInContainer {
   display: flex;
   font-family: "Poppins", sans-serif !important;
@@ -288,14 +291,7 @@
    }
  
   
-  .absolute {
-display: flex;
-justify-content: center;
-align-items: center;  
-position: absolute;  
-right: 170px;
-bottom: 300px;
-  }
+
  
  
   .button-group {
@@ -315,7 +311,7 @@ bottom: 300px;
     color: #004b23;
     transition: border-bottom 0.3s ease-in-out;
     font-weight: 300;
-    
+
     /* white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
@@ -324,9 +320,10 @@ bottom: 300px;
   }
 /* Flex container for Username and Shop Name */
 .input-row {
-  display: flex;
-  gap: 1rem; /* Space between inputs */
+  position: relative;
   width: 60%;
+  display: flex;
+  align-items: center;
 }
 
 /* Make both inputs take equal width */
@@ -1089,7 +1086,10 @@ bottom: 300px;
 .importantNote ul {
   padding-left: 20px;
 }
+.logo .logImg {
 
+  display: none;
+}
 .importantNote li {
   margin-bottom: 8px;
 }
@@ -1172,4 +1172,110 @@ bottom: 300px;
   to {
     background-position: 200% center;
   }
+}
+
+/* 🟢 Mobile Devices: up to 600px */
+@media (max-width: 600px) {
+  .SignInContainer {
+    flex-direction: column; /* Stack the sections vertically */
+    padding: 20px; /* Adjust padding for smaller screens */
+    height: auto;
+    width: 100%; 
+    
+    /* Allow height to adjust based on content */
+  }
+ .signLeft {
+    width: 100%; /* Full width for both sections */
+    height: auto; /* Allow height to adjust based on content */
+    padding: 20px; /* Add padding for better spacing */
+    border-radius: 20px; /* Adjust border radius for smaller screens */
+  }
+  .userCredentials{
+  }
+  .SignText{
+    padding: 0; /* Remove padding for smaller screens */
+    margin: 0; /* Remove margin for smaller screens */
+  }
+  .form2{
+    margin: 0; /* Remove margin for smaller screens */
+/* Full width for form */
+    padding: 0; /* Remove padding for smaller screens */
+  }
+  .inputfield2 {
+    width: 90%; /* Full width for inputs */
+    margin-bottom: 1rem; /* Add some space between inputs */
+  }
+  .input-row {
+    width: 90%; /* Make buttons and inputs wider on small screens */
+  }
+  .input-row .inputfield2 {
+    width: 90%; /* Make buttons and inputs wider on small screens */
+  }
+  .signRight {
+display: none;
+  }
+  .SignText{
+    width: 100%;
+    text-align: center;
+  }
+
+
+  .checkbox-container{
+    width: 100%;
+    justify-content: center; /* Center the checkbox container */
+    margin-bottom: 1rem; /* Add some space below the checkbox */
+  }
+  .iconButton{
+    width: 100%; /* Full width for the button */
+    padding: 1rem; /* Adjust padding for better touch targets */
+    font-size: 1.2rem; /* Adjust font size for smaller screens */
+    display: flex; /* Use flexbox for proper alignment */
+    justify-content: center; /* Center the button text and icon */
+    align-items: center; /* Center the button text and icon vertically */
+  }
+  .SignText .welcometext {
+    width: 100%;
+    font-size: 1.5rem; /* Adjust font size for smaller screens */
+    margin-left: 0; /* Center the heading */
+  }
+  .SignText .subtext {
+    width: 100%;
+    font-size: 1rem; /* Adjust font size for smaller screens */
+    margin-left: 0; /* Center the subtext */
+  }
+  .homeLink {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center; /* Center the link horizontally */
+  align-items: center; /* Center the link vertically */
+}
+
+.homeLinkAnchor {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #bbb5b5;
+  text-decoration: none;
+  font-weight: 500;
+}
+.logocontainer {
+  width: 100%;
+  padding: 1rem; /* Adjust padding for smaller screens */
+  display: flex;
+  justify-content: space-between; /* Push logo left and home right */
+  align-items: center;
+  padding: 10 1rem; /* Add padding for overall spacing */
+}
+.homeLinkAnchor .arrow {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  color: #e0e0e0;
+}
+    .logo .logImg {
+  width: 120px;
+  height: auto;
+  margin-right: -100px;
+  display: block;
+}
 }

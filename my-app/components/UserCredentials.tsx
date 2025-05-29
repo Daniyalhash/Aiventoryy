@@ -242,8 +242,8 @@ const UserCredentials = ({ onApproved }: UserCredentialsProps) => {
             onChange={handleChange}
             className={`inputfield2 ${inputValid.password === true ? 'valid-input' : inputValid.password === false ? 'invalid-input' : ''}`}
           />
-          <span onClick={togglePasswordVisibility} className="absolute">
-            {showPassword ? <Eye size={20} color="#004b23" /> : <EyeOff size={20} color="#004b23" />}
+          <span onClick={togglePasswordVisibility} className="">
+            {showPassword ? <Eye size={20} color="#004b23" className='eye-icon'/> : <EyeOff size={20} color="#004b23" />}
           </span>
         </div>
         {errors.password && <p className="error-text">{errors.password}</p>}

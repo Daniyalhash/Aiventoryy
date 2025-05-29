@@ -64,7 +64,7 @@ const ResetPasswordPage = () => {
             src="/images/logoPro.png"
              alt="Logo"
               className="logImg"
-               hidden />
+               />
           </div>
         </div>
 

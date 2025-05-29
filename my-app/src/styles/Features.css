@@ -250,6 +250,7 @@ box-sizing: border-box;
     .features-heading-left {
         width: 100%;
         text-align: center;
+        
     }
     .features-heading-right {
         width: 100%;
@@ -267,8 +268,11 @@ box-sizing: border-box;
         flex-direction:  column;
         justify-content: space-between;
         padding: 1rem;
+
     }
     .feature-list {
+                        border: 1px solid #ccc; /* Optional: border for better visibility */
+border-radius: 20px;
         width: 100%;
         height: 300px; /* Adjusted for smaller screens */
     }
