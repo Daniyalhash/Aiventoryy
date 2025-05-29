@@ -172,7 +172,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://aiventory.pro",  # also allow without www if needed
 
     # "*"# Frontend origin
-        # "http://localhost:3000",
+        "http://localhost:3000",
 
 ]
 # Email Configuration
