@@ -1218,7 +1218,13 @@ display: none;
     width: 100%;
     text-align: center;
   }
-
+    .logo .logImg {
+  width: 120px; /* Adjust width */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Hide the image by default */
+  justify-content: flex-start;
+  align-items: left;
+}
 
   .checkbox-container{
     width: 100%;
@@ -1243,39 +1249,5 @@ display: none;
     font-size: 1rem; /* Adjust font size for smaller screens */
     margin-left: 0; /* Center the subtext */
   }
-  .homeLink {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: center; /* Center the link horizontally */
-  align-items: center; /* Center the link vertically */
-}
-
-.homeLinkAnchor {
-  display: flex;
-  align-items: center;
-  font-size: 1.1rem;
-  color: #bbb5b5;
-  text-decoration: none;
-  font-weight: 500;
-}
-.logocontainer {
-  width: 100%;
-  padding: 1rem; /* Adjust padding for smaller screens */
-  display: flex;
-  justify-content: space-between; /* Push logo left and home right */
-  align-items: center;
-  padding: 10 1rem; /* Add padding for overall spacing */
-}
-.homeLinkAnchor .arrow {
-  margin-right: 0.5rem;
-  font-size: 1.2rem;
-  color: #e0e0e0;
-}
-    .logo .logImg {
-  width: 120px;
-  height: auto;
-  margin-right: -100px;
-  display: block;
-}
+  
 }

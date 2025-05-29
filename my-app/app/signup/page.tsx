@@ -142,11 +142,7 @@ const SignupPage = () => {
               </Link>
             </div>
 
-            <div className="homeLink">
-              <Link href="/" className="homeLinkAnchor">
-                <span className="arrow">←</span> Home
-              </Link>
-            </div>
+        
           </div>
 
 
