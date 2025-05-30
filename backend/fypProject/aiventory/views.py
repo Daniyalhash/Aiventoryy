@@ -1455,7 +1455,7 @@ def forgot_password(request):
     )
 
     # Password Reset URL
-    reset_url = f"https://seal-app-8m3g5.ondigitalocean.app/aiventory/resetpassword?token={reset_token}"
+    reset_url = f"https://seal-app-8m3g5.ondigitalocean.app/aiventory/reset-password?token={reset_token}"
     
  # Send Reset Email
     try:
