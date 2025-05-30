@@ -12,6 +12,7 @@ import jwt
 import os
 import json
 import uuid
+import pytz
 from io import BytesIO
 from pymongo import UpdateOne
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -1598,21 +1599,28 @@ def delete_open_order_invoice(request):
     Delete a user-specific invoice from the openOrders collection using invoice_id and user_id.
     """
     try:
-        invoice_id = request.data.get('invoice_id')
+        invoice = request.data.get('invoice')  # Receive full invoice
+
         user_id = request.data.get('user_id')
 
-        if not invoice_id or not user_id:
+        if not user_id or not invoice:
             return Response(
-                {"error": "Missing invoice_id or user_id"},
+                {"error": "Missing user_id or invoice"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+        invoice_id = invoice.get('_id')
+        
         # Try deleting from openOrders collection where both _id and user_id match
         result = openOrders_collection.delete_one({
             "_id": ObjectId(invoice_id),
             "user_id": user_id
         })
-
+        # also cancelling the order in the orders collection
+        #  # 🔍 Get user info from users_collection
+        user_info = db['users'].find_one({"_id": ObjectId(user_id)})
+        shop_name = user_info.get('shopname', 'Shahjeee') if user_info else 'Shahjeee'
+        # 📦 Prepare invoice content
+                
         if result.deleted_count == 0:
             return Response(
                 {"error": "Invoice not found for this user in openOrders"},
@@ -2169,7 +2177,7 @@ def confirm_invoice(request, invoice_id):
                 openOrders_collection.insert_one(open_order)
                 #  # 🔍 Get user info from users_collection
                 user_info = db['users'].find_one({"_id": ObjectId(user_id)})
-                shop_name = user_info.get('shop_name', 'Shahjeee') if user_info else 'Shahjeee'
+                shop_name = user_info.get('shopname', 'Shahjeee') if user_info else 'Shahjeee'
                 # 📦 Prepare invoice content
                 vendor = confirmed_invoice.get('vendor', 'Unknown Vendor')
                 total_amount = confirmed_invoice.get('total_amount', 0)
@@ -2417,7 +2425,13 @@ def add_product(request):
             },
             upsert=True
         )
+        # Convert UTC to Pakistan time
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
 
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
         
         last_added_product = product_data
         # 📝 Metadata for audit log
@@ -2425,7 +2439,7 @@ def add_product(request):
             "productname": product_data.get("productname"),
             "productname_id": product_data.get("productname_id"),
             "category": product_data.get("category"),
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": formatted_time,
         }
 
         log_audit_action(
