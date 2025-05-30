@@ -197,7 +197,7 @@ def upload_dataset(request):
         # Process Forecasting Data
         forecasting_data = df[forecasting_columns].drop_duplicates().reset_index(drop=True)
        
-        db["products"].insert_one(product_document)
+        # db["products"].insert_one(product_document)
         utc_time = datetime.utcnow()
         pkt = pytz.timezone("Asia/Karachi")
         pkt_time = utc_time.astimezone(pkt)
@@ -232,7 +232,8 @@ def upload_dataset(request):
             "products": product_data.to_dict(orient="records"),
             "upload_date": formatted_time,
         }
-        
+        db["products"].insert_one(product_document)
+
         # Insert Vendor Data into MongoDB
         vendor_document = {
             "_id": ObjectId(),  # Generate unique ID for dataset
