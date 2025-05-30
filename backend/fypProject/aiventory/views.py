@@ -4683,7 +4683,7 @@ def get_vendor_performance(request):
 
         reliability_score_history = [{"date": d["timestamp"], "score": d["score_after"]} for d in deliveries]
         last_5_scores = [d.get("score_after", 0) for d in deliveries[-5:]]
-
+        
         return Response({
             "success": True,
             "data": {

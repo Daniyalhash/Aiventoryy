@@ -189,6 +189,12 @@ const DatasetUpload = ({ userId, emailId, onUploadComplete }: DatasetUploadProps
       const data = await response.json();
       if (response.ok) {
         setMessage("Signup completed. Redirecting...");
+         localStorage.removeItem("authToken");
+        localStorage.clear();
+        sessionStorage.clear();
+        // setUser(null);
+        // signOut({ redirect: false });
+        // window.location.href = "/";
         window.location.href = "/"; // Redirect to the main dashboard
       } else {
         setMessage(data.error);
