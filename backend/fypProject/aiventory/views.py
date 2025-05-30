@@ -1455,7 +1455,7 @@ def forgot_password(request):
     )
 
     
-    reset_url = f"https://www.aiventory.pro/reset-password?token={reset_token}"
+    reset_url = f"https://www.aiventory.pro/resetpassword?token={reset_token}"
 
  # Send Reset Email
     try:
