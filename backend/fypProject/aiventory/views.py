@@ -196,7 +196,13 @@ def upload_dataset(request):
         # Process Forecasting Data
         forecasting_data = df[forecasting_columns].drop_duplicates().reset_index(drop=True)
        
+        db["products"].insert_one(product_document)
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
 
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
         # Handle missing vendor IDs in product data
         if product_data['vendor_id'].isnull().any():
             missing_products = product_data[product_data['vendor_id'].isnull()]
@@ -213,7 +219,7 @@ def upload_dataset(request):
             "user_id": ObjectId(user_id),
             "dataset_id": dataset_id,
             "forecasting": forecasting_data.to_dict(orient="records"),
-            "upload_date": datetime.utcnow().isoformat(),
+            "upload_date": formatted_time,
         }
         db["forecasting"].insert_one(forecasting_document)
 
@@ -223,17 +229,16 @@ def upload_dataset(request):
             "user_id": ObjectId(user_id),
             "dataset_id": dataset_id,
             "products": product_data.to_dict(orient="records"),
-            "upload_date": datetime.utcnow().isoformat(),
+            "upload_date": formatted_time,
         }
-        db["products"].insert_one(product_document)
-
+        
         # Insert Vendor Data into MongoDB
         vendor_document = {
             "_id": ObjectId(),  # Generate unique ID for dataset
             "user_id": ObjectId(user_id),
             "dataset_id": dataset_id,
             "vendors": vendor_data.to_dict(orient="records"),
-            "upload_date": datetime.utcnow().isoformat(),
+            "upload_date": formatted_time,
         }
         db["vendors"].insert_one(vendor_document)
 
@@ -452,13 +457,18 @@ def complete_signup(request):
         demand_model_names = list(training_results.keys()) if training_results and isinstance(training_results, dict) else []
 
         combined_models = demand_model_names 
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
 
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
         result = db["users"].update_one(
             {"_id": ObjectId(user_id)},
             {"$set": {
                 "status": "complete",
                 "models_trained": True,
-                "last_trained": datetime.utcnow(),
+                "last_trained": formatted_time,
                 "trained_models": combined_models
             }}
         )
@@ -566,13 +576,18 @@ def done(request):
         demand_model_names = list(training_results.keys()) if training_results and isinstance(training_results, dict) else []
 
         combined_models = demand_model_names 
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
 
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
         result = db["users"].update_one(
             {"_id": ObjectId(user_id)},
             {"$set": {
                 "status": "complete",
                 "models_trained": True,
-                "last_trained": datetime.utcnow(),
+                "last_trained": formatted_time,
                 "trained_models": combined_models
             }}
         )
@@ -868,7 +883,12 @@ def update_vendor_reliability(request):
             print("Vendor found but no changes made (values might be same)")
         # Save invoice data into receivedVendor collection\
             
-            
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
+
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")    
         invoice_id = invoice_data.get("_id")
         if not invoice_id:
             return Response({"error": "Invoice ID missing in invoice data"}, status=400)
@@ -882,7 +902,7 @@ def update_vendor_reliability(request):
                     "current_delivery_score": current_delivery_score,
                     "score_before": previous_score,
                     "score_after": new_reliability_score,
-                    "timestamp": datetime.utcnow()
+                    "timestamp": formatted_time
                 }
             },
             "$inc": {
@@ -994,12 +1014,17 @@ def update_vendor_reliability(request):
 
             else:
                 print("Inserting new received invoice...")
+                utc_time = datetime.utcnow()
+                pkt = pytz.timezone("Asia/Karachi")
+                pkt_time = utc_time.astimezone(pkt)
 
+                # Format as "09:39 AM 30/05/2025"
+                formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
                 invoice = invoice_data.copy()
                 invoice["status"] = "received"
                 invoice["user_id"] = ObjectId(user_id)
                 invoice["vendor_id"] = vendor_id
-                invoice["created_at"] = datetime.utcnow()            
+                invoice["created_at"] = formatted_time          
                 print("----------------------------------------------------------")
         
                 insert_result = db.receivedOrder.insert_one(invoice)
@@ -1617,8 +1642,7 @@ def delete_open_order_invoice(request):
         })
         # also cancelling the order in the orders collection
         #  # 🔍 Get user info from users_collection
-        user_info = db['users'].find_one({"_id": ObjectId(user_id)})
-        shop_name = user_info.get('shopname', 'Shahjeee') if user_info else 'Shahjeee'
+
         # 📦 Prepare invoice content
                 
         if result.deleted_count == 0:
@@ -1775,7 +1799,41 @@ def automate_order(request):
         
         #insert into open order
         openOrders_collection.insert_one(invoice)
+        user_info = db['users'].find_one({"_id": ObjectId(user_id)})
+        shop_name = user_info.get('shopname', 'Shahjeee') if user_info else 'Shahjeee'
+        # 📦 Prepare invoice content
+        vendor = invoice.get('vendor', 'Unknown Vendor')
+        total_amount = invoice.get('total_amount', 0)
+        formatted_date = invoice.get('formatted_date', str(datetime.utcnow()))
+        product_lines = ""
 
+        for product in invoice.get('products', []):
+            name = product.get('name', 'Unnamed')
+            price = product.get('price', 0)
+            quantity = product.get('quantity', 0)
+            line_total = round(price * quantity, 2)
+            product_lines += f"\n🟢 {name}\n   Qty: {quantity} × Rs.{price:.2f} = Rs.{line_total:.2f}"
+
+        # 📄 Final message body
+        message_body = (
+            f"📦 *Business Inventory Confirmation*\n"
+            f"🛍️ Shop: {shop_name}\n"
+            f"🏷️ Vendor: {vendor}\n"
+            f"📅 Date: {formatted_date}\n"
+            f"📌 Status: Confirmed\n\n"
+            f"📋 Products:{product_lines}\n\n"
+            f"💰 Total Amount: Rs.{total_amount:.2f}\n"
+            f"✅ Thank you for using Business Inventory!"
+        )
+        vendor_phone = invoice.get('vendorPhone', None)
+        if vendor_phone:
+            phone_number = f"+{vendor_phone}" if not str(vendor_phone).startswith("+") else str(vendor_phone)
+            message = client.messages.create(
+                body=message_body,
+                from_=TWILIO_NUMBER,
+                to=phone_number
+            )
+        print(f"📤 Twilio message sent! SID: {message.sid}")
         
         return Response({
             "message": "Invoice and order created successfully",
@@ -2492,6 +2550,13 @@ def delete_product(request):
         if result.modified_count == 0:
             return JsonResponse({"error": "No products found to delete"}, status=404)
  # 📋 Step 2: Log the deletion
+        # Convert UTC to Pakistan time
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
+
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
         log_audit_action(
             db=db,
             user_id=user_id,
@@ -2499,7 +2564,7 @@ def delete_product(request):
             entity_type="product",
             entity_id=product_id,
             metadata={
-                "timestamp": datetime.utcnow().isoformat()
+                "timestamp": formatted_time,
             }
         )
 
@@ -2593,7 +2658,13 @@ def update_product(request):
         # 6. Handle results
         if result.matched_count == 0:
             return JsonResponse({"error": "Product not found"}, status=404)
+        # Convert UTC to Pakistan time
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
 
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
         # 📋 Log audit action
         log_audit_action(
             db=db,
@@ -2603,7 +2674,7 @@ def update_product(request):
             entity_id=product_id,
             metadata={
                 "updatedFields": list(update_data.keys()),
-                "timestamp": datetime.utcnow().isoformat()
+                "timestamp": formatted_time,
             }
         )
 # 8. Performance metrics
@@ -2789,11 +2860,18 @@ def add_vendor(request):
         print("Total Unique Vendors:", total_unique_vendors)
         # Newly added vendor (last one pushed)
         last_added_vendor = updated_doc.get("vendors", [])[-1] if updated_doc.get("vendors") else None
+        # Convert UTC to Pakistan time
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
+
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
         metadata = {
             "vendor_id": vendor_data.get("vendor_id"),
             "vendor": vendor_data.get("vendor"),
             "category": vendor_data.get("category"),
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": formatted_time,
         }
         log_audit_action(
                     db=db,
@@ -2851,6 +2929,13 @@ def delete_vendor(request):
                 unique_vendors[vid] = v
 
         total_unique_vendors = len(unique_vendors)
+        # Convert UTC to Pakistan time
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
+
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
  # 📋 Step 2: Log the deletion
         log_audit_action(
             db=db,
@@ -2859,7 +2944,7 @@ def delete_vendor(request):
             entity_type="vendor",
             entity_id=vendor_id,
             metadata={
-                "timestamp": datetime.utcnow().isoformat()
+                "timestamp": formatted_time,
             }
         )
 
@@ -2918,6 +3003,12 @@ def update_vendor(request):
         if result.matched_count == 0:
             return JsonResponse({"error": "Vendor not found"}, status=404)
 # 📋 Log audit action
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
+
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
         log_audit_action(
             db=db,
             user_id=user_id,
@@ -2926,7 +3017,7 @@ def update_vendor(request):
             entity_id=vendor_id,
             metadata={
                 "updatedFields": list(update_data.keys()),
-                "timestamp": datetime.utcnow().isoformat()
+                "timestamp": formatted_time,
             }
         )
         return JsonResponse({
@@ -3173,7 +3264,13 @@ def get_product_by_id(request):
 def create_notifications_for_stock_levels(user_id, stock_levels, products_collection, notifications_collection):
     try:
         user_id_obj = ObjectId(user_id)
-        now = datetime.utcnow()
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
+
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
+        now = formatted_time
         # print(f"Creating notifications for user {user_id} with stock levels {stock_levels}")
 
         notification_types = {
@@ -3453,7 +3550,13 @@ def bestSales(request):
         user_id = request.GET.get('user_id')
         if not user_id:
             print("user id not found")
-        today_date = datetime.utcnow()  # Get current UTC date
+        utc_time = datetime.utcnow()
+        pkt = pytz.timezone("Asia/Karachi")
+        pkt_time = utc_time.astimezone(pkt)
+
+        # Format as "09:39 AM 30/05/2025"
+        formatted_time = pkt_time.strftime("%I:%M %p %d/%m/%Y")
+        today_date = formatted_time# Get current UTC date
         print("user",user_id)
 
         pipeline = [
