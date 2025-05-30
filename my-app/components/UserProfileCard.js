@@ -28,7 +28,7 @@ const UserProfileCard = ({ userId }) => {
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://127.0.0.1:8000/aiventory/get_user_details/`, {
+        const response = await axios.get(`https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/`, {
           params: { user_id: userId }
         });
         setContextUser(response.data);
@@ -68,7 +68,7 @@ const UserProfileCard = ({ userId }) => {
 
     setMessage({ text: '', type: '' }); // Clear previous messages
 
-      const { data: response } = await axios.post('http://127.0.0.1:8000/aiventory/update-user/', {
+      const { data: response } = await axios.post('https://seal-app-8m3g5.ondigitalocean.app/aiventory/update-user/', {
         user_id: userId,
         username: tempUser.username,
         shopname:tempUser.shopname,
