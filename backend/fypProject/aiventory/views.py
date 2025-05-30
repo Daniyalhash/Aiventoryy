@@ -982,23 +982,6 @@ def update_vendor_reliability(request):
                     print(f"✅ Stock updated for product {productname_id}")
                 else:
                     print(f"❌ Product with barcode {productname_id} not found for stock update")
-
-        
-        # metadata = {
-        #     "product_id": product.get("productname_id"),
-        #     "vendor":request.data.get('vendor_id'),
-        #     "category": product.get("category"),
-        #     "timestamp": datetime.utcnow().isoformat()
-        # }
-        # log_audit_action(
-        #             db=db,
-        #             user_id=user_id,
-        #             action="Update",
-        #             entity_type="Product",
-        #             entity_id=None,  # Optional: vendor if you have one
-        #             metadata=metadata
-        #         )
-        print("===============")
         if invoice_data:
             invoice_id = invoice_data.get("_id")
             if not invoice_id:
@@ -2195,14 +2178,7 @@ def confirm_invoice(request, invoice_id):
                 {"error": "Invalid invoice ID format"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        # First check if invoice already exists in openOrders
-        # existing_order = openOrders_collection.find_one({"_id": ObjectId(invoice_id)})
-        # if existing_order:
-        #     return Response(
-        #         {"error": "Order already placed"},
-        #         status=status.HTTP_400_BAD_REQUEST
-        #     )
-        # Update status only if invoice belongs to user
+      
         result = invoices_collection.update_one(
             {
                 "_id": ObjectId(invoice_id),
@@ -2551,8 +2527,6 @@ def delete_product(request):
             {"user_id": ObjectId(user_id), "products.productname_id": product_id},
             {"$pull": {"products": {"productname_id": product_id}}}
         )
-
-
         if result.modified_count == 0:
             return JsonResponse({"error": "No products found to delete"}, status=404)
  # 📋 Step 2: Log the deletion
@@ -2573,8 +2547,6 @@ def delete_product(request):
                 "timestamp": formatted_time,
             }
         )
-
-        
 
         return JsonResponse({
             "message": "Product deleted successfully",
