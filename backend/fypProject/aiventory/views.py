@@ -139,7 +139,7 @@ REQUIRED_COLUMNS = [
 
 #     result = train_model_for_user(user_id)
 #     return Response(result)
-
+from rest_framework.permissions import AllowAny
 @api_view(['OPTIONS', 'POST'])
 @permission_classes([AllowAny])
 def upload_dataset(request):
