@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import delete_ExpiredProduct,get_expired_products,fetch_smart_reorder_products,automate_order,get_logs,export_products,export_vendors,get_vendor_performance,products_by_category,fetch_cached_predictions,get_expiry_forecast,get_product_by_id,get_vendor_by_id,get_vendor_summary,delete_received_order_invoice,get_user_received_orders,delete_open_order_invoice,get_inventory_summary,vendors_by_category,search_product,update_product,delete_product,add_product,search_vendor,update_vendor,delete_vendor,update_vendor_reliability,predict_demand,get_monthly_sales,bestSales,last_sales_month,train_models,get_top_predicted_products,predict_sales,get_model_performance,check_stock_levels,mark_notification_as_read,get_notifications,delete_notifications,confirm_invoice,update_invoice,discard_signup,in_complete_signup,add_vendor,update_user,signup,delete_invoice,get_invoices,get_user_details,save_invoice,get_stock_levels, login,forgot_password,reset_password, validate_token,upload_dataset,complete_signup,get_vendor_visuals,get_total_products,get_dashboard_visuals,get_current_dataset,get_inventory_visuals,get_vendor,get_categories,get_top_products_by_category,get_products_by_name,get_categories_p,get_vendor_details
+from .views import done,delete_ExpiredProduct,get_expired_products,fetch_smart_reorder_products,automate_order,get_logs,export_products,export_vendors,get_vendor_performance,products_by_category,fetch_cached_predictions,get_expiry_forecast,get_product_by_id,get_vendor_by_id,get_vendor_summary,delete_received_order_invoice,get_user_received_orders,delete_open_order_invoice,get_inventory_summary,vendors_by_category,search_product,update_product,delete_product,add_product,search_vendor,update_vendor,delete_vendor,update_vendor_reliability,predict_demand,get_monthly_sales,bestSales,last_sales_month,train_models,get_top_predicted_products,predict_sales,get_model_performance,check_stock_levels,mark_notification_as_read,get_notifications,delete_notifications,confirm_invoice,update_invoice,discard_signup,in_complete_signup,add_vendor,update_user,signup,delete_invoice,get_invoices,get_user_details,save_invoice,get_stock_levels, login,forgot_password,reset_password, validate_token,upload_dataset,complete_signup,get_vendor_visuals,get_total_products,get_dashboard_visuals,get_current_dataset,get_inventory_visuals,get_vendor,get_categories,get_top_products_by_category,get_products_by_name,get_categories_p,get_vendor_details
 
 urlpatterns = [
     # login---
@@ -10,6 +10,7 @@ urlpatterns = [
     path('get_expired_products/', get_expired_products, name='get_expired_products'),
     path('delete_ExpiredProduct/', delete_ExpiredProduct, name='delete_ExpiredProduct'),
 
+    path('done/', done, name='done'),
 
     path('validate-token/', validate_token, name='validate_token'),
     path('upload_dataset/', upload_dataset, name='upload_dataset'),  # Add this line

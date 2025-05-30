@@ -36,7 +36,7 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
 
         const completeSignup = async () => {
             try {
-                const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/complete_signup/", {
+                const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/done/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include", // again, needed for Django sessions

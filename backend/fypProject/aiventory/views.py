@@ -485,8 +485,117 @@ def complete_signup(request):
             "details": error_msg
         }, status=500)
 
-    
-    
+@api_view(['POST'])
+def done(request):    
+    try:
+        # 1. Validate user_id
+        user_id = request.data.get("user_id")
+        if not user_id:
+            return Response({"error": "User ID is required."}, status=400)
+        
+        print(f"🚀 Starting signup completion for user {user_id}")
+        print('user_id', user_id)
+        
+        # 2. Initialize predictor and load data
+        predictor = DemandPredictor(user_id)
+        if not predictor.is_model_already_trained():
+            print("Training model for new user...")
+            start_time = time.time()  # Start timing the model training
+            try:
+                training_results = predictor.train_models()  # Train model
+            except Exception as e:
+                print("Training failed:", str(e))
+                return Response({ "error": "Training failed", "details": str(e) }, status=500)
+            print(f"Model training completed in {time.time() - start_time} seconds")
+            print("Model trained & saved to MongoDB")
+        else:
+            print("Model already exists in MongoDB")
+            training_results = None  # Skip retraining
+
+        print("\n🔍 Pre-validation check:")
+        try:
+            # Load and validate data
+            df = predictor.load_user_data()
+            
+            if not isinstance(df, pd.DataFrame):
+                raise ValueError("Data loading failed - invalid format")
+                
+            if len(df) < 10:
+                raise ValueError(f"Need at least 10 records, found {len(df)}")
+            
+            # Validate required columns
+            required_cols = {'sale_date', 'monthly_sales', 'productname_id', 'season'}
+            missing_cols = required_cols - set(df.columns)
+            if missing_cols:
+                raise ValueError(f"Missing columns: {', '.join(missing_cols)}")
+                
+            # Validate dates
+            try:
+                df['sale_date'] = pd.to_datetime(df['sale_date'])
+            except Exception as e:
+                raise ValueError(f"Invalid date format: {str(e)}")
+                
+            print(f"✅ Validated {len(df)} records with columns: {list(df.columns)}")
+
+        except Exception as e:
+            error_msg = f"Data validation failed: {str(e)}"
+            print(f"❌ {error_msg}")
+            return Response({
+                "error": "Cannot complete signup",
+                "details": error_msg,
+                "solution": "Ensure you have proper sales data (min 10 records with sale_date, monthly_sales, productname_id, season)"
+            }, status=400)
+        # 4. Initialize ai waster and load data
+         # ⏳ Train the model
+         
+        try:
+            get_expiry_forecast(user_id, force_retrain=True)
+        except Exception as e:
+            print("expiry training failed:", str(e))
+            return Response({ "error": "Training failed", "details": str(e) }, status=500)
+            
+        print("💾 Model saved successfully")
+        
+        # 4. Finalize signup
+        print("\n🔄 Finalizing signup...")
+
+        # Handle trained models safely
+        demand_model_names = list(training_results.keys()) if training_results and isinstance(training_results, dict) else []
+
+        combined_models = demand_model_names 
+
+        result = db["users"].update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {
+                "status": "complete",
+                "models_trained": True,
+                "last_trained": datetime.utcnow(),
+                "trained_models": combined_models
+            }}
+        )
+
+        if not result.modified_count:
+            error_msg = "User status update failed"
+            print(f"⚠️ {error_msg}")
+            return Response({
+                "error": "Signup processing incomplete",
+                "details": error_msg
+            }, status=400)
+
+        print("🎉 Signup completed successfully!")
+        return Response({
+            "status": "success",
+            "trained_models": combined_models,
+            "message": "Models trained and user status updated successfully!"
+        })
+
+    except Exception as e:
+        error_msg = f"Unexpected error: {str(e)}"
+        print(f"🔥 {error_msg}")
+        return Response({
+            "error": "Signup processing failed",
+            "details": error_msg
+        }, status=500)
     
     
 @api_view(['GET'])
