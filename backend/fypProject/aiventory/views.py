@@ -140,8 +140,8 @@ REQUIRED_COLUMNS = [
 #     result = train_model_for_user(user_id)
 #     return Response(result)
 
-
-@api_view(['POST'])
+@api_view(['OPTIONS', 'POST'])
+@permission_classes([AllowAny])
 def upload_dataset(request):
     try:
         # Get User ID
