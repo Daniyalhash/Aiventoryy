@@ -484,8 +484,10 @@ def complete_signup(request):
             "error": "Signup processing failed",
             "details": error_msg
         }, status=500)
+from rest_framework.permissions import AllowAny
 
-@api_view(['POST'])
+@api_view(['OPTIONS', 'POST'])
+@permission_classes([AllowAny])
 def done(request):    
     try:
         # 1. Validate user_id

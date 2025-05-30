@@ -36,6 +36,16 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
 
         const completeSignup = async () => {
             try {
+                // Step 1: Check if user is already complete
+                const existing = await axios.get("https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/", {
+                    params: { user_id: userId }
+                });
+                if (existing.data.status === "complete") {
+                setMessage("User already set up. Redirecting...");
+                setIsError(false);
+                window.location.href = "/dashboard";
+                return;
+                     }
                 const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/done/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -52,21 +62,19 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
                     setIsError(false);
                     // poll for user status
                     // Start polling
-                    const pollUserStatus = async () => {
+                    const pollUserStatus   = async () => {
                         try {
-                            const response = await axios.get(
+                            const pollRes = await axios.get(
                                 "https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/",
                                 {
                                     params: { user_id: userId }
                                 }
                             );
 
-                            const data = response.data;
-
-                            if (data.status === "complete") {
-                                clearInterval(pollingInterval);
-                                window.location.href = "/dashboard";
-                            }
+                       if (pollRes.data.status === "complete") {
+                            clearInterval(pollingInterval);
+                            window.location.href = "/dashboard";
+                        }
                         } catch (error) {
                             console.error("Polling failed:", error);
                         }
