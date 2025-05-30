@@ -1454,9 +1454,9 @@ def forgot_password(request):
         SECRET_KEY, algorithm="HS256"
     )
 
-    # Password Reset URL
-    reset_url = f"https://seal-app-8m3g5.ondigitalocean.app/aiventory/reset-password?token={reset_token}"
     
+    reset_url = f"https://seal-app-8m3g5.ondigitalocean.app/reset-password?token={reset_token}"
+
  # Send Reset Email
     try:
         send_mail(
@@ -1473,7 +1473,6 @@ def forgot_password(request):
         return Response({"error": "Failed to send email. Please try again later."}, status=500)
 
 # Reset Password Endpoint
-# Forgot Password Endpoint
 @api_view(['OPTIONS', 'POST'])
 @permission_classes([AllowAny])
 def reset_password(request):
