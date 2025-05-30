@@ -70,7 +70,7 @@ import bson
 from utils.demand_predictor import DemandPredictor
 from utils.waste_predictor import AIWasteReducer
 
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import send_mail
 from django.conf import settings
 # utils 
 from utils.Signup import Signup
@@ -1473,9 +1473,8 @@ def forgot_password(request):
 
     # Password Reset URL
     reset_url = f"https://seal-app-8m3g5.ondigitalocean.app/resetpassword?token={reset_token}"
-    # Email content (HTML with logo)
- 
-    # Send Reset Email
+    
+ # Send Reset Email
     try:
         send_mail(
             'Password Reset Request',
@@ -1489,7 +1488,6 @@ def forgot_password(request):
     except Exception as e:
         print(f"Error sending email: {str(e)}")
         return Response({"error": "Failed to send email. Please try again later."}, status=500)
-
 
 # Reset Password Endpoint
 # Forgot Password Endpoint
@@ -1528,7 +1526,7 @@ def reset_password(request):
     except jwt.ExpiredSignatureError:
         return Response({"error": "Token has expired"}, status=400)
     except jwt.InvalidTokenError:
-        return Response({"error": "Invalid token"}, status=400)    also this one
+        return Response({"error": "Invalid token"}, status=400)
 
 # done --------------------------------------------------------------------------------------------------------------------------
 
