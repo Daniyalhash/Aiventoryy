@@ -70,7 +70,7 @@ import bson
 from utils.demand_predictor import DemandPredictor
 from utils.waste_predictor import AIWasteReducer
 
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 # utils 
 from utils.Signup import Signup
@@ -1454,7 +1454,9 @@ def get_vendor_details(request):
 
 
 # Forgot Password Endpoint
-@api_view(['POST'])
+# Forgot Password Endpoint
+@api_view(['OPTIONS', 'POST'])
+@permission_classes([AllowAny])
 def forgot_password(request):
     email = request.data.get("email")
     
@@ -1470,29 +1472,43 @@ def forgot_password(request):
     )
 
     # Password Reset URL
-    reset_url = f"http://localhost:3000/resetpassword?token={reset_token}"
-    
- # Send Reset Email
+    reset_url = f"https://seal-app-8m3g5.ondigitalocean.app/resetpassword?token={reset_token}"
+    # Email content (HTML with logo)
+    subject = 'Password Reset Request'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    to_email = [email]
+    text_content = f"Hi {user['username']},\nClick the link to reset your password: {reset_url}"
+    html_content = f"""
+        <div style="font-family: Arial, sans-serif;">
+            <h2>Password Reset Request</h2>
+            <p>Hi {user['username']},</p>
+            <p>We received a request to reset your password. Click the link below:</p>
+            <a href="{reset_url}" style="color: #4CAF50; font-weight: bold;">Reset your password</a>
+            <p>This link will expire in 1 hour.</p>
+            <p>If you did not request this, please ignore this email.</p>
+            <br />
+            <p>Thanks,<br />Your App Team</p>
+        </div>
+    """
+    # Send Reset Email
     try:
-        send_mail(
-            'Password Reset Request',
-            f'Hi {user["username"]},\n\nClick the link to reset your password:\n{reset_url}\n\nIf you did not request this, ignore this email.',
-            settings.DEFAULT_FROM_EMAIL,
-            [email],
-            fail_silently=False,
-        )
+        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
         return Response({"message": "Password reset link sent to your email"}, status=200)
-
     except Exception as e:
         print(f"Error sending email: {str(e)}")
         return Response({"error": "Failed to send email. Please try again later."}, status=500)
 
 # Reset Password Endpoint
-@api_view(['POST'])
+# Forgot Password Endpoint
+@api_view(['OPTIONS', 'POST'])
+@permission_classes([AllowAny])
 def reset_password(request):
     token = request.data.get("token")
     new_password = request.data.get("newPassword")
-
+    if not token or not new_password:
+        return Response({"error": "Token and new password are required."}, status=400)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
         user_id = payload["userId"]
@@ -1507,17 +1523,27 @@ def reset_password(request):
             {"_id": ObjectId(user_id)},
             {"$set": {"password": hashed_password}}
         )
+         # Email content with logo
+        subject = 'Password Reset Successful'
+        to_email = [user["email"]]
+        text_content = f"Hi {user['username']},\n\nYour password has been reset successfully."
 
+        html_content = f"""
+            <div style="font-family: Arial, sans-serif;">
+                <h2>Password Reset Successful</h2>
+                <p>Hi {user['username']},</p>
+                <p>Your password has been reset successfully. You can now log in using your new password.</p>
+                <p>If you didn’t do this, please contact our support team immediately.</p>
+                <br />
+                <p>Thanks,<br />Your App Team</p>
+            </div>
+        """
         # Send Confirmation Email
-        send_mail(
-            'Password Reset Successful',
-            f'Hi {user["username"]},\n\nYour password has been reset successfully. You can now log in with your new password.\n\nThank you!',
-            settings.DEFAULT_FROM_EMAIL,
-            [user["email"]],
-            fail_silently=False,
-        )
+        msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, to_email)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
 
-        return Response({"message": "Password reset successful"})
+        return Response({"message": "Password reset successful."}, status=200)
 
     except jwt.ExpiredSignatureError:
         return Response({"error": "Token has expired"}, status=400)
