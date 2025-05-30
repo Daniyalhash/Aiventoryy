@@ -143,6 +143,7 @@ from rest_framework.permissions import AllowAny
 @api_view(['OPTIONS', 'POST'])
 @permission_classes([AllowAny])
 def upload_dataset(request):
+    print("Request method:", request.method)  # Add this
     try:
         # Get User ID
         user_id = request.data.get("user_id")
