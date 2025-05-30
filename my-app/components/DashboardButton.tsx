@@ -41,17 +41,17 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
                     params: { user_id: userId }
                 });
                 if (existing.data.status === "complete") {
-                setMessage("User already set up. Redirecting...");
-                setIsError(false);
-                window.location.href = "/dashboard";
-                return;
-                     }
+                    setMessage("User already set up. Redirecting...");
+                    setIsError(false);
+                    window.location.href = "/dashboard";
+                    return;
+                }
                 const response = await fetch("https://seal-app-8m3g5.ondigitalocean.app/aiventory/done/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include", // again, needed for Django sessions
                     body: JSON.stringify({ user_id: userId }),
-                    
+
                 });
 
                 const data = await response.json();
@@ -60,28 +60,11 @@ const DashboardButton = ({ userId }: DashboardButtonProps) => {
                     localStorage.setItem("userId", userId);
                     setMessage("Signup completed successfully! Redirecting to dashboard...");
                     setIsError(false);
-                    // poll for user status
-                    // Start polling
-                    const pollUserStatus   = async () => {
-                        try {
-                            const pollRes = await axios.get(
-                                "https://seal-app-8m3g5.ondigitalocean.app/aiventory/get_user_details/",
-                                {
-                                    params: { user_id: userId }
-                                }
-                            );
-
-                       if (pollRes.data.status === "complete") {
-                            clearInterval(pollingInterval);
-                            window.location.href = "/dashboard";
-                        }
-                        } catch (error) {
-                            console.error("Polling failed:", error);
-                        }
-                    };
-
-                    const pollingInterval = setInterval(pollUserStatus, 5000);
-
+                    // Instead of polling repeatedly for user status, rely on the top call’s information.
+                    // Redirect after a short delay.
+                    setTimeout(() => {
+                        window.location.href = "/dashboard";
+                    }, 3000);
                 } else {
                     setMessage(data.error || "Failed to complete signup. Try again.");
                     setIsError(true);
